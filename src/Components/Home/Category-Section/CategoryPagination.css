@@ -1,0 +1,14 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination li {
+  list-style: none;
+}
+
+.pagination .active {
+  background-color: #2563eb; /* Tailwind's blue-600 */
+  color: white;
+}

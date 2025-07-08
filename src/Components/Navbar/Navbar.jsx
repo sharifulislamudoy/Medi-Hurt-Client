@@ -10,7 +10,7 @@ const Navbar = () => {
         <li className='px-4'><NavLink to={'/Language'} className={'px-3 py-0'}>Languages</NavLink></li>
     </>
     return (
-        <div className="flex px-2 py-1 w-11/12 mx-auto rounded-2xl border-b-1 shadow-sm bg-blue-50 mt-3">
+        <div className="flex px-2 py-1 w-11/12 mx-auto rounded-2xl border-b-1 shadow-sm bg-blue-50 mt-3 sticky top-0 inset-0 z-50">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:border-blue-50">
