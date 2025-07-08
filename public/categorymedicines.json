@@ -1,146 +1,170 @@
 [
   {
     "id": "cat001",
-    "name": "Analgesics (Pain Relievers)",
-    "image": "/images/analgesics.png",
-    "totalMedicines": 85
+    "name": "Analgesics",
+    "image": "https://i.ibb.co/YqrXMrV/Untitled-design-85.png",
+    "totalMedicines": 85,
+    "description": "Used to relieve pain, commonly for headaches, muscle aches, and arthritis."
   },
   {
     "id": "cat002",
-    "name": "Antipyretics (Fever Reducers)",
-    "image": "/images/antipyretics.png",
-    "totalMedicines": 60
+    "name": "Antipyretics",
+    "image": "https://i.ibb.co/k2v0YB9w/Untitled-design-86-1.jpg",
+    "totalMedicines": 60,
+    "description": "Reduce fever by affecting the hypothalamus and promoting heat loss."
   },
   {
     "id": "cat003",
-    "name": "Antibiotics (Antibacterials)",
-    "image": "/images/antibiotics.png",
-    "totalMedicines": 120
+    "name": "Antibiotics",
+    "image": "https://i.ibb.co/NnCKB48H/Untitled-design-87.png",
+    "totalMedicines": 120,
+    "description": "Treat bacterial infections by killing or inhibiting bacteria growth."
   },
   {
     "id": "cat004",
     "name": "Antivirals",
-    "image": "/images/antivirals.png",
-    "totalMedicines": 48
+    "image": "https://i.ibb.co/qL3K5fg9/Untitled-design-88.png",
+    "totalMedicines": 48,
+    "description": "Prevent or treat viral infections like flu, herpes, or HIV."
   },
   {
     "id": "cat005",
     "name": "Antifungals",
-    "image": "/images/antifungals.png",
-    "totalMedicines": 30
+    "image": "https://i.ibb.co/hRfC39z1/Untitled-design-89.png",
+    "totalMedicines": 30,
+    "description": "Used to treat fungal infections of the skin, nails, and body."
   },
   {
     "id": "cat006",
     "name": "Antiparasitics",
-    "image": "/images/antiparasitics.png",
-    "totalMedicines": 40
+    "image": "https://i.ibb.co/q8fJH3L/World-Health-Day.png",
+    "totalMedicines": 40,
+    "description": "Treat infections caused by parasites like worms or protozoa."
   },
   {
     "id": "cat007",
-    "name": "Cardiovascular Drugs",
-    "image": "/images/cardiovascular.png",
-    "totalMedicines": 90
+    "name": "Cardiovascular",
+    "image": "https://i.ibb.co/zTQc3Hh0/Untitled-design-90.png",
+    "totalMedicines": 90,
+    "description": "Used to manage heart-related conditions like hypertension and arrhythmia."
   },
   {
     "id": "cat008",
     "name": "Antidiabetics",
-    "image": "/images/antidiabetics.png",
-    "totalMedicines": 100
+    "image": "https://i.ibb.co/ZzCkw3Tb/Untitled-design-91.png",
+    "totalMedicines": 100,
+    "description": "Help control blood sugar levels in people with diabetes."
   },
   {
     "id": "cat009",
     "name": "Respiratory Drugs",
     "image": "/images/respiratory.png",
-    "totalMedicines": 55
+    "totalMedicines": 55,
+    "description": "Treat respiratory issues like asthma, bronchitis, and COPD."
   },
   {
     "id": "cat010",
     "name": "Central Nervous System (CNS) Drugs",
     "image": "/images/cns.png",
-    "totalMedicines": 70
+    "totalMedicines": 70,
+    "description": "Affect brain and spinal cord to treat pain, epilepsy, anxiety, and depression."
   },
   {
     "id": "cat011",
     "name": "Gastrointestinal Drugs",
     "image": "/images/gi.png",
-    "totalMedicines": 65
+    "totalMedicines": 65,
+    "description": "Used for stomach and digestive problems such as acid reflux and diarrhea."
   },
   {
     "id": "cat012",
     "name": "Immunological Agents",
     "image": "/images/immunological.png",
-    "totalMedicines": 40
+    "totalMedicines": 40,
+    "description": "Boost or suppress the immune system for various immune-related diseases."
   },
   {
     "id": "cat013",
     "name": "Hormonal / Endocrine Drugs",
     "image": "/images/endocrine.png",
-    "totalMedicines": 50
+    "totalMedicines": 50,
+    "description": "Regulate hormone levels for thyroid, growth, or reproductive issues."
   },
   {
     "id": "cat014",
     "name": "Pediatric Medicines",
     "image": "/images/pediatric.png",
-    "totalMedicines": 35
+    "totalMedicines": 35,
+    "description": "Formulated specifically for infants, children, and adolescents."
   },
   {
     "id": "cat015",
     "name": "Gynecological/Obstetric Medicines",
     "image": "/images/gynecology.png",
-    "totalMedicines": 45
+    "totalMedicines": 45,
+    "description": "Support women's reproductive health and pregnancy care."
   },
   {
     "id": "cat016",
     "name": "Cancer Drugs (Oncology)",
     "image": "/images/oncology.png",
-    "totalMedicines": 25
+    "totalMedicines": 25,
+    "description": "Used to treat cancer by killing or slowing the growth of cancer cells."
   },
   {
     "id": "cat017",
     "name": "Ophthalmic Medicines",
     "image": "/images/eye.png",
-    "totalMedicines": 28
+    "totalMedicines": 28,
+    "description": "Treat eye-related conditions such as infections, dryness, or glaucoma."
   },
   {
     "id": "cat018",
     "name": "ENT (Ear, Nose, Throat) Drugs",
     "image": "/images/ent.png",
-    "totalMedicines": 34
+    "totalMedicines": 34,
+    "description": "Manage conditions of the ear, nose, and throat, including infections and allergies."
   },
   {
     "id": "cat019",
     "name": "Musculoskeletal Drugs",
     "image": "/images/muscle.png",
-    "totalMedicines": 40
+    "totalMedicines": 40,
+    "description": "Used for muscle, bone, or joint conditions like arthritis and inflammation."
   },
   {
     "id": "cat020",
     "name": "Dermatological Drugs",
     "image": "/images/derma.png",
-    "totalMedicines": 50
+    "totalMedicines": 50,
+    "description": "Treat skin issues such as acne, eczema, fungal infections, or rashes."
   },
   {
     "id": "cat021",
     "name": "Dental Medicines",
     "image": "/images/dental.png",
-    "totalMedicines": 22
+    "totalMedicines": 22,
+    "description": "Used to manage oral health issues including infections, pain, and gum disease."
   },
   {
     "id": "cat022",
     "name": "Nutritional & Dietary Supplements",
     "image": "/images/supplements.png",
-    "totalMedicines": 75
+    "totalMedicines": 75,
+    "description": "Support health with vitamins, minerals, and nutritional enhancements."
   },
   {
     "id": "cat023",
     "name": "Diagnostic Agents",
     "image": "/images/diagnostic.png",
-    "totalMedicines": 18
+    "totalMedicines": 18,
+    "description": "Aid in identifying diseases or conditions through tests and imaging."
   },
   {
     "id": "cat024",
     "name": "Emergency / First Aid Drugs",
     "image": "/images/emergency.png",
-    "totalMedicines": 15
+    "totalMedicines": 15,
+    "description": "Critical drugs for quick response in emergency and life-threatening situations."
   }
 ]
