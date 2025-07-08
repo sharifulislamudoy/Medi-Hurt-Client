@@ -13,9 +13,11 @@
     "@tailwindcss/vite": "^4.1.11",
     "daisyui": "^5.0.46",
     "firebase": "^11.10.0",
+    "keen-slider": "^6.8.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.6.3",
+    "swiper": "^11.2.10",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {

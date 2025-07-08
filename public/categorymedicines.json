@@ -1,0 +1,146 @@
+[
+  {
+    "id": "cat001",
+    "name": "Analgesics (Pain Relievers)",
+    "image": "/images/analgesics.png",
+    "totalMedicines": 85
+  },
+  {
+    "id": "cat002",
+    "name": "Antipyretics (Fever Reducers)",
+    "image": "/images/antipyretics.png",
+    "totalMedicines": 60
+  },
+  {
+    "id": "cat003",
+    "name": "Antibiotics (Antibacterials)",
+    "image": "/images/antibiotics.png",
+    "totalMedicines": 120
+  },
+  {
+    "id": "cat004",
+    "name": "Antivirals",
+    "image": "/images/antivirals.png",
+    "totalMedicines": 48
+  },
+  {
+    "id": "cat005",
+    "name": "Antifungals",
+    "image": "/images/antifungals.png",
+    "totalMedicines": 30
+  },
+  {
+    "id": "cat006",
+    "name": "Antiparasitics",
+    "image": "/images/antiparasitics.png",
+    "totalMedicines": 40
+  },
+  {
+    "id": "cat007",
+    "name": "Cardiovascular Drugs",
+    "image": "/images/cardiovascular.png",
+    "totalMedicines": 90
+  },
+  {
+    "id": "cat008",
+    "name": "Antidiabetics",
+    "image": "/images/antidiabetics.png",
+    "totalMedicines": 100
+  },
+  {
+    "id": "cat009",
+    "name": "Respiratory Drugs",
+    "image": "/images/respiratory.png",
+    "totalMedicines": 55
+  },
+  {
+    "id": "cat010",
+    "name": "Central Nervous System (CNS) Drugs",
+    "image": "/images/cns.png",
+    "totalMedicines": 70
+  },
+  {
+    "id": "cat011",
+    "name": "Gastrointestinal Drugs",
+    "image": "/images/gi.png",
+    "totalMedicines": 65
+  },
+  {
+    "id": "cat012",
+    "name": "Immunological Agents",
+    "image": "/images/immunological.png",
+    "totalMedicines": 40
+  },
+  {
+    "id": "cat013",
+    "name": "Hormonal / Endocrine Drugs",
+    "image": "/images/endocrine.png",
+    "totalMedicines": 50
+  },
+  {
+    "id": "cat014",
+    "name": "Pediatric Medicines",
+    "image": "/images/pediatric.png",
+    "totalMedicines": 35
+  },
+  {
+    "id": "cat015",
+    "name": "Gynecological/Obstetric Medicines",
+    "image": "/images/gynecology.png",
+    "totalMedicines": 45
+  },
+  {
+    "id": "cat016",
+    "name": "Cancer Drugs (Oncology)",
+    "image": "/images/oncology.png",
+    "totalMedicines": 25
+  },
+  {
+    "id": "cat017",
+    "name": "Ophthalmic Medicines",
+    "image": "/images/eye.png",
+    "totalMedicines": 28
+  },
+  {
+    "id": "cat018",
+    "name": "ENT (Ear, Nose, Throat) Drugs",
+    "image": "/images/ent.png",
+    "totalMedicines": 34
+  },
+  {
+    "id": "cat019",
+    "name": "Musculoskeletal Drugs",
+    "image": "/images/muscle.png",
+    "totalMedicines": 40
+  },
+  {
+    "id": "cat020",
+    "name": "Dermatological Drugs",
+    "image": "/images/derma.png",
+    "totalMedicines": 50
+  },
+  {
+    "id": "cat021",
+    "name": "Dental Medicines",
+    "image": "/images/dental.png",
+    "totalMedicines": 22
+  },
+  {
+    "id": "cat022",
+    "name": "Nutritional & Dietary Supplements",
+    "image": "/images/supplements.png",
+    "totalMedicines": 75
+  },
+  {
+    "id": "cat023",
+    "name": "Diagnostic Agents",
+    "image": "/images/diagnostic.png",
+    "totalMedicines": 18
+  },
+  {
+    "id": "cat024",
+    "name": "Emergency / First Aid Drugs",
+    "image": "/images/emergency.png",
+    "totalMedicines": 15
+  }
+]
