@@ -3,9 +3,9 @@ import {
 } from "react-router";
 import MainLayout from "../Layouts/MainLayout";
 import Home from "../Pages/Home";
-import SignupForm from "../Layouts/AuthenticationLayout";
 import AuthenticationLayout from "../Layouts/AuthenticationLayout";
 import Signup from "../Pages/Signup";
+import ShopPage from "../Pages/Shop";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +16,10 @@ export const router = createBrowserRouter([
             index:true,
             Component: Home,
         },
+        {
+          path: '/Shop',
+          Component: ShopPage
+        }
     ]
   },
   {

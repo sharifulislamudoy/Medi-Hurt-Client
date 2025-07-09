@@ -1,0 +1,2590 @@
+[
+  {
+    "category": "Analgesics",
+    "name": "Tapentadol",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tapentadol",
+    "price": 53.73,
+    "stock": 52
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 34.81,
+    "stock": 33
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "Nucynta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 84.61,
+    "stock": 27
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "Celebrex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 145.91,
+    "stock": 75
+  },
+  {
+    "category": "Analgesics",
+    "name": "Paracetamol",
+    "brand": "Celebrex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 81.95,
+    "stock": 69
+  },
+  {
+    "category": "Analgesics",
+    "name": "Aspirin",
+    "brand": "Codeine Phosphate",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 95.8,
+    "stock": 12
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ketorolac",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketorolac",
+    "price": 141.71,
+    "stock": 73
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tramadol",
+    "brand": "Vicodin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tramadol",
+    "price": 69.12,
+    "stock": 52
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Feldene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 72.59,
+    "stock": 37
+  },
+  {
+    "category": "Analgesics",
+    "name": "Paracetamol",
+    "brand": "Mobic",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 24.51,
+    "stock": 91
+  },
+  {
+    "category": "Analgesics",
+    "name": "Mephenamic Acid",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mephenamic+Acid",
+    "price": 44.43,
+    "stock": 66
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 69.29,
+    "stock": 31
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 118.83,
+    "stock": 3
+  },
+  {
+    "category": "Analgesics",
+    "name": "Hydrocodone",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydrocodone",
+    "price": 33.03,
+    "stock": 95
+  },
+  {
+    "category": "Analgesics",
+    "name": "Piroxicam",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piroxicam",
+    "price": 63.87,
+    "stock": 76
+  },
+  {
+    "category": "Analgesics",
+    "name": "Buprenorphine",
+    "brand": "Toradol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Buprenorphine",
+    "price": 139.31,
+    "stock": 38
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tramadol",
+    "brand": "Butrans",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tramadol",
+    "price": 100.72,
+    "stock": 88
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 50.3,
+    "stock": 79
+  },
+  {
+    "category": "Analgesics",
+    "name": "Acetaminophen",
+    "brand": "OxyContin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 134.67,
+    "stock": 36
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 51.21,
+    "stock": 34
+  },
+  {
+    "category": "Analgesics",
+    "name": "Aspirin",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 146.84,
+    "stock": 70
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "Feldene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 131.13,
+    "stock": 64
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ketorolac",
+    "brand": "Vicodin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketorolac",
+    "price": 92.14,
+    "stock": 34
+  },
+  {
+    "category": "Analgesics",
+    "name": "Dextropropoxyphene",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dextropropoxyphene",
+    "price": 75.62,
+    "stock": 87
+  },
+  {
+    "category": "Analgesics",
+    "name": "Codeine",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Codeine",
+    "price": 37.7,
+    "stock": 74
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tapentadol",
+    "brand": "Codeine Phosphate",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tapentadol",
+    "price": 146.49,
+    "stock": 17
+  },
+  {
+    "category": "Analgesics",
+    "name": "Mephenamic Acid",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mephenamic+Acid",
+    "price": 92.87,
+    "stock": 44
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 109.88,
+    "stock": 1
+  },
+  {
+    "category": "Analgesics",
+    "name": "Diclofenac",
+    "brand": "Mobic",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diclofenac",
+    "price": 49.77,
+    "stock": 84
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "Butrans",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 82.57,
+    "stock": 42
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Darvon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 78.93,
+    "stock": 56
+  },
+  {
+    "category": "Analgesics",
+    "name": "Naproxen",
+    "brand": "Indocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 111.16,
+    "stock": 56
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Mobic",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 117.95,
+    "stock": 0
+  },
+  {
+    "category": "Analgesics",
+    "name": "Hydrocodone",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydrocodone",
+    "price": 113.21,
+    "stock": 37
+  },
+  {
+    "category": "Analgesics",
+    "name": "Naproxen",
+    "brand": "Vicodin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 126.25,
+    "stock": 23
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 111.51,
+    "stock": 32
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 92.63,
+    "stock": 3
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ketorolac",
+    "brand": "Lodine",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketorolac",
+    "price": 62.94,
+    "stock": 16
+  },
+  {
+    "category": "Analgesics",
+    "name": "Naproxen",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 38.45,
+    "stock": 0
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tramadol",
+    "brand": "Mobic",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tramadol",
+    "price": 104.42,
+    "stock": 81
+  },
+  {
+    "category": "Analgesics",
+    "name": "Diclofenac",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diclofenac",
+    "price": 57.47,
+    "stock": 1
+  },
+  {
+    "category": "Analgesics",
+    "name": "Codeine",
+    "brand": "OxyContin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Codeine",
+    "price": 83.89,
+    "stock": 4
+  },
+  {
+    "category": "Analgesics",
+    "name": "Morphine",
+    "brand": "OxyContin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Morphine",
+    "price": 16.71,
+    "stock": 29
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tramadol",
+    "brand": "Toradol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tramadol",
+    "price": 21.62,
+    "stock": 11
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Butrans",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 40.19,
+    "stock": 22
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Butrans",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 15.45,
+    "stock": 34
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tapentadol",
+    "brand": "Toradol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tapentadol",
+    "price": 69.54,
+    "stock": 75
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Butrans",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 50.32,
+    "stock": 76
+  },
+  {
+    "category": "Analgesics",
+    "name": "Oxycodone",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oxycodone",
+    "price": 101.45,
+    "stock": 71
+  },
+  {
+    "category": "Analgesics",
+    "name": "Buprenorphine",
+    "brand": "Darvon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Buprenorphine",
+    "price": 78.96,
+    "stock": 1
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ketorolac",
+    "brand": "Darvon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketorolac",
+    "price": 75.3,
+    "stock": 56
+  },
+  {
+    "category": "Analgesics",
+    "name": "Mephenamic Acid",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mephenamic+Acid",
+    "price": 29.25,
+    "stock": 80
+  },
+  {
+    "category": "Analgesics",
+    "name": "Buprenorphine",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Buprenorphine",
+    "price": 26.55,
+    "stock": 76
+  },
+  {
+    "category": "Analgesics",
+    "name": "Acetaminophen",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 75.77,
+    "stock": 93
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 88.83,
+    "stock": 45
+  },
+  {
+    "category": "Analgesics",
+    "name": "Mephenamic Acid",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mephenamic+Acid",
+    "price": 11.62,
+    "stock": 52
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 147.74,
+    "stock": 5
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 25.8,
+    "stock": 93
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 19.48,
+    "stock": 61
+  },
+  {
+    "category": "Analgesics",
+    "name": "Naproxen",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 72.83,
+    "stock": 9
+  },
+  {
+    "category": "Analgesics",
+    "name": "Naproxen",
+    "brand": "Celebrex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 42.97,
+    "stock": 64
+  },
+  {
+    "category": "Analgesics",
+    "name": "Tapentadol",
+    "brand": "Vicodin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tapentadol",
+    "price": 69.17,
+    "stock": 99
+  },
+  {
+    "category": "Analgesics",
+    "name": "Diclofenac",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diclofenac",
+    "price": 148.63,
+    "stock": 20
+  },
+  {
+    "category": "Analgesics",
+    "name": "Meloxicam",
+    "brand": "Codeine Phosphate",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meloxicam",
+    "price": 19.12,
+    "stock": 99
+  },
+  {
+    "category": "Analgesics",
+    "name": "Etodolac",
+    "brand": "OxyContin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Etodolac",
+    "price": 59.73,
+    "stock": 81
+  },
+  {
+    "category": "Analgesics",
+    "name": "Aspirin",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 136.83,
+    "stock": 98
+  },
+  {
+    "category": "Analgesics",
+    "name": "Oxycodone",
+    "brand": "Toradol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oxycodone",
+    "price": 99.5,
+    "stock": 17
+  },
+  {
+    "category": "Analgesics",
+    "name": "Codeine",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Codeine",
+    "price": 13.84,
+    "stock": 93
+  },
+  {
+    "category": "Analgesics",
+    "name": "Dextropropoxyphene",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dextropropoxyphene",
+    "price": 24.64,
+    "stock": 58
+  },
+  {
+    "category": "Analgesics",
+    "name": "Aspirin",
+    "brand": "Toradol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 115.31,
+    "stock": 38
+  },
+  {
+    "category": "Analgesics",
+    "name": "Dextropropoxyphene",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dextropropoxyphene",
+    "price": 37.02,
+    "stock": 93
+  },
+  {
+    "category": "Analgesics",
+    "name": "Buprenorphine",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Buprenorphine",
+    "price": 10.13,
+    "stock": 24
+  },
+  {
+    "category": "Analgesics",
+    "name": "Hydrocodone",
+    "brand": "OxyContin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydrocodone",
+    "price": 46.97,
+    "stock": 62
+  },
+  {
+    "category": "Analgesics",
+    "name": "Mephenamic Acid",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mephenamic+Acid",
+    "price": 78.94,
+    "stock": 69
+  },
+  {
+    "category": "Analgesics",
+    "name": "Hydrocodone",
+    "brand": "Feldene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydrocodone",
+    "price": 131.09,
+    "stock": 100
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 65.05,
+    "stock": 19
+  },
+  {
+    "category": "Analgesics",
+    "name": "Oxycodone",
+    "brand": "MS Contin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oxycodone",
+    "price": 80.03,
+    "stock": 56
+  },
+  {
+    "category": "Analgesics",
+    "name": "Paracetamol",
+    "brand": "Lodine",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 105.99,
+    "stock": 91
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Lodine",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 110.48,
+    "stock": 46
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Ponstan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 45.15,
+    "stock": 64
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Celebrex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 46.45,
+    "stock": 88
+  },
+  {
+    "category": "Analgesics",
+    "name": "Ibuprofen",
+    "brand": "Indocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 102.77,
+    "stock": 47
+  },
+  {
+    "category": "Analgesics",
+    "name": "Indomethacin",
+    "brand": "Feldene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 145.31,
+    "stock": 49
+  },
+  {
+    "category": "Analgesics",
+    "name": "Celecoxib",
+    "brand": "Feldene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Celecoxib",
+    "price": 119.66,
+    "stock": 65
+  },
+  {
+    "category": "Analgesics",
+    "name": "Piroxicam",
+    "brand": "Indocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piroxicam",
+    "price": 128.11,
+    "stock": 83
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Nimesulide",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nimesulide",
+    "price": 118.4,
+    "stock": 40
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Acetaminophen",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 98.53,
+    "stock": 39
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Phenazone",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Phenazone",
+    "price": 25.6,
+    "stock": 13
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Dipyrone",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dipyrone",
+    "price": 114.5,
+    "stock": 49
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Dipyrone",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dipyrone",
+    "price": 28.54,
+    "stock": 71
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Paracetamol",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 90.91,
+    "stock": 94
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Acetaminophen",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 81.92,
+    "stock": 65
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ibuprofen",
+    "brand": "Calpol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 111.01,
+    "stock": 93
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Nimesulide",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nimesulide",
+    "price": 101.05,
+    "stock": 8
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 101.88,
+    "stock": 60
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 53.01,
+    "stock": 10
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ibuprofen",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 114.23,
+    "stock": 57
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Indomethacin",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 58.46,
+    "stock": 27
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Metamizole",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metamizole",
+    "price": 33.77,
+    "stock": 97
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 83.26,
+    "stock": 98
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Doliprane",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 9.08,
+    "stock": 59
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ketoprofen",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoprofen",
+    "price": 98.98,
+    "stock": 65
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ketoprofen",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoprofen",
+    "price": 103.76,
+    "stock": 33
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 84.82,
+    "stock": 64
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 108.93,
+    "stock": 54
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Acetaminophen",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 62.97,
+    "stock": 18
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Naproxen",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 103.7,
+    "stock": 62
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Piroxicam",
+    "brand": "Nimulid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piroxicam",
+    "price": 30.06,
+    "stock": 75
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Dipyrone",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dipyrone",
+    "price": 24.39,
+    "stock": 47
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ketoprofen",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoprofen",
+    "price": 114.55,
+    "stock": 92
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Paracetamol",
+    "brand": "Nimulid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 107.36,
+    "stock": 81
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Nimulid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 105.75,
+    "stock": 66
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Nimesulide",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nimesulide",
+    "price": 104.99,
+    "stock": 61
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Dipyrone",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dipyrone",
+    "price": 30.15,
+    "stock": 74
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Indomethacin",
+    "brand": "Calpol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Indomethacin",
+    "price": 35.0,
+    "stock": 80
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Paracetamol",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 15.83,
+    "stock": 53
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Diclofenac",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diclofenac",
+    "price": 63.07,
+    "stock": 91
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ibuprofen",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 56.46,
+    "stock": 50
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Diclofenac",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diclofenac",
+    "price": 41.58,
+    "stock": 59
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Mefenamic Acid",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mefenamic+Acid",
+    "price": 17.39,
+    "stock": 94
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Metamizole",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metamizole",
+    "price": 95.25,
+    "stock": 26
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Piroxicam",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piroxicam",
+    "price": 75.69,
+    "stock": 34
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ketoprofen",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoprofen",
+    "price": 99.48,
+    "stock": 80
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 50.29,
+    "stock": 32
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Piroxicam",
+    "brand": "Aleve",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piroxicam",
+    "price": 103.75,
+    "stock": 10
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Panadol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 66.49,
+    "stock": 9
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ibuprofen",
+    "brand": "Nimulid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 114.07,
+    "stock": 29
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Naproxen",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 94.94,
+    "stock": 66
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Naproxen",
+    "brand": "Doliprane",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 111.23,
+    "stock": 51
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Flexon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 36.74,
+    "stock": 58
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Dipyrone",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dipyrone",
+    "price": 111.1,
+    "stock": 2
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Naproxen",
+    "brand": "Ecotrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 28.78,
+    "stock": 40
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 35.31,
+    "stock": 62
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Paracetamol",
+    "brand": "Tylenol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Paracetamol",
+    "price": 70.14,
+    "stock": 93
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Acetaminophen",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acetaminophen",
+    "price": 32.77,
+    "stock": 18
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Nimesulide",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nimesulide",
+    "price": 115.57,
+    "stock": 47
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Naproxen",
+    "brand": "Calpol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naproxen",
+    "price": 81.66,
+    "stock": 64
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ketoprofen",
+    "brand": "Brufen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoprofen",
+    "price": 82.8,
+    "stock": 73
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Phenazone",
+    "brand": "Voltaren",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Phenazone",
+    "price": 107.69,
+    "stock": 45
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Metamizole",
+    "brand": "Flexon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metamizole",
+    "price": 18.5,
+    "stock": 31
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Metamizole",
+    "brand": "Flexon",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metamizole",
+    "price": 106.46,
+    "stock": 67
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Phenazone",
+    "brand": "Advil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Phenazone",
+    "price": 117.4,
+    "stock": 79
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Ibuprofen",
+    "brand": "Crocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ibuprofen",
+    "price": 114.05,
+    "stock": 48
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Aspirin",
+    "brand": "Nimulid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Aspirin",
+    "price": 65.25,
+    "stock": 64
+  },
+  {
+    "category": "Antipyretics",
+    "name": "Nimesulide",
+    "brand": "Doliprane",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nimesulide",
+    "price": 113.47,
+    "stock": 51
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Amoxicillin",
+    "brand": "Amoxil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Amoxicillin",
+    "price": 25.50,
+    "stock": 120
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Azithromycin",
+    "brand": "Zithromax",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Azithromycin",
+    "price": 48.90,
+    "stock": 80
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Ciprofloxacin",
+    "brand": "Cipro",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ciprofloxacin",
+    "price": 39.95,
+    "stock": 100
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Doxycycline",
+    "brand": "Doryx",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Doxycycline",
+    "price": 30.00,
+    "stock": 75
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Cephalexin",
+    "brand": "Keflex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Cephalexin",
+    "price": 29.70,
+    "stock": 60
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Clindamycin",
+    "brand": "Cleocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clindamycin",
+    "price": 42.25,
+    "stock": 40
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Levofloxacin",
+    "brand": "Levaquin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Levofloxacin",
+    "price": 47.10,
+    "stock": 85
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Metronidazole",
+    "brand": "Flagyl",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metronidazole",
+    "price": 27.40,
+    "stock": 95
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Nitrofurantoin",
+    "brand": "Macrobid",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nitrofurantoin",
+    "price": 36.85,
+    "stock": 90
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Erythromycin",
+    "brand": "Ery-Tab",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Erythromycin",
+    "price": 33.20,
+    "stock": 70
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Rifampin",
+    "brand": "Rifadin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Rifampin",
+    "price": 45.30,
+    "stock": 55
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Minocycline",
+    "brand": "Minocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Minocycline",
+    "price": 38.80,
+    "stock": 65
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Vancomycin",
+    "brand": "Vancocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Vancomycin",
+    "price": 53.60,
+    "stock": 35
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Meropenem",
+    "brand": "Merrem",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Meropenem",
+    "price": 67.40,
+    "stock": 45
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Linezolid",
+    "brand": "Zyvox",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Linezolid",
+    "price": 71.80,
+    "stock": 22
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Imipenem",
+    "brand": "Primaxin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Imipenem",
+    "price": 65.00,
+    "stock": 18
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Tigecycline",
+    "brand": "Tygacil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tigecycline",
+    "price": 60.40,
+    "stock": 25
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Fosfomycin",
+    "brand": "Monurol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Fosfomycin",
+    "price": 50.10,
+    "stock": 32
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Colistin",
+    "brand": "Coly-Mycin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Colistin",
+    "price": 69.75,
+    "stock": 15
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Piperacillin",
+    "brand": "Zosyn",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Piperacillin",
+    "price": 55.50,
+    "stock": 27
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Sulfasalazine",
+    "brand": "Azulfidine",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Sulfasalazine",
+    "price": 40.00,
+    "stock": 38
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Trimethoprim",
+    "brand": "Proloprim",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Trimethoprim",
+    "price": 26.75,
+    "stock": 49
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Chloramphenicol",
+    "brand": "Chloromycetin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Chloramphenicol",
+    "price": 34.45,
+    "stock": 26
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Norfloxacin",
+    "brand": "Noroxin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Norfloxacin",
+    "price": 43.90,
+    "stock": 30
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Ofloxacin",
+    "brand": "Floxin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ofloxacin",
+    "price": 37.25,
+    "stock": 58
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Spectinomycin",
+    "brand": "Trobicin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Spectinomycin",
+    "price": 51.10,
+    "stock": 24
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Telithromycin",
+    "brand": "Ketek",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Telithromycin",
+    "price": 46.75,
+    "stock": 42
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Moxifloxacin",
+    "brand": "Avelox",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Moxifloxacin",
+    "price": 44.00,
+    "stock": 39
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Gatifloxacin",
+    "brand": "Tequin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Gatifloxacin",
+    "price": 41.90,
+    "stock": 50
+  },
+  {
+    "category": "Antibiotics",
+    "name": "Cefuroxime",
+    "brand": "Ceftin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Cefuroxime",
+    "price": 35.20,
+    "stock": 67
+  },
+  {
+    "category": "Antivirals",
+    "name": "Acyclovir",
+    "brand": "Zovirax",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acyclovir",
+    "price": 22.50,
+    "stock": 50
+  },
+  {
+    "category": "Antivirals",
+    "name": "Valacyclovir",
+    "brand": "Valtrex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Valacyclovir",
+    "price": 35.00,
+    "stock": 40
+  },
+  {
+    "category": "Antivirals",
+    "name": "Oseltamivir",
+    "brand": "Tamiflu",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oseltamivir",
+    "price": 45.75,
+    "stock": 30
+  },
+  {
+    "category": "Antivirals",
+    "name": "Zanamivir",
+    "brand": "Relenza",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Zanamivir",
+    "price": 49.99,
+    "stock": 25
+  },
+  {
+    "category": "Antivirals",
+    "name": "Famciclovir",
+    "brand": "Famvir",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Famciclovir",
+    "price": 38.20,
+    "stock": 45
+  },
+  {
+    "category": "Antivirals",
+    "name": "Lamivudine",
+    "brand": "Epivir",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Lamivudine",
+    "price": 26.40,
+    "stock": 55
+  },
+  {
+    "category": "Antivirals",
+    "name": "Tenofovir",
+    "brand": "Viread",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tenofovir",
+    "price": 42.10,
+    "stock": 38
+  },
+  {
+    "category": "Antivirals",
+    "name": "Ribavirin",
+    "brand": "Copegus",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ribavirin",
+    "price": 33.00,
+    "stock": 60
+  },
+  {
+    "category": "Antivirals",
+    "name": "Sofosbuvir",
+    "brand": "Sovaldi",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Sofosbuvir",
+    "price": 120.00,
+    "stock": 15
+  },
+  {
+    "category": "Antivirals",
+    "name": "Ledipasvir",
+    "brand": "Harvoni",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ledipasvir",
+    "price": 130.00,
+    "stock": 12
+  },
+  {
+    "category": "Antivirals",
+    "name": "Remdesivir",
+    "brand": "Veklury",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Remdesivir",
+    "price": 140.00,
+    "stock": 10
+  },
+  {
+    "category": "Antivirals",
+    "name": "Ganciclovir",
+    "brand": "Cytovene",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ganciclovir",
+    "price": 58.60,
+    "stock": 20
+  },
+  {
+    "category": "Antivirals",
+    "name": "Abacavir",
+    "brand": "Ziagen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Abacavir",
+    "price": 41.20,
+    "stock": 35
+  },
+  {
+    "category": "Antivirals",
+    "name": "Emtricitabine",
+    "brand": "Emtriva",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Emtricitabine",
+    "price": 39.90,
+    "stock": 28
+  },
+  {
+    "category": "Antivirals",
+    "name": "Darunavir",
+    "brand": "Prezista",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Darunavir",
+    "price": 55.00,
+    "stock": 18
+  },
+  {
+    "category": "Antivirals",
+    "name": "Raltegravir",
+    "brand": "Isentress",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Raltegravir",
+    "price": 48.80,
+    "stock": 22
+  },
+  {
+    "category": "Antivirals",
+    "name": "Dolutegravir",
+    "brand": "Tivicay",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dolutegravir",
+    "price": 52.00,
+    "stock": 26
+  },
+  {
+    "category": "Antivirals",
+    "name": "Maraviroc",
+    "brand": "Selzentry",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Maraviroc",
+    "price": 47.70,
+    "stock": 24
+  },
+  {
+    "category": "Antivirals",
+    "name": "Entecavir",
+    "brand": "Baraclude",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Entecavir",
+    "price": 37.90,
+    "stock": 29
+  },
+  {
+    "category": "Antivirals",
+    "name": "Boceprevir",
+    "brand": "Victrelis",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Boceprevir",
+    "price": 65.50,
+    "stock": 14
+  },
+  {
+    "category": "Antivirals",
+    "name": "Telaprevir",
+    "brand": "Incivek",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Telaprevir",
+    "price": 68.75,
+    "stock": 13
+  },
+  {
+    "category": "Antivirals",
+    "name": "Efavirenz",
+    "brand": "Sustiva",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Efavirenz",
+    "price": 33.30,
+    "stock": 39
+  },
+  {
+    "category": "Antivirals",
+    "name": "Nevirapine",
+    "brand": "Viramune",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nevirapine",
+    "price": 30.10,
+    "stock": 44
+  },
+  {
+    "category": "Antivirals",
+    "name": "Lopinavir/Ritonavir",
+    "brand": "Kaletra",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Kaletra",
+    "price": 59.40,
+    "stock": 20
+  },
+  {
+    "category": "Antivirals",
+    "name": "Cidofovir",
+    "brand": "Vistide",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Cidofovir",
+    "price": 71.20,
+    "stock": 11
+  },
+  {
+    "category": "Antivirals",
+    "name": "Foscarnet",
+    "brand": "Foscavir",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Foscarnet",
+    "price": 78.90,
+    "stock": 8
+  },
+  {
+    "category": "Antivirals",
+    "name": "Tipranavir",
+    "brand": "Aptivus",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tipranavir",
+    "price": 60.00,
+    "stock": 9
+  },
+  {
+    "category": "Antivirals",
+    "name": "Elvitegravir",
+    "brand": "Vitekta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Elvitegravir",
+    "price": 43.25,
+    "stock": 19
+  },
+  {
+    "category": "Antivirals",
+    "name": "Bictegravir",
+    "brand": "Biktarvy",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Bictegravir",
+    "price": 77.40,
+    "stock": 16
+  },
+  {
+    "category": "Antifungals",
+    "name": "Fluconazole",
+    "brand": "Diflucan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Fluconazole",
+    "price": 25.50,
+    "stock": 50
+  },
+  {
+    "category": "Antifungals",
+    "name": "Itraconazole",
+    "brand": "Sporanox",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Itraconazole",
+    "price": 30.75,
+    "stock": 40
+  },
+  {
+    "category": "Antifungals",
+    "name": "Ketoconazole",
+    "brand": "Nizoral",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ketoconazole",
+    "price": 18.90,
+    "stock": 60
+  },
+  {
+    "category": "Antifungals",
+    "name": "Terbinafine",
+    "brand": "Lamisil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Terbinafine",
+    "price": 27.60,
+    "stock": 45
+  },
+  {
+    "category": "Antifungals",
+    "name": "Clotrimazole",
+    "brand": "Lotrimin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clotrimazole",
+    "price": 15.40,
+    "stock": 70
+  },
+  {
+    "category": "Antifungals",
+    "name": "Miconazole",
+    "brand": "Monistat",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Miconazole",
+    "price": 14.25,
+    "stock": 65
+  },
+  {
+    "category": "Antifungals",
+    "name": "Efinaconazole",
+    "brand": "Jublia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Efinaconazole",
+    "price": 48.80,
+    "stock": 30
+  },
+  {
+    "category": "Antifungals",
+    "name": "Ciclopirox",
+    "brand": "Penlac",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ciclopirox",
+    "price": 34.10,
+    "stock": 25
+  },
+  {
+    "category": "Antifungals",
+    "name": "Griseofulvin",
+    "brand": "Gris-PEG",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Griseofulvin",
+    "price": 22.90,
+    "stock": 38
+  },
+  {
+    "category": "Antifungals",
+    "name": "Amphotericin B",
+    "brand": "Fungizone",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=AmphotericinB",
+    "price": 52.30,
+    "stock": 20
+  },
+  {
+    "category": "Antifungals",
+    "name": "Nystatin",
+    "brand": "Mycostatin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nystatin",
+    "price": 16.40,
+    "stock": 48
+  },
+  {
+    "category": "Antifungals",
+    "name": "Voriconazole",
+    "brand": "Vfend",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Voriconazole",
+    "price": 60.20,
+    "stock": 18
+  },
+  {
+    "category": "Antifungals",
+    "name": "Posaconazole",
+    "brand": "Noxafil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Posaconazole",
+    "price": 67.40,
+    "stock": 15
+  },
+  {
+    "category": "Antifungals",
+    "name": "Isavuconazole",
+    "brand": "Cresemba",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Isavuconazole",
+    "price": 75.00,
+    "stock": 10
+  },
+  {
+    "category": "Antifungals",
+    "name": "Anidulafungin",
+    "brand": "Eraxis",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Anidulafungin",
+    "price": 72.80,
+    "stock": 12
+  },
+  {
+    "category": "Antifungals",
+    "name": "Caspofungin",
+    "brand": "Cancidas",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Caspofungin",
+    "price": 66.60,
+    "stock": 17
+  },
+  {
+    "category": "Antifungals",
+    "name": "Micafungin",
+    "brand": "Mycamine",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Micafungin",
+    "price": 69.40,
+    "stock": 13
+  },
+  {
+    "category": "Antifungals",
+    "name": "Butenafine",
+    "brand": "Mentax",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Butenafine",
+    "price": 29.50,
+    "stock": 32
+  },
+  {
+    "category": "Antifungals",
+    "name": "Econazole",
+    "brand": "Spectazole",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Econazole",
+    "price": 24.30,
+    "stock": 36
+  },
+  {
+    "category": "Antifungals",
+    "name": "Naftifine",
+    "brand": "Naftin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Naftifine",
+    "price": 33.90,
+    "stock": 29
+  },
+  {
+    "category": "Antifungals",
+    "name": "Oxiconazole",
+    "brand": "Oxistat",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oxiconazole",
+    "price": 28.60,
+    "stock": 34
+  },
+  {
+    "category": "Antifungals",
+    "name": "Sulconazole",
+    "brand": "Exelderm",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Sulconazole",
+    "price": 26.70,
+    "stock": 37
+  },
+  {
+    "category": "Antifungals",
+    "name": "Tioconazole",
+    "brand": "Vagistat",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tioconazole",
+    "price": 19.80,
+    "stock": 52
+  },
+  {
+    "category": "Antifungals",
+    "name": "Tolnaftate",
+    "brand": "Tinactin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tolnaftate",
+    "price": 17.30,
+    "stock": 61
+  },
+  {
+    "category": "Antifungals",
+    "name": "Undecylenic acid",
+    "brand": "Fungi-Nail",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Undecylenic",
+    "price": 21.20,
+    "stock": 55
+  },
+  {
+    "category": "Antifungals",
+    "name": "Clioquinol",
+    "brand": "Vioform",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clioquinol",
+    "price": 20.50,
+    "stock": 42
+  },
+  {
+    "category": "Antifungals",
+    "name": "Haloprogin",
+    "brand": "Halotex",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Haloprogin",
+    "price": 22.10,
+    "stock": 39
+  },
+  {
+    "category": "Antifungals",
+    "name": "Bifonazole",
+    "brand": "Canespor",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Bifonazole",
+    "price": 31.00,
+    "stock": 27
+  },
+  {
+    "category": "Antifungals",
+    "name": "Sertaconazole",
+    "brand": "Ertaczo",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Sertaconazole",
+    "price": 35.80,
+    "stock": 23
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Albendazole",
+    "brand": "Albenza",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Albendazole",
+    "price": 12.45,
+    "stock": 50
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Ivermectin",
+    "brand": "Stromectol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ivermectin",
+    "price": 25.99,
+    "stock": 40
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Metronidazole",
+    "brand": "Flagyl",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metronidazole",
+    "price": 15.75,
+    "stock": 60
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Praziquantel",
+    "brand": "Biltricide",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Praziquantel",
+    "price": 18.50,
+    "stock": 35
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Mebendazole",
+    "brand": "Vermox",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Mebendazole",
+    "price": 10.99,
+    "stock": 70
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Nitazoxanide",
+    "brand": "Alinia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nitazoxanide",
+    "price": 22.30,
+    "stock": 45
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Tinidazole",
+    "brand": "Tindamax",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tinidazole",
+    "price": 20.20,
+    "stock": 38
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Pyrantel Pamoate",
+    "brand": "Reese's",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Pyrantel+Pamoate",
+    "price": 9.15,
+    "stock": 55
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Levamisole",
+    "brand": "Ergamisol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Levamisole",
+    "price": 14.70,
+    "stock": 42
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Chloroquine",
+    "brand": "Aralen",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Chloroquine",
+    "price": 17.55,
+    "stock": 29
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Hydroxychloroquine",
+    "brand": "Plaquenil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydroxychloroquine",
+    "price": 23.40,
+    "stock": 37
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Artemether",
+    "brand": "Coartem",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Artemether",
+    "price": 28.60,
+    "stock": 33
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Quinine",
+    "brand": "Qualaquin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Quinine",
+    "price": 26.00,
+    "stock": 21
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Atovaquone",
+    "brand": "Mepron",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Atovaquone",
+    "price": 30.25,
+    "stock": 28
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Clindamycin",
+    "brand": "Cleocin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clindamycin",
+    "price": 19.80,
+    "stock": 41
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Fumagillin",
+    "brand": "Fumidil B",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Fumagillin",
+    "price": 16.90,
+    "stock": 26
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Emetine",
+    "brand": "Ipecac",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Emetine",
+    "price": 21.45,
+    "stock": 15
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Diethylcarbamazine",
+    "brand": "Hetrazan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diethylcarbamazine",
+    "price": 13.35,
+    "stock": 50
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Suramin",
+    "brand": "Bayer",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Suramin",
+    "price": 29.90,
+    "stock": 12
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Melarsoprol",
+    "brand": "Arsobal",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Melarsoprol",
+    "price": 34.50,
+    "stock": 10
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Nifurtimox",
+    "brand": "Lampit",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nifurtimox",
+    "price": 27.80,
+    "stock": 17
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Benznidazole",
+    "brand": "Rochagan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Benznidazole",
+    "price": 24.70,
+    "stock": 22
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Oxantel",
+    "brand": "Combatrin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Oxantel",
+    "price": 11.60,
+    "stock": 34
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Secnidazole",
+    "brand": "Solosec",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Secnidazole",
+    "price": 18.90,
+    "stock": 40
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Clioquinol",
+    "brand": "Entero-Vioform",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clioquinol",
+    "price": 14.55,
+    "stock": 25
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Nitazoxanide",
+    "brand": "Alinia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nitazoxanide",
+    "price": 22.10,
+    "stock": 48
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Chlorcyclizine",
+    "brand": "Atarax",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Chlorcyclizine",
+    "price": 13.20,
+    "stock": 30
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Diiodohydroxyquinoline",
+    "brand": "Yodoxin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diiodohydroxyquinoline",
+    "price": 17.15,
+    "stock": 36
+  },
+  {
+    "category": "Antiparasitics",
+    "name": "Tebanicline",
+    "brand": "Hypothetical Brand",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tebanicline",
+    "price": 19.99,
+    "stock": 20
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Atorvastatin",
+    "brand": "Lipitor",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Atorvastatin",
+    "price": 29.99,
+    "stock": 55
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Amlodipine",
+    "brand": "Norvasc",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Amlodipine",
+    "price": 24.75,
+    "stock": 60
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Lisinopril",
+    "brand": "Prinivil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Lisinopril",
+    "price": 22.50,
+    "stock": 48
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Metoprolol",
+    "brand": "Lopressor",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metoprolol",
+    "price": 19.30,
+    "stock": 53
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Clopidogrel",
+    "brand": "Plavix",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clopidogrel",
+    "price": 33.45,
+    "stock": 40
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Furosemide",
+    "brand": "Lasix",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Furosemide",
+    "price": 17.60,
+    "stock": 65
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Warfarin",
+    "brand": "Coumadin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Warfarin",
+    "price": 27.10,
+    "stock": 30
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Hydrochlorothiazide",
+    "brand": "Microzide",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydrochlorothiazide",
+    "price": 13.95,
+    "stock": 52
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Valsartan",
+    "brand": "Diovan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Valsartan",
+    "price": 31.20,
+    "stock": 36
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Simvastatin",
+    "brand": "Zocor",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Simvastatin",
+    "price": 28.45,
+    "stock": 41
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Enalapril",
+    "brand": "Vasotec",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Enalapril",
+    "price": 21.75,
+    "stock": 44
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Diltiazem",
+    "brand": "Cardizem",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Diltiazem",
+    "price": 26.50,
+    "stock": 38
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Digoxin",
+    "brand": "Lanoxin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Digoxin",
+    "price": 23.80,
+    "stock": 29
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Nitroglycerin",
+    "brand": "Nitrostat",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nitroglycerin",
+    "price": 18.90,
+    "stock": 34
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Amiodarone",
+    "brand": "Cordarone",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Amiodarone",
+    "price": 32.10,
+    "stock": 22
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Atenolol",
+    "brand": "Tenormin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Atenolol",
+    "price": 20.65,
+    "stock": 46
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Rosuvastatin",
+    "brand": "Crestor",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Rosuvastatin",
+    "price": 35.75,
+    "stock": 33
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Clonidine",
+    "brand": "Catapres",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Clonidine",
+    "price": 15.25,
+    "stock": 50
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Propafenone",
+    "brand": "Rythmol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Propafenone",
+    "price": 25.00,
+    "stock": 27
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Felodipine",
+    "brand": "Plendil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Felodipine",
+    "price": 23.10,
+    "stock": 37
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Nebivolol",
+    "brand": "Bystolic",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nebivolol",
+    "price": 29.50,
+    "stock": 39
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Isosorbide Mononitrate",
+    "brand": "Imdur",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Isosorbide+Mononitrate",
+    "price": 21.95,
+    "stock": 45
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Verapamil",
+    "brand": "Calan",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Verapamil",
+    "price": 27.80,
+    "stock": 31
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Bisoprolol",
+    "brand": "Zebeta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Bisoprolol",
+    "price": 22.40,
+    "stock": 48
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Ezetimibe",
+    "brand": "Zetia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ezetimibe",
+    "price": 30.15,
+    "stock": 35
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Chlorthalidone",
+    "brand": "Hygroton",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Chlorthalidone",
+    "price": 14.80,
+    "stock": 43
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Hydralazine",
+    "brand": "Apresoline",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Hydralazine",
+    "price": 16.90,
+    "stock": 28
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Ramipril",
+    "brand": "Altace",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ramipril",
+    "price": 24.60,
+    "stock": 50
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Ticagrelor",
+    "brand": "Brilinta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Ticagrelor",
+    "price": 38.00,
+    "stock": 22
+  },
+  {
+    "category": "Cardiovascular",
+    "name": "Nifedipine",
+    "brand": "Procardia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nifedipine",
+    "price": 25.40,
+    "stock": 41
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Metformin",
+    "brand": "Glucophage",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Metformin",
+    "price": 12.50,
+    "stock": 50
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Glibenclamide",
+    "brand": "Daonil",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Glibenclamide",
+    "price": 8.75,
+    "stock": 70
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Pioglitazone",
+    "brand": "Actos",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Pioglitazone",
+    "price": 15.00,
+    "stock": 40
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Sitagliptin",
+    "brand": "Januvia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Sitagliptin",
+    "price": 22.30,
+    "stock": 60
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Insulin Glargine",
+    "brand": "Lantus",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Insulin+Glargine",
+    "price": 45.50,
+    "stock": 25
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Exenatide",
+    "brand": "Byetta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Exenatide",
+    "price": 40.00,
+    "stock": 20
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Acarbose",
+    "brand": "Precose",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Acarbose",
+    "price": 10.20,
+    "stock": 80
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Glimepiride",
+    "brand": "Amaryl",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Glimepiride",
+    "price": 13.90,
+    "stock": 45
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Liraglutide",
+    "brand": "Victoza",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Liraglutide",
+    "price": 55.00,
+    "stock": 30
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Dulaglutide",
+    "brand": "Trulicity",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Dulaglutide",
+    "price": 50.00,
+    "stock": 27
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Repaglinide",
+    "brand": "Prandin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Repaglinide",
+    "price": 18.00,
+    "stock": 35
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Canagliflozin",
+    "brand": "Invokana",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Canagliflozin",
+    "price": 42.00,
+    "stock": 33
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Empagliflozin",
+    "brand": "Jardiance",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Empagliflozin",
+    "price": 44.00,
+    "stock": 40
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Miglitol",
+    "brand": "Glyset",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Miglitol",
+    "price": 9.50,
+    "stock": 55
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Rosiglitazone",
+    "brand": "Avandia",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Rosiglitazone",
+    "price": 17.00,
+    "stock": 38
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Vildagliptin",
+    "brand": "Galvus",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Vildagliptin",
+    "price": 23.50,
+    "stock": 42
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Linagliptin",
+    "brand": "Tradjenta",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Linagliptin",
+    "price": 26.00,
+    "stock": 48
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Albiglutide",
+    "brand": "Tanzeum",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Albiglutide",
+    "price": 52.00,
+    "stock": 22
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Pramlintide",
+    "brand": "Symlin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Pramlintide",
+    "price": 38.00,
+    "stock": 18
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Glipizide",
+    "brand": "Glucotrol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Glipizide",
+    "price": 11.00,
+    "stock": 65
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Tolbutamide",
+    "brand": "Orinase",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tolbutamide",
+    "price": 7.80,
+    "stock": 50
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Nateglinide",
+    "brand": "Starlix",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Nateglinide",
+    "price": 20.00,
+    "stock": 37
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Repaglinide",
+    "brand": "Prandin",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Repaglinide",
+    "price": 18.00,
+    "stock": 33
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Miglitol",
+    "brand": "Glyset",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Miglitol",
+    "price": 9.50,
+    "stock": 50
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Tolazamide",
+    "brand": "Tolinase",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Tolazamide",
+    "price": 8.00,
+    "stock": 43
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Glyburide",
+    "brand": "Micronase",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Glyburide",
+    "price": 14.00,
+    "stock": 48
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Chlorpropamide",
+    "brand": "Diabinese",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Chlorpropamide",
+    "price": 10.00,
+    "stock": 40
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Insulin Aspart",
+    "brand": "NovoLog",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Insulin+Aspart",
+    "price": 48.00,
+    "stock": 25
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Insulin Detemir",
+    "brand": "Levemir",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Insulin+Detemir",
+    "price": 46.00,
+    "stock": 28
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Colesevelam",
+    "brand": "Welchol",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Colesevelam",
+    "price": 19.00,
+    "stock": 35
+  },
+  {
+    "category": "Antidiabetics",
+    "name": "Saxagliptin",
+    "brand": "Onglyza",
+    "image": "https://dummyimage.com/200x200/cccccc/000000&text=Saxagliptin",
+    "price": 25.00,
+    "stock": 40
+  }
+]
+
+
+
+

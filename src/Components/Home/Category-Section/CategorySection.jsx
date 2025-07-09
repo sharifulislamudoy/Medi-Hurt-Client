@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import CategoryCard from './CategoryCard';
-import ReactPaginate from 'react-paginate';
-import './CategoryPagination.css'; // for custom pagination styles (you can style it)
 
 const CategorySection = () => {
     const [categories, setCategories] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [showAll, setShowAll] = useState(false);
     const itemsPerPage = 8;
 
     useEffect(() => {
@@ -19,46 +17,35 @@ const CategorySection = () => {
         return <p className="text-center my-10">Loading categories...</p>;
     }
 
-    const pageCount = Math.ceil(categories.length / itemsPerPage);
-    const startOffset = currentPage * itemsPerPage;
-    const currentCategories = categories.slice(startOffset, startOffset + itemsPerPage);
+    // If showAll is false, slice to show only first 8 categories
+    const displayedCategories = showAll ? categories : categories.slice(0, itemsPerPage);
 
-    const handlePageClick = ({ selected }) => {
-        setCurrentPage(selected);
+    const handleSeeAllClick = () => {
+        setShowAll(true);
     };
 
     return (
         <section className="w-11/12 mx-auto my-10">
-            <h1 className="text-3xl font-bold mb-6 text-center">Category Section</h1>
+            <h1 className="text-3xl font-bold mb-6 text-center text-[#31718f]">Category Section</h1>
 
             {/* Category Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {currentCategories.map((category) => (
+                {displayedCategories.map((category) => (
                     <CategoryCard key={category.id} category={category} />
                 ))}
             </div>
 
-            {/* Pagination */}
-            <div className="mt-10 flex justify-center">
-                <ReactPaginate
-                    previousLabel="«"
-                    nextLabel="»"
-                    breakLabel="..."
-                    breakClassName="break-me"
-                    pageCount={pageCount}
-                    marginPagesDisplayed={1}
-                    pageRangeDisplayed={2}
-                    onPageChange={handlePageClick}
-                    containerClassName="join"
-                    pageClassName="join-item btn"
-                    pageLinkClassName="px-3"
-                    previousClassName="join-item btn"
-                    nextClassName="join-item btn"
-                    activeClassName="btn-primary"
-                    disabledClassName="opacity-50 cursor-not-allowed"
-                    forcePage={currentPage}
-                />
-            </div>
+            {/* See All Button */}
+            {!showAll && categories.length > itemsPerPage && (
+                <div className="mt-10 flex justify-center">
+                    <button
+                        onClick={handleSeeAllClick}
+                        className="btn border-teal-700 text-white bg-teal-600 rounded-2xl px-5 py-0 hover:bg-teal-700 "
+                    >
+                        See All Categories
+                    </button>
+                </div>
+            )}
         </section>
     );
 };

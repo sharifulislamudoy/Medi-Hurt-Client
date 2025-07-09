@@ -25,7 +25,7 @@ const bannerImages = [
 const Banner = () => {
 
     return (
-        <div className="w-11/12 mx-auto my-3 min-h-screen rounded-2xl overflow-hidden">
+        <div className="w-11/12 mx-auto my-3 h-full rounded-2xl overflow-hidden">
             <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
