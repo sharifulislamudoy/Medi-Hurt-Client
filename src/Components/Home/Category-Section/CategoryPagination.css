@@ -9,6 +9,6 @@
 }
 
 .pagination .active {
-  background-color: #2563eb; /* Tailwind's blue-600 */
+  background-color: #2563eb;
   color: white;
 }
