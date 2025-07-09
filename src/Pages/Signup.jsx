@@ -2,8 +2,11 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
+import useAuth from '../Components/Hooks/UseAuth';
+import Swal from 'sweetalert2';
 
 const Signup = () => {
+    const { loginWithGoogle } = useAuth()
     const {
         register,
         handleSubmit,
@@ -15,9 +18,33 @@ const Signup = () => {
     };
 
     // Placeholder handlers (replace with actual Firebase logic)
-    const handleGoogleSignup = () => {
-        console.log("Google signup clicked");
-        // implement Google sign-in logic here
+    const handleGoogleSignup = async () => {
+        try {
+            const result = await loginWithGoogle();
+            // console.log("Google user:", result.user);
+
+            // Show SweetAlert success popup
+            Swal.fire({
+                title: 'Success!',
+                text: `Welcome, ${result.user.displayName || 'User'}!`,
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            });
+
+            // Optional: redirect after sign-in
+            // navigate('/dashboard');
+
+        } catch (err) {
+            console.error("Google sign-in error:", err.message);
+
+            // Optional: show error alert
+            Swal.fire({
+                title: 'Error!',
+                text: err.message,
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
+        }
     };
 
     const handleGithubSignup = () => {
@@ -38,7 +65,7 @@ const Signup = () => {
                         <label className="block text-sm font-medium text-white mb-1">Username</label>
                         <input
                             {...register("username", { required: "Username is required" })}
-                            className="w-full px-4 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full px-4 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
                             placeholder="Your name"
                         />
                         {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
@@ -55,7 +82,7 @@ const Signup = () => {
                                     message: "Invalid email address",
                                 },
                             })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
                             placeholder="you@example.com"
                         />
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -73,7 +100,7 @@ const Signup = () => {
                                     message: "Password must be at least 6 characters",
                                 },
                             })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
                             placeholder="••••••••"
                         />
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
@@ -84,7 +111,7 @@ const Signup = () => {
                         <label className="block text-sm font-medium text-white mb-1">Select Role</label>
                         <select
                             {...register("role", { required: "Role is required" })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
                         >
                             <option value="">-- Select Role --</option>
                             <option value="user">User</option>
@@ -118,6 +145,12 @@ const Signup = () => {
                         </button>
                     </div>
                 </form>
+                <div className="text-center text-white mt-4">
+                    Already have an account?{" "}
+                    <a href="/login" className="text-teal-400 hover:underline">
+                        Login
+                    </a>
+                </div>
 
                 <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
@@ -145,10 +178,8 @@ const Signup = () => {
                         Sign Up with GitHub
                     </button>
                 </div>
-
-
-
             </div>
+
         </div>
     );
 };
