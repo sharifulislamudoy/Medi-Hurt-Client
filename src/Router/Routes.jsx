@@ -6,6 +6,7 @@ import Home from "../Pages/Home";
 import AuthenticationLayout from "../Layouts/AuthenticationLayout";
 import Signup from "../Pages/Signup";
 import ShopPage from "../Pages/Shop";
+import CategoryDetails from "../Pages/CategoryDetails";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
         {
           path: '/Shop',
           Component: ShopPage
+        },
+        {
+          path: '/category/:categoryName',
+          Component: CategoryDetails,
         }
     ]
   },

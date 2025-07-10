@@ -11,7 +11,7 @@ const AuthenticationLayout = () => {
         <div>
             <div className="min-h-screen flex items-center flex-col justify-center bg-white w-11/12 mx-auto my-3  rounded-lg">
                 {/* Logo at the top-left */}
-                <div className="w-full px-6 py-4 bg-[#31718f] rounded-lg sticky top-0 inset-0 z-50">
+                <div className="w-full px-2 py-2 bg-[#31718f] rounded-lg sticky top-0 inset-0 z-50">
                     <a href="/" className='flex items-center gap-3'>
                         <img src="https://i.ibb.co/Gfv2MGCw/Logo.png" className='h-8' alt="Logo" />
                         <div>

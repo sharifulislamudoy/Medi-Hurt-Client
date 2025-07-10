@@ -6,16 +6,45 @@ import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
 
 const Signup = () => {
-    const { loginWithGoogle } = useAuth()
+    const { loginWithGoogle, registerWithEmail } = useAuth()
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data) => {
+        const { email, password, username, role, photo } = data;
+
+        try {
+            const userCredential = await registerWithEmail(email, password);
+            const user = userCredential.user;
+
+            // Show success alert
+            Swal.fire({
+                title: 'Success!',
+                text: `Welcome, ${username}! Your account has been created.`,
+                icon: 'success',
+                confirmButtonColor: '#1db184',
+                confirmButtonText: 'Continue'
+            });
+
+            // Optional: Upload photo to server or Firebase Storage here
+
+            // Optional: Redirect user to dashboard or login
+            // navigate('/dashboard');
+
+        } catch (error) {
+            console.error("Signup error:", error.message);
+            Swal.fire({
+                title: 'Error!',
+                text: error.message,
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
+        }
     };
+
 
     // Placeholder handlers (replace with actual Firebase logic)
     const handleGoogleSignup = async () => {
@@ -28,6 +57,7 @@ const Signup = () => {
                 title: 'Success!',
                 text: `Welcome, ${result.user.displayName || 'User'}!`,
                 icon: 'success',
+                confirmButtonColor: '#1db184',
                 confirmButtonText: 'Continue'
             });
 

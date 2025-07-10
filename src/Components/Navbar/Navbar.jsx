@@ -2,15 +2,48 @@ import React from 'react';
 import { Link, NavLink } from 'react-router';
 import './Navbar.css';
 import useAuth from '../Hooks/UseAuth';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const handleLogout = async () => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to logout from your account.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1db184',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await logout();
+                Swal.fire({
+                    title: 'Logged Out',
+                    text: 'You have successfully logged out.',
+                    icon: 'success',
+                    confirmButtonColor: '#1db184'
+                });
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.message || 'Logout failed. Try again.',
+                    icon: 'error',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        }
+    };
+
 
     const navLinks = (
         <>
-            <li className='px-4'><NavLink to='/' className='px-3 py-1 text-white'>Home</NavLink></li>
-            <li className='px-4'><NavLink to='/Shop' className='px-3 py-0 text-white'>Shop</NavLink></li>
-            <li className='px-4'><NavLink to='/Language' className='px-3 py-0 text-white'>Languages</NavLink></li>
+            <li className='px-4'><NavLink to='/' className='px-3 py-1 text-white font-bold'>Home</NavLink></li>
+            <li className='px-4'><NavLink to='/Shop' className='px-3 py-0 text-white font-bold'>Shop</NavLink></li>
+            <li className='px-4'><NavLink to='/Language' className='px-3 py-0 text-white font-bold'>Languages</NavLink></li>
         </>
     );
 
@@ -22,17 +55,17 @@ const Navbar = () => {
                     <div className="navbar-start">
                         <div className="dropdown">
                             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:border-blue-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
                                 </svg>
                             </div>
                             <ul
                                 tabIndex={0}
-                                className="menu menu-sm dropdown-content bg-white rounded-xl z-1 mt-3 w-52 p-2 shadow space-y-3">
+                                className="menu menu-sm dropdown-content bg-[#31718f] rounded-xl z-1 mt-3 w-52 p-2 shadow space-y-3">
                                 {navLinks}
                             </ul>
                         </div>
-                        <a href="#" className='flex items-center gap-3'>
+                        <a href="/" className='flex items-center gap-3'>
                             <img src="https://i.ibb.co/Gfv2MGCw/Logo.png" className='h-8' alt="Logo" />
                             <div>
                                 <h2 className='font-bold h-full text-2xl flex'>
@@ -93,7 +126,8 @@ const Navbar = () => {
                                                 <a className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Settings</a>
                                             </li>
                                             <li>
-                                                <a className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</a>
+                                                <button onClick={handleLogout}
+                                                    className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</button>
                                             </li>
                                         </ul>
                                     </div>
