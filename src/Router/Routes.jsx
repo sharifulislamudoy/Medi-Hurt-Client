@@ -7,6 +7,7 @@ import AuthenticationLayout from "../Layouts/AuthenticationLayout";
 import Signup from "../Pages/Signup";
 import ShopPage from "../Pages/Shop";
 import CategoryDetails from "../Pages/CategoryDetails";
+import Cart from "../Pages/Cart";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
         {
           path: '/category/:categoryName',
           Component: CategoryDetails,
+        },
+        {
+          path: '/cart',
+          Component: Cart
         }
     ]
   },

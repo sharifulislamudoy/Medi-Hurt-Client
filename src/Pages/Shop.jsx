@@ -1,17 +1,89 @@
-import { useState, useEffect } from "react";
-import { FaEye, FaPlus } from "react-icons/fa";
+import { useState, useEffect, useMemo } from "react";
+import { FaEye, FaPlus, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import Swal from "sweetalert2";
+import ReactPaginate from "react-paginate";
+import { useCart } from "../Provider/CartProvider";
 
 const ShopPage = () => {
     const [medicines, setMedicines] = useState([]);
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState({});
 
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 10;
+
+    // Sorting state
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: 'ascending'
+    });
+    const { addToCart } = useCart();
+
     useEffect(() => {
         fetch("/category-medicine-data.json")
             .then(res => res.json())
             .then(data => setMedicines(data));
     }, []);
+
+    // Handle sorting
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    // Get sorting icon
+    const getSortIcon = (key) => {
+        if (sortConfig.key !== key) {
+            return <FaSort className="inline ml-1" />;
+        }
+        return sortConfig.direction === 'ascending'
+            ? <FaSortUp className="inline ml-1" />
+            : <FaSortDown className="inline ml-1" />;
+    };
+
+    // Sorted and paginated data
+    const sortedMedicines = useMemo(() => {
+        let sortableItems = [...medicines];
+        if (sortConfig.key) {
+            sortableItems.sort((a, b) => {
+                // Special case for price since it's nested in formulations
+                if (sortConfig.key === 'price') {
+                    const aPrice = a.formulations?.tablet || 0;
+                    const bPrice = b.formulations?.tablet || 0;
+                    if (aPrice < bPrice) {
+                        return sortConfig.direction === 'ascending' ? -1 : 1;
+                    }
+                    if (aPrice > bPrice) {
+                        return sortConfig.direction === 'ascending' ? 1 : -1;
+                    }
+                    return 0;
+                } else {
+                    // Normal sorting for other fields
+                    if (a[sortConfig.key] < b[sortConfig.key]) {
+                        return sortConfig.direction === 'ascending' ? -1 : 1;
+                    }
+                    if (a[sortConfig.key] > b[sortConfig.key]) {
+                        return sortConfig.direction === 'ascending' ? 1 : -1;
+                    }
+                    return 0;
+                }
+            });
+        }
+        return sortableItems;
+    }, [medicines, sortConfig]);
+
+    // Pagination logic
+    const pageCount = Math.ceil(sortedMedicines.length / itemsPerPage);
+    const offset = currentPage * itemsPerPage;
+    const currentItems = sortedMedicines.slice(offset, offset + itemsPerPage);
+
+    const handlePageClick = ({ selected }) => {
+        setCurrentPage(selected);
+    };
 
     const handleView = (medicine) => {
         setSelectedMedicine(medicine);
@@ -26,18 +98,21 @@ const ShopPage = () => {
         }));
     };
 
-    const handleSelectFormulation = (formulationType, price) => {
-        const quantity = selectedQuantity[formulationType] || 1;
+    const handleSelectFormulation = (type, price) => {
+        const quantity = selectedQuantity[type] || 1;
+
+        // Add to cart
+        addToCart(selectedMedicine, type, quantity);
 
         Swal.fire({
             icon: "success",
             title: "Added to Cart",
             html: `
-                <b>${selectedMedicine.name}</b><br />
-                Formulation: ${formulationType}<br />
-                Quantity: ${quantity}<br />
-                Total Price: ৳${price * quantity}
-            `,
+            <b>${selectedMedicine.name}</b><br />
+            Formulation: ${type}<br />
+            Quantity: ${quantity}<br />
+            Total Price: ৳${price * quantity}
+        `,
             timer: 2500,
             showConfirmButton: false,
         });
@@ -48,25 +123,45 @@ const ShopPage = () => {
     return (
         <div className="py-6 w-11/12 mx-auto">
             <h2 className="text-3xl font-bold my-2 text-center">🛒 Shop Medicines</h2>
-            <p className="text-sm text-center mb-4">
+            <p className="text-sm text-center mb-4 ml-8">
                 <i>(More than {medicines.length}+ Medicine Found)</i>
             </p>
-            <div className="overflow-auto max-h-[500px] rounded-lg shadow-md">
+            <div className="overflow-auto rounded-lg shadow-md">
                 <table className="table w-full border-x-2 border-b-2 border-teal-800">
                     <thead className="bg-[#31718f] font-semibold text-white sticky top-0 z-10">
                         <tr>
                             <th className="w-24">Image</th>
-                            <th className="w-48">Name</th>
-                            <th className="w-40">Brand</th>
-                            <th className="w-40">Category</th>
-                            <th className="w-24">Price</th>
+                            <th
+                                className="w-48 cursor-pointer"
+                                onClick={() => requestSort('name')}
+                            >
+                                Name {getSortIcon('name')}
+                            </th>
+                            <th
+                                className="w-40 cursor-pointer"
+                                onClick={() => requestSort('brand')}
+                            >
+                                Brand {getSortIcon('brand')}
+                            </th>
+                            <th
+                                className="w-40 cursor-pointer"
+                                onClick={() => requestSort('category')}
+                            >
+                                Category {getSortIcon('category')}
+                            </th>
+                            <th
+                                className="w-24 cursor-pointer"
+                                onClick={() => requestSort('price')}
+                            >
+                                Price {getSortIcon('price')}
+                            </th>
                             <th className="w-24">Stock</th>
                             <th className="w-40">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {medicines.map((medicine) => (
-                            <tr key={medicine._id || medicine.name} className="border border-teal-800">
+                        {currentItems.map((medicine) => (
+                            <tr key={medicine._id || medicine.name} className="border border-teal-800 hover:bg-gray-100">
                                 <td>
                                     <img
                                         src={medicine.image}
@@ -77,14 +172,14 @@ const ShopPage = () => {
                                 <td>{medicine.name}</td>
                                 <td>{medicine.brand}</td>
                                 <td>{medicine.category}</td>
-                                <td>৳-{medicine.formulations?.tablet}</td>
+                                <td>৳{medicine.formulations?.tablet || 'N/A'}</td>
                                 <td>{medicine.stock}</td>
                                 <td className="space-x-2">
                                     <button
                                         onClick={() => handleView(medicine)}
                                         className="bg-teal-600 hover:bg-teal-700 text-white font-bold px-2 py-1 rounded"
                                     >
-                                        + View
+                                        View
                                     </button>
                                 </td>
                             </tr>
@@ -93,9 +188,29 @@ const ShopPage = () => {
                 </table>
             </div>
 
+            {/* Pagination */}
+            <div className="mt-4 flex justify-center">
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    breakLabel={'...'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageClick}
+                    containerClassName={'flex items-center gap-1'}
+                    pageClassName={'px-3 py-1 border rounded hover:bg-teal-100'}
+                    pageLinkClassName={'text-teal-800'}
+                    activeClassName={'bg-teal-600 text-white'}
+                    activeLinkClassName={'text-white'}
+                    previousClassName={'px-3 py-1 border rounded hover:bg-teal-100 mr-2'}
+                    nextClassName={'px-3 py-1 border rounded hover:bg-teal-100 ml-2'}
+                    disabledClassName={'opacity-50 cursor-not-allowed'}
+                />
+            </div>
+
             <dialog id="medicine_modal" className="modal">
                 <div className="modal-box bg-white rounded-lg shadow-lg max-w-md mx-auto p-6 relative">
-                    {/* Top-right Close Icon */}
                     <form method="dialog">
                         <button
                             className="absolute top-3 right-3 text-red-600 hover:text-white bg-red-100 hover:bg-red-600 rounded-full w-8 h-8 flex items-center justify-center transition"
@@ -131,40 +246,35 @@ const ShopPage = () => {
                                             className="flex items-center justify-between border border-gray-300 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
                                         >
                                             <div>
-                                                <p className="font-semibold capitalize text-lg text-gray-800">
-                                                    {type} – <span className="text-teal-600">৳{price}</span>
+                                                <p className="font-semibold capitalize text-teal-700">
+                                                    {type}
                                                 </p>
+                                                <span className="text-gray-500">৳{price}</span>
+
+                                            </div>
+                                            <div className="flex items-center gap-2">
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     defaultValue={1}
-                                                    className="border-2 input input-sm input-bordered w-20 mt-1 focus:outline-none focus:ring-2  focus:ring-teal-500 focus:border-transparent rounded"
+                                                    className="border px-2 py-1 w-20 rounded text-sm"
                                                     onChange={(e) => handleQuantityChange(type, e.target.value)}
                                                 />
+                                                <button
+                                                    onClick={() => handleSelectFormulation(type, price)}
+                                                    className="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded text-sm flex items-center gap-1"
+                                                >
+                                                    Add to Cart
+                                                </button>
                                             </div>
-                                            <button
-                                                onClick={() => handleSelectFormulation(type, price)}
-                                                className="btn btn-sm bg-teal-600 hover:bg-teal-700 text-white rounded flex items-center gap-1 shadow-md transition-colors duration-200"
-                                            >
-                                                <FaPlus /> Select
-                                            </button>
+
                                         </div>
                                     ))}
                             </div>
-
-                            {/* <div className="modal-action mt-8 flex justify-center">
-                                <form method="dialog">
-                                    <button className="btn btn-outline btn-wide border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300 rounded">
-                                        Close
-                                    </button>
-                                </form>
-                            </div> */}
                         </>
                     )}
                 </div>
             </dialog>
-
-
         </div>
     );
 };
