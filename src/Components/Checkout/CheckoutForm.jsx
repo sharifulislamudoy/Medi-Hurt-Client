@@ -7,6 +7,7 @@ import amex from '../../assets/amex.png';
 import mastercard from '../../assets/mastercard.png';
 import discover from '../../assets/discover.png';
 import useAuth from '../Hooks/UseAuth';
+import Swal from 'sweetalert2';
 
 const CheckoutForm = () => {
     const { user } = useAuth();
@@ -20,6 +21,19 @@ const CheckoutForm = () => {
 
         if (!stripe || !elements) return;
 
+        // Show "Are you sure?" SweetAlert before proceeding
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: `You are about to pay ৳${cartTotal.toFixed(2)}.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#14b8a6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, pay now!',
+        });
+
+        if (!result.isConfirmed) return;
+
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card: elements.getElement(CardElement),
@@ -27,19 +41,33 @@ const CheckoutForm = () => {
 
         if (error) {
             console.error(error);
-            alert('Payment failed. Try again.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Failed',
+                text: 'Something went wrong. Please try again.',
+            });
             return;
         }
 
-        clearCart();
-        navigate('/invoice', {
-            state: {
-                amountPaid: cartTotal,
-                transactionId: paymentMethod.id,
-                date: new Date().toLocaleString(),
-            },
+        // Show success message
+        Swal.fire({
+            icon: 'success',
+            title: 'Payment Successful!',
+            text: `Transaction ID: ${paymentMethod.id}`,
+            confirmButtonColor: '#14b8a6',
+            confirmButtonText: 'View Invoice',
+        }).then(() => {
+            clearCart();
+            navigate('/invoice', {
+                state: {
+                    amountPaid: cartTotal,
+                    transactionId: paymentMethod.id,
+                    date: new Date().toLocaleString(),
+                },
+            });
         });
     };
+
 
     return (
         <div className="w-11/12 mx-auto p-6 bg-white shadow-lg rounded-lg border-2 border-teal-700">

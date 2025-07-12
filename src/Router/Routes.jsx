@@ -10,6 +10,7 @@ import CategoryDetails from "../Pages/CategoryDetails";
 import Cart from "../Pages/Cart";
 import Checkout from "../Pages/CheckOut";
 import Invoice from "../Components/Checkout/Invoice";
+import Admin from "../Layouts/Admin";
 
 export const router = createBrowserRouter([
   {
@@ -51,5 +52,9 @@ export const router = createBrowserRouter([
         Component: Signup,
       }
     ]
+  },
+  {
+    path: '/admin',
+    Component: Admin
   }
 ]);
