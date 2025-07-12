@@ -122,7 +122,7 @@ const ShopPage = () => {
 
     return (
         <div className="py-6 w-11/12 mx-auto">
-            <h2 className="text-3xl font-bold my-2 text-center">🛒 Shop Medicines</h2>
+            <h2 className="text-3xl font-bold my-2 text-center text-teal-900">🛒 Shop Medicines</h2>
             <p className="text-sm text-center mb-4 ml-8">
                 <i>(More than {medicines.length}+ Medicine Found)</i>
             </p>

@@ -131,7 +131,7 @@ const CategoryDetails = () => {
 
     return (
         <section className="w-11/12 mx-auto my-10 overflow-x-auto">
-            <h1 className="text-3xl font-bold text-center text-black mb-6">
+            <h1 className="text-3xl font-bold text-center text-teal-900 mb-6">
                 {categoryName} Medicines
             </h1>
             <p className="text-sm text-center mb-4">

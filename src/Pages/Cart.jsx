@@ -1,14 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useCart } from '../Provider/CartProvider';
 
 const Cart = () => {
     const { cartItems, cartTotal, cartItemCount, removeFromCart, updateQuantity } = useCart();
+    const navigate = useNavigate();
 
     return (
         <div className="container bg-none w-11/12 mx-auto py-8 min-h-screen">
             <h1 className="text-3xl font-bold mb-8 text-center">Your Shopping Cart</h1>
-            
+
             {cartItems.length === 0 ? (
                 <div className="text-center py-12">
                     <p className="text-xl text-gray-600 mb-4">Your cart is empty</p>
@@ -65,8 +66,8 @@ const Cart = () => {
                             </div>
                         </div>
                     </div>
-                    
-                    <div className="lg:col-span-1">
+
+                    <div className="border-2 border-teal-600 rounded-xl">
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
                             <div className="space-y-4">
@@ -85,10 +86,12 @@ const Cart = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button className="btn btn-primary w-full mt-6">
+                            <Link to={'/checkout'}
+                                className="btn btn-primary text-teal-600 hover:bg-teal-600 hover:text-white w-full mt-6 rounded-xl border-teal-600"
+                            >
                                 Proceed to Checkout
-                            </button>
-                            <Link to="/shop" className="btn btn-outline w-full mt-4">
+                            </Link>
+                            <Link to="/shop" className="btn btn-outline w-full rounded-xl border-teal-600 bg-teal-600 text-white hover:bg-teal-700 mt-4">
                                 Continue Shopping
                             </Link>
                         </div>
