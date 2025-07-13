@@ -7,7 +7,7 @@ const CategorySection = () => {
     const itemsPerPage = 8;
 
     useEffect(() => {
-        fetch('/categorymedicines.json')
+        fetch('http://localhost:3000/medicines')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error('Failed to load categories:', err));

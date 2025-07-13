@@ -4,10 +4,11 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 import { ReTitle } from 're-title';
 
-const Signup = () => {
-    const { loginWithGoogle, registerWithEmail } = useAuth()
+const Login = () => {
+    const { loginWithGoogle, loginWithEmail } = useAuth();
     const {
         register,
         handleSubmit,
@@ -15,28 +16,25 @@ const Signup = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        const { email, password, username, role, photo } = data;
+        const { email, password } = data;
 
         try {
-            const userCredential = await registerWithEmail(email, password);
-            const user = userCredential.user;
-
+            await loginWithEmail(email, password);
+            
             // Show success alert
             Swal.fire({
-                title: 'Success!',
-                text: `Welcome, ${username}! Your account has been created.`,
+                title: 'Welcome Back!',
+                text: 'You have successfully logged in.',
                 icon: 'success',
                 confirmButtonColor: '#1db184',
                 confirmButtonText: 'Continue'
             });
 
-            // Optional: Upload photo to server or Firebase Storage here
-
-            // Optional: Redirect user to dashboard or login
+            // Optional: Redirect to dashboard
             // navigate('/dashboard');
 
         } catch (error) {
-            console.error("Signup error:", error.message);
+            console.error("Login error:", error.message);
             Swal.fire({
                 title: 'Error!',
                 text: error.message,
@@ -46,29 +44,20 @@ const Signup = () => {
         }
     };
 
-
-    // Placeholder handlers (replace with actual Firebase logic)
-    const handleGoogleSignup = async () => {
+    const handleGoogleLogin = async () => {
         try {
             const result = await loginWithGoogle();
-            // console.log("Google user:", result.user);
-
-            // Show SweetAlert success popup
+            
             Swal.fire({
                 title: 'Success!',
-                text: `Welcome, ${result.user.displayName || 'User'}!`,
+                text: `Welcome back, ${result.user.displayName || 'User'}!`,
                 icon: 'success',
                 confirmButtonColor: '#1db184',
                 confirmButtonText: 'Continue'
             });
 
-            // Optional: redirect after sign-in
-            // navigate('/dashboard');
-
         } catch (err) {
             console.error("Google sign-in error:", err.message);
-
-            // Optional: show error alert
             Swal.fire({
                 title: 'Error!',
                 text: err.message,
@@ -78,34 +67,22 @@ const Signup = () => {
         }
     };
 
-    const handleGithubSignup = () => {
-        console.log("GitHub signup clicked");
-        // implement GitHub sign-in logic here
+    const handleGithubLogin = () => {
+        console.log("GitHub login clicked");
+        // implement GitHub login logic here
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-teal-600 ">
-            <ReTitle title='Medi Hurt | Sign Up' />
-            <div className="w-full max-w-md  p-8">
-                <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Create Your Account</h2>
+        <div className="min-h-screen flex items-center justify-center bg-teal-600">
+            <ReTitle title='Medi Hurt | Login'/>
+            <div className="w-full max-w-md p-8">
+                <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Welcome Back</h2>
 
-
-                {/* Main Signup Form */}
+                {/* Main Login Form */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                    {/* Username */}
-                    <div>
-                        <label className="block text-sm font-medium text-white mb-1">Username</label>
-                        <input
-                            {...register("username", { required: "Username is required" })}
-                            className="w-full px-4 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
-                            placeholder="Your name"
-                        />
-                        {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
-                    </div>
-
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium  mb-1 text-white">Email</label>
+                        <label className="block text-sm font-medium mb-1 text-white">Email</label>
                         <input
                             {...register("email", {
                                 required: "Email is required",
@@ -127,10 +104,6 @@ const Signup = () => {
                             type="password"
                             {...register("password", {
                                 required: "Password is required",
-                                minLength: {
-                                    value: 6,
-                                    message: "Password must be at least 6 characters",
-                                },
                             })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
                             placeholder="••••••••"
@@ -138,33 +111,25 @@ const Signup = () => {
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                     </div>
 
-                    {/* Role Selection */}
-                    <div>
-                        <label className="block text-sm font-medium text-white mb-1">Select Role</label>
-                        <select
-                            {...register("role", { required: "Role is required" })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
-                        >
-                            <option value="">-- Select Role --</option>
-                            <option value="user">User</option>
-                            <option value="seller">Seller</option>
-                        </select>
-                        {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
-                    </div>
-
-                    {/* Photo Upload */}
-                    <div>
-                        <label className="block text-sm font-medium text-white ">Upload Your Photo</label>
-                        <fieldset className="border  border-teal-700">
+                    {/* Remember Me & Forgot Password */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
                             <input
-                                type="file"
-                                accept="image/*"
-                                {...register("photo", { required: "Photo is required" })}
-                                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-teal-800 file:text-white hover:file:bg-teal-900 bg-white rounded-md"
+                                id="remember-me"
+                                name="remember-me"
+                                type="checkbox"
+                                className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                             />
+                            <label htmlFor="remember-me" className="ml-2 block text-sm text-white">
+                                Remember me
+                            </label>
+                        </div>
 
-                            {errors.photo && <p className="text-red-500 text-sm mt-1">{errors.photo.message}</p>}
-                        </fieldset>
+                        <div className="text-sm">
+                            <Link to="/forgot-password" className="font-bold text-teal-800 hover:text-teal-900">
+                                Forgot password?
+                            </Link>
+                        </div>
                     </div>
 
                     {/* Submit */}
@@ -173,15 +138,16 @@ const Signup = () => {
                             type="submit"
                             className="w-full bg-teal-800 text-white font-semibold py-2 rounded-md hover:bg-teal-900 transition duration-200 shadow-sm"
                         >
-                            Sign Up
+                            Sign In
                         </button>
                     </div>
                 </form>
+
                 <div className="text-center text-white mt-4">
-                    Already have an account?{" "}
-                    <a href="/auth/login" className="text-teal-800 font-extrabold hover:underline">
-                        Login
-                    </a>
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-teal-400 hover:underline">
+                        Sign Up
+                    </Link>
                 </div>
 
                 <div className="relative my-6">
@@ -189,31 +155,30 @@ const Signup = () => {
                         <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                        <span className="bg-teal-600 px-3 text-white">or continue with email</span>
+                        <span className="bg-teal-600 px-3 text-white">or continue with</span>
                     </div>
                 </div>
 
-                {/* Social Sign ups */}
+                {/* Social Logins */}
                 <div className="space-y-3 mb-6">
                     <button
-                        onClick={handleGoogleSignup}
+                        onClick={handleGoogleLogin}
                         className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-blue-50 transition"
                     >
                         <FcGoogle className="text-lg" />
-                        Sign Up with Google
+                        Sign In with Google
                     </button>
                     <button
-                        onClick={handleGithubSignup}
+                        onClick={handleGithubLogin}
                         className="w-full flex items-center justify-center gap-3 bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
                     >
                         <FaGithub className="text-lg" />
-                        Sign Up with GitHub
+                        Sign In with GitHub
                     </button>
                 </div>
             </div>
-
         </div>
     );
 };
 
-export default Signup;
+export default Login;

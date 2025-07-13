@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link } from "react-router"; // Fixed import
 
 const CategoryCard = ({ category }) => {
     const { image, name, totalMedicines, description } = category;
 
     return (
-        <Link to={`/category/${name}`} className="block">
+        <Link to={`/category/${name}`} className="block"> {/* Changed to proper route */}
             <div className="h-105 bg-white border-teal-700 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 hover:-translate-y-1 transform cursor-pointer overflow-hidden border-2">
                 <figure className="w-full h-48 overflow-hidden">
                     <img

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useCart } from '../Provider/CartProvider';
+import { ReTitle } from 're-title';
 
 const Cart = () => {
     const { cartItems, cartTotal, cartItemCount, removeFromCart, updateQuantity } = useCart();
@@ -8,7 +9,8 @@ const Cart = () => {
 
     return (
         <div className="container bg-none w-11/12 mx-auto py-8 min-h-screen">
-            <h1 className="text-3xl font-bold mb-8 text-center">Your Shopping Cart</h1>
+            <ReTitle title='Medi Hurt | Cart'></ReTitle>
+            <h1 className="text-3xl text-teal-900 font-bold mb-8 text-center">Your Shopping Cart</h1>
 
             {cartItems.length === 0 ? (
                 <div className="text-center py-12">

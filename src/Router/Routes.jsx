@@ -11,6 +11,8 @@ import Cart from "../Pages/Cart";
 import Checkout from "../Pages/CheckOut";
 import Invoice from "../Components/Checkout/Invoice";
 import Admin from "../Layouts/Admin";
+import AppWrapper from "../Components/AppWrapper/AppWrapper";
+import Login from "../Pages/Login";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +21,9 @@ export const router = createBrowserRouter([
     children:[
         {
             index:true,
-            Component: Home,
+            element: <AppWrapper>
+              <Home />
+            </AppWrapper>
         },
         {
           path: '/Shop',
@@ -50,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: 'signup',
         Component: Signup,
+      },
+      {
+        path: 'login',
+        Component: Login,
       }
     ]
   },

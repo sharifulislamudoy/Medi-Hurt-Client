@@ -1,13 +1,55 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router';
-import './Navbar.css';
-import useAuth from '../Hooks/UseAuth';
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router';
+import { FaShoppingCart } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useCart } from '../../Provider/CartProvider';
+import useAuth from '../Hooks/UseAuth';
+import './Navbar.css';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
-    const { cartItems, cartTotal, cartItemCount, removeFromCart, updateQuantity } = useCart();
+    const { cartItemCount, cartItems, cartTotal, updateQuantity, removeFromCart } = useCart();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [allMedicines, setAllMedicines] = useState([]);
+    const navigate = useNavigate();
+
+    // Fetch all medicines on component mount
+    useEffect(() => {
+        fetch("http://localhost:3000/medicines-data")
+            .then(res => res.json())
+            .then(data => setAllMedicines(data));
+    }, []);
+
+    // Handle search term changes
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setSuggestions([]);
+            return;
+        }
+
+        const filtered = allMedicines.filter(medicine =>
+            medicine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            medicine.brand.toLowerCase().includes(searchTerm.toLowerCase())
+        ).slice(0, 5);
+
+        setSuggestions(filtered);
+    }, [searchTerm, allMedicines]);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
+            setShowSuggestions(false);
+        }
+    };
+
+    const handleSuggestionClick = (medicineName) => {
+        setSearchTerm(medicineName);
+        navigate(`/shop?search=${encodeURIComponent(medicineName)}`);
+        setShowSuggestions(false);
+    };
 
     const handleLogout = async () => {
         const result = await Swal.fire({
@@ -50,170 +92,259 @@ const Navbar = () => {
     );
 
     return (
-        <>
-            <div className="flex flex-col px-2 py-1 w-11/12 mx-auto rounded-lg border-b-1 shadow-sm bg-[#31718f] mt-3 sticky top-0 inset-0 z-50">
-                <div className='flex'>
-                    <div className="navbar-start">
-                        <div className="dropdown">
-                            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:border-blue-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-                                </svg>
-                            </div>
-                            <ul tabIndex={0} className="menu menu-sm dropdown-content bg-[#31718f] rounded-xl z-1 mt-3 w-52 p-2 shadow space-y-3">
-                                {navLinks}
-                            </ul>
+        <div className="flex flex-col px-2 py-1 w-11/12 mx-auto rounded-lg border-b-1 shadow-sm bg-[#31718f] mt-3 sticky top-0 inset-0 z-50">
+            <div className='flex'>
+                <div className="navbar-start">
+                    <div className="dropdown">
+                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:border-blue-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                            </svg>
                         </div>
-                        <a href="/" className='flex items-center gap-3'>
-                            <img src="https://i.ibb.co/Gfv2MGCw/Logo.png" className='h-8' alt="Logo" />
-                            <div>
-                                <h2 className='font-bold h-full text-2xl flex'>
-                                    <p className='text-white'>MediHurt</p>
-                                    <span className='text-[#1db184]'>.</span>
-                                </h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div className="navbar-center hidden lg:flex rounded-full">
-                        <ul className="flex px-7">
+                        <ul tabIndex={0} className="menu menu-sm dropdown-content bg-[#31718f] rounded-xl z-1 mt-3 w-52 p-2 shadow space-y-3">
                             {navLinks}
                         </ul>
                     </div>
-                    <div className="navbar-end">
-                        <div className="flex-none">
-                            {user ? (
-                                <div className="flex items-center gap-4">
-                                    {/* Cart Dropdown */}
-                                    <div className="dropdown dropdown-end">
-                                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle border-2 border-teal-600 hover:border-teal-800 transition">
-                                            <div className="indicator">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3c-.6.6-.2 1.7.7 1.7H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                </svg>
-                                                {cartItemCount > 0 && (
-                                                    <span className="badge rounded-lg p-1 bg-teal-800 text-white border-none indicator-item">
-                                                        {cartItemCount}
-                                                    </span>
-                                                )}
-                                            </div>
+                    <a href="/" className='flex items-center gap-3'>
+                        <img src="https://i.ibb.co/Gfv2MGCw/Logo.png" className='h-8' alt="Logo" />
+                        <div>
+                            <h2 className='font-bold h-full text-2xl flex'>
+                                <p className='text-white'>MediHurt</p>
+                                <span className='text-[#1db184]'>.</span>
+                            </h2>
+                        </div>
+                    </a>
+                </div>
+                <div className="navbar-center hidden lg:flex rounded-full">
+                    <ul className="flex px-7">
+                        {navLinks}
+                    </ul>
+                </div>
+                <div className="navbar-end">
+                    <div className="flex-none">
+                        {user ? (
+                            <div className="flex items-center gap-4">
+                                {/* Cart Dropdown - Responsive */}
+                                <div className="dropdown dropdown-end">
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="btn btn-ghost btn-circle border-2 border-teal-600 hover:border-teal-800 transition relative"
+                                        aria-label="Shopping cart"
+                                    >
+                                        <FaShoppingCart className="h-5 w-5 text-black" />
+                                        {cartItemCount > 0 && (
+                                            <span className="absolute -top-2 -right-2 badge rounded-full min-w-6 h-6 p-0 bg-teal-800 text-white border-none flex items-center justify-center">
+                                                {cartItemCount}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div
+                                        tabIndex={0}
+                                        className="dropdown-content z-50 mt-3 w-80 md:w-96 rounded-xl shadow-2xl bg-white p-4 space-y-4 border border-gray-100"
+                                    >
+                                        <div className="flex items-center justify-between border-b pb-2">
+                                            <h3 className="font-bold text-lg">Your Cart</h3>
+                                            <span className="text-sm text-gray-500">{cartItemCount} item{cartItemCount !== 1 ? 's' : ''}</span>
                                         </div>
-                                        <div tabIndex={0} className="dropdown-content z-50 mt-3 w-80 rounded-xl shadow-lg bg-white p-4 space-y-4">
-                                            {cartItems.length === 0 ? (
-                                                <div className="text-center py-4">
-                                                    <p className="text-gray-600">Your cart is empty</p>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    <div className="max-h-60 overflow-y-auto space-y-3">
-                                                        {cartItems.map((item) => (
-                                                            <div key={`${item._id}-${item.formulationType}`} className="flex items-center gap-3 border-b pb-2">
+
+                                        {cartItems.length === 0 ? (
+                                            <div className="text-center py-6 flex flex-col items-center">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-12 w-12 text-gray-400 mb-2"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={1.5}
+                                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3c-.6.6-.2 1.7.7 1.7H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                                    />
+                                                </svg>
+                                                <p className="text-gray-600">Your cart is empty</p>
+                                                <Link
+                                                    to="/shop"
+                                                    className="btn btn-outline btn-sm mt-4 rounded-lg border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white"
+                                                >
+                                                    Browse Products
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="max-h-60 md:max-h-72 overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                                    {cartItems.map((item) => (
+                                                        <div
+                                                            key={`${item._id}-${item.formulationType}`}
+                                                            className="flex items-center gap-2 border-b pb-2 last:border-0"
+                                                        >
+                                                            <div className="relative">
                                                                 <img
                                                                     src={item.image || '/default-medicine.png'}
                                                                     alt={item.name}
-                                                                    className="w-12 h-12 object-cover rounded"
+                                                                    className="w-10 h-10 md:w-14 md:h-14 object-contain rounded-lg bg-gray-100 p-1"
                                                                     onError={(e) => {
                                                                         e.target.src = '/default-medicine.png';
                                                                     }}
                                                                 />
-                                                                <div className="flex-1">
-                                                                    <h4 className="font-medium">{item.name}</h4>
-                                                                    <p className="text-sm text-gray-600">
-                                                                        {item.formulationType} - ৳{item.selectedPrice?.toFixed(2)} × {item.quantity}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="flex items-center gap-1">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            updateQuantity(item._id, item.formulationType, item.quantity - 1);
-                                                                        }}
-                                                                        className="btn btn-xs btn-circle"
-                                                                    >
-                                                                        -
-                                                                    </button>
-                                                                    <span>{item.quantity}</span>
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            updateQuantity(item._id, item.formulationType, item.quantity + 1);
-                                                                        }}
-                                                                        className="btn btn-xs btn-circle"
-                                                                    >
-                                                                        +
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            removeFromCart(item._id, item.formulationType);
-                                                                        }}
-                                                                        className="btn btn-xs btn-error"
-                                                                    >
-                                                                        ×
-                                                                    </button>
-                                                                </div>
+                                                                {item.quantity > 1 && (
+                                                                    <span className="absolute -top-2 -right-2 bg-teal-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                                                        {item.quantity}
+                                                                    </span>
+                                                                )}
                                                             </div>
-                                                        ))}
-                                                    </div>
-                                                    <div className="border-t pt-2">
-                                                        <div className="flex justify-between font-semibold">
-                                                            <span>Subtotal:</span>
-                                                            <span>৳{cartTotal}</span>
+                                                            <div className="flex-1 min-w-0">
+                                                                <h4 className="font-medium text-sm md:text-base truncate">{item.name}</h4>
+                                                                <p className="text-xs text-gray-600 truncate">
+                                                                    {item.formulationType}
+                                                                </p>
+                                                                <p className="text-sm font-semibold text-teal-800">
+                                                                    ৳{(item.selectedPrice * item.quantity).toFixed(2)}
+                                                                </p>
+                                                            </div>
+                                                            <div className="flex items-center gap-1">
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        updateQuantity(item._id, item.formulationType, item.quantity - 1);
+                                                                    }}
+                                                                    className="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+                                                                    disabled={item.quantity <= 1}
+                                                                >
+                                                                    -
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        updateQuantity(item._id, item.formulationType, item.quantity + 1);
+                                                                    }}
+                                                                    className="btn btn-xs btn-circle btn-outline border-gray-300 hover:bg-gray-100"
+                                                                >
+                                                                    +
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        removeFromCart(item._id, item.formulationType);
+                                                                    }}
+                                                                    className="btn btn-xs btn-ghost text-red-500 hover:bg-red-50"
+                                                                    aria-label="Remove item"
+                                                                >
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        <Link to="/cart" className="btn btn-primary btn-block mt-2">
+                                                    ))}
+                                                </div>
+
+                                                <div className="border-t pt-3 space-y-3">
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="font-semibold">Subtotal:</span>
+                                                        <span className="font-bold text-lg text-teal-800">৳{cartTotal.toFixed(2)}</span>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <Link
+                                                            to="/cart"
+                                                            className="btn btn-outline flex-1 border-teal-600 rounded-lg text-teal-600 hover:bg-teal-600 hover:text-white text-sm md:text-base"
+                                                        >
                                                             View Cart
                                                         </Link>
+                                                        <Link
+                                                            to="/checkout"
+                                                            className="btn btn-primary flex-1 bg-teal-600 rounded-lg text-white border-teal-600 hover:bg-teal-700 hover:border-teal-700 text-sm md:text-base"
+                                                        >
+                                                            Checkout
+                                                        </Link>
                                                     </div>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Avatar Dropdown */}
-                                    <div className="dropdown dropdown-end">
-                                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle border-2 border-teal-600 avatar">
-                                            <div className="w-10 rounded-full ring ring-teal-500 ring-offset-base-100 ring-offset-2">
-                                                <img
-                                                    alt="User Avatar"
-                                                    src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
-                                                />
-                                            </div>
-                                        </div>
-                                        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 w-52 bg-white rounded-xl p-2 shadow-lg">
-                                            <li>
-                                                <Link to="/dashboard" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Dashboard</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/settings" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Settings</Link>
-                                            </li>
-                                            <li>
-                                                <button onClick={handleLogout} className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</button>
-                                            </li>
-                                        </ul>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
-                            ) : (
-                                <button className="btn border-teal-700 text-white bg-teal-600 rounded-2xl px-5 py-0 hover:bg-teal-700">
-                                    <Link to='/auth/signup'>Join Us</Link>
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <div className="w-full mt-2">
-                    <div className="flex items-center gap-3">
-                        <label className="flex-grow flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-xl bg-white shadow-sm mb-3">
-                            <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <path d="m21 21-4.3-4.3"></path>
-                                </g>
-                            </svg>
-                            <input type="search" required placeholder="Search Your Medicine" className="w-full outline-none" />
-                        </label>
+
+                                {/* Avatar Dropdown */}
+                                <div className="dropdown dropdown-end">
+                                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle border-2 border-teal-600 avatar">
+                                        <div className="w-10 rounded-full ring ring-teal-500 ring-offset-base-100 ring-offset-2">
+                                            <img
+                                                alt="User Avatar"
+                                                src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                                            />
+                                        </div>
+                                    </div>
+                                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 w-52 bg-white rounded-xl p-2 shadow-lg">
+                                        <li>
+                                            <Link to="/dashboard" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Dashboard</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/settings" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Settings</Link>
+                                        </li>
+                                        <li>
+                                            <button onClick={handleLogout} className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        ) : (
+                            <button className="btn border-teal-700 text-white bg-teal-600 rounded-2xl px-5 py-0 hover:bg-teal-700">
+                                <Link to='/auth/signup'>Join Us</Link>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
-        </>
+            <div className="w-full mt-2 relative">
+                <form onSubmit={handleSearch} className="flex items-center gap-3">
+                    <label className="flex-grow flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-xl bg-white shadow-sm mb-3 relative">
+                        <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </g>
+                        </svg>
+                        <input
+                            type="search"
+                            placeholder="Search Your Medicine"
+                            className="w-full outline-none"
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                setShowSuggestions(true);
+                            }}
+                            onFocus={() => setShowSuggestions(true)}
+                            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                        />
+                        {showSuggestions && suggestions.length > 0 && (
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                                {suggestions.map((medicine) => (
+                                    <div
+                                        key={medicine._id}
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-3"
+                                        onClick={() => handleSuggestionClick(medicine.name)}
+                                        onMouseDown={(e) => e.preventDefault()} // Prevent input blur
+                                    >
+                                        <img
+                                            src={medicine.image}
+                                            alt={medicine.name}
+                                            className="w-8 h-8 rounded-full object-cover"
+                                        />
+                                        <div>
+                                            <p className="font-medium">{medicine.name}</p>
+                                            <p className="text-xs text-gray-600">{medicine.brand}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </label>
+                </form>
+            </div>
+        </div>
     );
 };
 
