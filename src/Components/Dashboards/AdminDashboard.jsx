@@ -17,6 +17,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Swal from 'sweetalert2';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -30,9 +31,10 @@ const AdminDashboard = () => {
     const [payments, setPayments] = useState([]);
     const [sales, setSales] = useState([]);
     const [advertisements, setAdvertisements] = useState([]);
-    const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [categoryForm, setCategoryForm] = useState({
         categoryName: '',
+        categoryId: '',
+        categoryDescription: '',
         categoryImage: '',
         imageFile: null
     });
@@ -61,9 +63,9 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         fetch('http://localhost:3000/medicines')
-        .then(res => res.json())
-        .then(data => setCategories(data))
-    },[])
+            .then(res => res.json())
+            .then(data => setCategories(data))
+    }, [])
 
     // Mock data initialization
     useEffect(() => {
@@ -99,6 +101,18 @@ const AdminDashboard = () => {
                 throw new Error('Invalid user ID');
             }
 
+            const result = await Swal.fire({
+                title: 'Confirm Role Change',
+                text: `Are you sure you want to change this user's role to ${newRole}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            });
+
+            if (!result.isConfirmed) return;
+
             const response = await fetch(`http://localhost:3000/users/${userId}/role`, {
                 method: 'PATCH',
                 headers: {
@@ -119,37 +133,45 @@ const AdminDashboard = () => {
             ));
 
             // Show success message
-            console.log('Role updated successfully');
+            await Swal.fire(
+                'Updated!',
+                `User role has been changed to ${newRole}`,
+                'success'
+            );
 
         } catch (error) {
             console.error('Error updating role:', error);
-            // Show error message to user
-            alert(error.message || 'Failed to update role');
+            await Swal.fire(
+                'Error!',
+                error.message || 'Failed to update role',
+                'error'
+            );
         }
     };
 
     const handleOpenCategoryModal = (category = null) => {
         if (category) {
             setCategoryForm({
+                categoryId: category.id || category._id, // Handle both cases
                 categoryName: category.name,
-                categoryImage: category.imageUrl,
+                categoryDescription: category.description || '',
+                categoryImage: category.image,
                 imageFile: null
             });
-            setEditCategoryId(category.id);
+            setEditCategoryId(category.id || category._id);
         } else {
             setCategoryForm({
+                categoryId: '',
                 categoryName: '',
+                categoryDescription: '',
                 categoryImage: '',
                 imageFile: null
             });
             setEditCategoryId(null);
         }
-        setOpenCategoryModal(true);
+        document.getElementById('category_modal').showModal();
     };
 
-    const handleCloseCategoryModal = () => {
-        setOpenCategoryModal(false);
-    };
 
     const handleCategoryFormChange = (e) => {
         const { name, value } = e.target;
@@ -164,28 +186,129 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleSaveCategory = () => {
-        if (editCategoryId) {
-            // Update existing category
-            setCategories(categories.map(cat =>
-                cat.id === editCategoryId
-                    ? { ...cat, name: categoryForm.categoryName, imageUrl: categoryForm.categoryImage }
-                    : cat
-            ));
-        } else {
-            // Add new category
-            const newCategory = {
-                id: categories.length + 1,
+    const handleSaveCategory = async () => {
+        try {
+            // Validate form data
+            if (!categoryForm.categoryName || !categoryForm.categoryImage || !categoryForm.categoryId) {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Category ID, name and image are required',
+                });
+                return;
+            }
+
+            setLoading(true);
+
+            const categoryData = {
+                id: categoryForm.categoryId,
                 name: categoryForm.categoryName,
-                imageUrl: categoryForm.categoryImage
+                description: categoryForm.categoryDescription,
+                image: categoryForm.categoryImage
             };
-            setCategories([...categories, newCategory]);
+
+            const url = editCategoryId
+                ? `http://localhost:3000/categories/${categoryForm.categoryId}`
+                : 'http://localhost:3000/categories';
+
+            const method = editCategoryId ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(categoryData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || editCategoryId
+                    ? 'Failed to update category'
+                    : 'Failed to create category');
+            }
+
+            // Update local state
+            if (editCategoryId) {
+                setCategories(categories.map(cat =>
+                    cat.id === categoryForm.categoryId ? data.category : cat
+                ));
+            } else {
+                setCategories([...categories, data.category]);
+            }
+
+            document.getElementById('category_modal').close();
+
+            await Swal.fire({
+                icon: 'success',
+                title: editCategoryId ? 'Updated!' : 'Created!',
+                text: editCategoryId
+                    ? 'Category has been updated successfully'
+                    : 'New category has been created successfully',
+            });
+
+            // Reset form
+            setCategoryForm({
+                categoryId: '',
+                categoryName: '',
+                categoryDescription: '',
+                categoryImage: '',
+                imageFile: null
+            });
+            setEditCategoryId(null);
+        } catch (error) {
+            console.error('Error saving category:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to save category',
+            });
+        } finally {
+            setLoading(false);
         }
-        setOpenCategoryModal(false);
     };
 
-    const handleDeleteCategory = (categoryId) => {
-        setCategories(categories.filter(cat => cat.id !== categoryId));
+    const handleDeleteCategory = async (categoryId) => {
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete category');
+                }
+
+                // Update local state
+                setCategories(categories.filter(cat => cat.id !== categoryId));
+
+                // Show success message
+                Swal.fire(
+                    'Deleted!',
+                    'The category has been deleted.',
+                    'success'
+                );
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                Swal.fire(
+                    'Error!',
+                    error.message || 'Failed to delete category',
+                    'error'
+                );
+            }
+        }
     };
 
     const handlePaymentStatusChange = (paymentId) => {
@@ -573,76 +696,117 @@ const AdminDashboard = () => {
                         </>
                     )}
 
-                    {/* Category Modal */}
-                    {openCategoryModal && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-                                <div className="p-4 border-b">
-                                    <h2 className="text-xl font-semibold">{editCategoryId ? 'Edit Category' : 'Add New Category'}</h2>
+                    {/* Add this modal component near the end of your return statement, before the closing </div> */}
+                    <dialog id="category_modal" className="modal">
+                        <div className="modal-box bg-white">
+                            <form method="dialog">
+                                {/* Close button */}
+                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-red-600">✕</button>
+                            </form>
+                            <h3 className="font-bold text-lg">
+                                {editCategoryId ? 'Edit Category' : 'Add New Category'}
+                            </h3>
+                            <div className="space-y-4 mt-4">
+                                {/* Category ID Field */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">Category ID</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter category ID (e.g., CAT001)"
+                                        className="input input-bordered w-full border"
+                                        name="categoryId"
+                                        value={categoryForm.categoryId || ''}
+                                        onChange={handleCategoryFormChange}
+                                        pattern="[A-Za-z0-9]+"  // Example pattern
+                                        title="Alphanumeric characters only"
+                                        required
+                                    />
                                 </div>
-                                <div className="p-4 sm:p-6 space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                                        <input
-                                            type="text"
-                                            name="categoryName"
-                                            value={categoryForm.categoryName}
-                                            onChange={handleCategoryFormChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
-                                            required
+
+                                {/* Category Name Field */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">Category Name</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter category name"
+                                        className="input input-bordered w-full border"
+                                        name="categoryName"
+                                        value={categoryForm.categoryName}
+                                        onChange={handleCategoryFormChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">Description</span>
+                                    </label>
+                                    <textarea
+                                        placeholder="Enter category description"
+                                        className="textarea textarea-bordered w-full border"
+                                        name="categoryDescription"
+                                        value={categoryForm.categoryDescription}
+                                        onChange={handleCategoryFormChange}
+                                        rows={3}
+                                    />
+                                </div>
+
+                                {/* Image Preview */}
+                                {categoryForm.categoryImage && (
+                                    <div className="flex justify-center">
+                                        <img
+                                            src={categoryForm.categoryImage}
+                                            alt="Preview"
+                                            className="w-24 h-24 object-cover rounded"
                                         />
                                     </div>
-                                    {categoryForm.categoryImage && (
-                                        <div className="flex justify-center">
-                                            <img
-                                                src={categoryForm.categoryImage}
-                                                alt="Preview"
-                                                className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded"
-                                            />
-                                        </div>
-                                    )}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
-                                        <label className="flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer text-sm sm:text-base">
-                                            <span>Choose File</span>
-                                            <input
-                                                type="file"
-                                                className="hidden"
-                                                accept="image/*"
-                                                onChange={handleImageUpload}
-                                            />
-                                        </label>
-                                    </div>
-                                    <div className="text-center text-gray-500 text-sm">OR</div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Enter image URL</label>
-                                        <input
-                                            type="text"
-                                            name="categoryImage"
-                                            value={categoryForm.categoryImage}
-                                            onChange={handleCategoryFormChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
-                                        />
-                                    </div>
+                                )}
+
+                                {/* Image Upload */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">Upload Image</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        className="file-input file-input-bordered w-full"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                    />
                                 </div>
-                                <div className="p-4 border-t flex justify-end space-x-3">
-                                    <button
-                                        onClick={handleCloseCategoryModal}
-                                        className="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-100 text-sm sm:text-base"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleSaveCategory}
-                                        disabled={!categoryForm.categoryName || !categoryForm.categoryImage}
-                                        className={`px-3 py-2 rounded-md ${(!categoryForm.categoryName || !categoryForm.categoryImage) ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white text-sm sm:text-base`}
-                                    >
-                                        {editCategoryId ? 'Update' : 'Save'}
-                                    </button>
+
+                                <div className="text-center text-gray-500 text-sm">OR</div>
+
+                                {/* Image URL Field */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">Image URL</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter image URL"
+                                        className="input input-bordered w-full border"
+                                        name="categoryImage"
+                                        value={categoryForm.categoryImage}
+                                        onChange={handleCategoryFormChange}
+                                    />
                                 </div>
                             </div>
+                            <div className="modal-action">
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleSaveCategory}
+                                    disabled={!categoryForm.categoryName || !categoryForm.categoryImage || !categoryForm.categoryId}
+                                >
+                                    {editCategoryId ? 'Update' : 'Save'}
+                                </button>
+                            </div>
                         </div>
-                    )}
+                    </dialog>
                 </div>
             </div>
         </div>
