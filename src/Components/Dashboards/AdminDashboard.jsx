@@ -20,7 +20,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Swal from 'sweetalert2';
 
 const AdminDashboard = () => {
-    const [activeTab, setActiveTab] = useState('dashboard');
+    const [activeTab, setActiveTab] = useState(() => {
+        // Try to get the saved tab from localStorage
+        const savedTab = localStorage.getItem('adminActiveTab');
+        return savedTab || 'dashboard';
+    });
     const [salesData, setSalesData] = useState({
         totalRevenue: 12500,
         paidTotal: 9800,
@@ -43,8 +47,6 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-    // Check screen size and update state
     useEffect(() => {
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth < 768); // md breakpoint
@@ -107,6 +109,12 @@ const AdminDashboard = () => {
             setLoading(false);
         }, 1000);
     }, []);
+
+    const handleTabChange = (tabId) => {
+        setActiveTab(tabId);
+        localStorage.setItem('adminActiveTab', tabId);
+        if (isSmallScreen) setMobileMenuOpen(false);
+    };
 
     const handleRoleChange = async (userId, newRole) => {
         try {
@@ -203,11 +211,11 @@ const AdminDashboard = () => {
     const handleSaveCategory = async () => {
         try {
             // Validate form data
-            if (!categoryForm.categoryName || !categoryForm.categoryImage || !categoryForm.categoryId) {
+            if (!categoryForm.categoryName || !categoryForm.categoryImage) {
                 await Swal.fire({
                     icon: 'error',
                     title: 'Validation Error',
-                    text: 'Category ID, name and image are required',
+                    text: 'Category name and image are required',
                 });
                 return;
             }
@@ -215,33 +223,40 @@ const AdminDashboard = () => {
             setLoading(true);
 
             const categoryData = {
-                id: categoryForm.categoryId,
                 name: categoryForm.categoryName,
-                description: categoryForm.categoryDescription,
+                description: categoryForm.categoryDescription || '',
                 image: categoryForm.categoryImage
             };
 
-            const url = editCategoryId
-                ? `http://localhost:3000/categories/${categoryForm.categoryId}`
-                : 'http://localhost:3000/categories';
+            let response;
 
-            const method = editCategoryId ? 'PUT' : 'POST';
-
-            const response = await fetch(url, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(categoryData),
-            });
-
-            const data = await response.json();
+            if (editCategoryId) {
+                // Update existing category
+                response = await fetch(`http://localhost:3000/categories/${categoryForm.categoryId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(categoryData),
+                });
+            } else {
+                // Create new category
+                categoryData.id = categoryForm.categoryId || generateUniqueId(); // Add ID generation if needed
+                response = await fetch('http://localhost:3000/categories', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(categoryData),
+                });
+            }
 
             if (!response.ok) {
-                throw new Error(data.message || editCategoryId
-                    ? 'Failed to update category'
-                    : 'Failed to create category');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to save category');
             }
+
+            const data = await response.json();
 
             // Update local state
             if (editCategoryId) {
@@ -253,7 +268,6 @@ const AdminDashboard = () => {
             }
 
             document.getElementById('category_modal').close();
-
             await Swal.fire({
                 icon: 'success',
                 title: editCategoryId ? 'Updated!' : 'Created!',
@@ -431,11 +445,8 @@ const AdminDashboard = () => {
                         {menuItems.map((item) => (
                             <li key={item.id}>
                                 <button
-                                    onClick={() => {
-                                        setActiveTab(item.id);
-                                        if (isSmallScreen) setMobileMenuOpen(false);
-                                    }}
-                                    className={`rounded-2xl my-2 bg-teal-600 w-full  border text-white flex items-center px-4 py-2 text-left ${activeTab === item.id ? 'bg-teal-800 ' : 'text-gray-700 hover:bg-teal-800'}`}
+                                    onClick={() => handleTabChange(item.id)}
+                                    className={`rounded-2xl my-2 bg-teal-600 w-full border text-white flex items-center px-4 py-2 text-left ${activeTab === item.id ? 'bg-teal-800' : 'text-gray-700 hover:bg-teal-800'}`}
                                 >
                                     {item.icon}
                                     {item.text}
