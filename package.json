@@ -10,11 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@lottiefiles/react-lottie-player": "^3.6.0",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@mui/x-date-pickers": "^8.8.0",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.11",
     "daisyui": "^5.0.46",
+    "date-fns": "^4.1.0",
     "firebase": "^11.10.0",
     "jspdf": "^3.0.1",
     "keen-slider": "^6.8.6",

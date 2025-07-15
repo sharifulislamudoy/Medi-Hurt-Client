@@ -15,7 +15,6 @@ const CategoryDetails = () => {
     const [quantities, setQuantities] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
     const { addToCart } = useCart();
-
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 10;
 

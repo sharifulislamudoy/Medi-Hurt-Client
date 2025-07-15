@@ -18,22 +18,40 @@ const Signup = () => {
         const { email, password, username, role, photo } = data;
 
         try {
+            // Step 1: Create user in Firebase
             const userCredential = await registerWithEmail(email, password);
             const user = userCredential.user;
 
-            // Show success alert
-            Swal.fire({
-                title: 'Success!',
-                text: `Welcome, ${username}! Your account has been created.`,
-                icon: 'success',
-                confirmButtonColor: '#1db184',
-                confirmButtonText: 'Continue'
+            // Step 2: Create user object for backend
+            const newUser = {
+                email,
+                username,
+                role,
+                photoURL: photo[0]?.name || '', // Optional: store photo name (better to use uploaded URL)
+                createdAt: new Date()
+            };
+
+            // Step 3: Send user data to backend
+            const res = await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
             });
 
-            // Optional: Upload photo to server or Firebase Storage here
+            const result = await res.json();
 
-            // Optional: Redirect user to dashboard or login
-            // navigate('/dashboard');
+            // Step 4: Show success alert
+            if (result.insertedId) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: `Welcome, ${username}! Your account has been created.`,
+                    icon: 'success',
+                    confirmButtonColor: '#1db184',
+                    confirmButtonText: 'Continue'
+                });
+            }
 
         } catch (error) {
             console.error("Signup error:", error.message);
@@ -47,28 +65,45 @@ const Signup = () => {
     };
 
 
+
     // Placeholder handlers (replace with actual Firebase logic)
     const handleGoogleSignup = async () => {
         try {
             const result = await loginWithGoogle();
-            // console.log("Google user:", result.user);
+            const user = result.user;
 
-            // Show SweetAlert success popup
-            Swal.fire({
-                title: 'Success!',
-                text: `Welcome, ${result.user.displayName || 'User'}!`,
-                icon: 'success',
-                confirmButtonColor: '#1db184',
-                confirmButtonText: 'Continue'
+            // Construct new user object with default role = 'user'
+            const newUser = {
+                email: user.email,
+                username: user.displayName || 'Unknown',
+                role: 'user',
+                photoURL: user.photoURL || '',
+                createdAt: new Date()
+            };
+
+            // Send new user to backend
+            const res = await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
             });
 
-            // Optional: redirect after sign-in
-            // navigate('/dashboard');
+            const resultData = await res.json();
+
+            if (resultData.insertedId) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: `Welcome, ${user.displayName || 'User'}!`,
+                    icon: 'success',
+                    confirmButtonColor: '#1db184',
+                    confirmButtonText: 'Continue'
+                });
+            }
 
         } catch (err) {
             console.error("Google sign-in error:", err.message);
-
-            // Optional: show error alert
             Swal.fire({
                 title: 'Error!',
                 text: err.message,
@@ -77,6 +112,7 @@ const Signup = () => {
             });
         }
     };
+
 
     const handleGithubSignup = () => {
         console.log("GitHub signup clicked");

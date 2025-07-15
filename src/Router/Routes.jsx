@@ -13,6 +13,7 @@ import Invoice from "../Components/Checkout/Invoice";
 import Admin from "../Layouts/Admin";
 import AppWrapper from "../Components/AppWrapper/AppWrapper";
 import Login from "../Pages/Login";
+import AdminDashboard from "../Components/Dashboards/AdminDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    Component: Admin
+    Component: Admin,
+  },
+  {
+    path: '/admin/dashboard',
+    Component: AdminDashboard
   }
 ]);

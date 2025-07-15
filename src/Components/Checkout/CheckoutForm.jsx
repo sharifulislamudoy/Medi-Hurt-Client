@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router';
 import { useCart } from '../../Provider/CartProvider';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 const CheckoutForm = () => {
     const { user } = useAuth();
+    const [cardName, setCardName] = useState('');
     const { cartTotal, clearCart } = useCart();
     const stripe = useStripe();
     const elements = useElements();
@@ -63,6 +64,7 @@ const CheckoutForm = () => {
                     amountPaid: cartTotal,
                     transactionId: paymentMethod.id,
                     date: new Date().toLocaleString(),
+                    cardHolderName: cardName,
                 },
             });
         });
@@ -78,7 +80,15 @@ const CheckoutForm = () => {
                     <h3 className="text-xl font-semibold mb-4">Billing Address</h3>
 
                     <label className="block mb-2 font-medium">👤 Full Name</label>
-                    <input type="text" placeholder="Ravi Raushan" value={user?.displayName} className="w-full  border-teal-600 p-2 mb-4 border rounded focus:ring-2 focus:ring-teal-600 focus:outline-none" required />
+                    <input
+                        type="text"
+                        placeholder="Ravi Raushan"
+                        value={cardName}
+                        onChange={(e) => setCardName(e.target.value)}
+                        className="w-full border-teal-600 p-2 mb-4 border rounded focus:ring-2 focus:ring-teal-600 focus:outline-none"
+                        required
+                    />
+
 
                     <label className="block mb-2 font-medium">✉ Email</label>
                     <input type="email" placeholder="ravi@raushan.com" value={user?.email} className="w-full  border-teal-600 p-2 mb-4 border rounded focus:ring-2 focus:ring-teal-600 focus:outline-none" required />

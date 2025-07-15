@@ -7,7 +7,7 @@ import useAuth from '../Hooks/UseAuth';
 const Invoice = () => {
     const { user } = useAuth();
     const location = useLocation();
-    const { amountPaid, transactionId, date = new Date().toLocaleDateString() } = location.state || {};
+    const { amountPaid, transactionId, date, cardHolderName = new Date().toLocaleDateString() } = location.state || {};
     const invoiceRef = useRef(null);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -60,7 +60,7 @@ const Invoice = () => {
         doc.text('Billed To:', leftMargin, yPos);
         doc.setFontSize(14);
         yPos += 10;
-        doc.text(user?.displayName || 'Customer Name', leftMargin, yPos);
+        doc.text(cardHolderName || 'Customer Name', leftMargin, yPos);
         yPos += 7;
         doc.setTextColor(102, 102, 102);
         doc.text(user?.email || 'customer@example.com', leftMargin, yPos);
@@ -154,7 +154,7 @@ const Invoice = () => {
                 {/* Customer Info */}
                 <div className="mb-8">
                     <h3 className="text-lg font-semibold text-gray-700 mb-2">Billed To:</h3>
-                    <p className="text-gray-800">{user?.displayName || 'Customer Name'}</p>
+                    <p className="text-gray-800">{cardHolderName || 'Customer Name'}</p>
                     <p className="text-gray-600">{user?.email || 'customer@example.com'}</p>
                 </div>
 
