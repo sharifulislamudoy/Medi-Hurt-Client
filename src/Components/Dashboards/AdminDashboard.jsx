@@ -67,17 +67,31 @@ const AdminDashboard = () => {
             .then(data => setCategories(data))
     }, [])
 
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('http://localhost:3000/orders');
+                if (!response.ok) throw new Error('Failed to fetch payments');
+                const data = await response.json();
+                setPayments(data.orders || []);
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+                Swal.fire('Error', 'Failed to load payment data', 'error');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPayments();
+    }, []);
+
     // Mock data initialization
     useEffect(() => {
         // Simulate API calls
         setLoading(true);
         setTimeout(() => {
 
-            setPayments([
-                { id: 1, orderId: 'ORD-1001', amount: 1200, status: 'paid', date: '2023-05-15' },
-                { id: 2, orderId: 'ORD-1002', amount: 800, status: 'pending', date: '2023-05-16' },
-                { id: 3, orderId: 'ORD-1003', amount: 1500, status: 'pending', date: '2023-05-17' }
-            ]);
 
             setSales([
                 { id: 1, medicine: 'Paracetamol', seller: 'seller1@example.com', buyer: 'customer1@example.com', price: 120, date: '2023-05-10' },
@@ -311,10 +325,55 @@ const AdminDashboard = () => {
         }
     };
 
-    const handlePaymentStatusChange = (paymentId) => {
-        setPayments(payments.map(payment =>
-            payment.id === paymentId ? { ...payment, status: 'paid' } : payment
-        ));
+    const handlePaymentStatusChange = async (paymentId) => {
+        try {
+            const result = await Swal.fire({
+                title: 'Confirm Payment',
+                text: 'Are you sure you want to mark this payment as paid?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, mark as paid'
+            });
+
+            if (!result.isConfirmed) return;
+
+            setLoading(true);
+
+            // Update payment status in backend
+            const response = await fetch(`http://localhost:3000/orders/${paymentId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'paid' }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update payment status');
+            }
+
+            // Update local state
+            setPayments(payments.map(payment =>
+                payment._id === paymentId ? { ...payment, status: 'paid' } : payment
+            ));
+
+            Swal.fire(
+                'Updated!',
+                'Payment status has been updated to paid.',
+                'success'
+            );
+        } catch (error) {
+            console.error('Error updating payment status:', error);
+            Swal.fire(
+                'Error!',
+                error.message || 'Failed to update payment status',
+                'error'
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleAdvertiseToggle = (adId) => {
@@ -529,32 +588,45 @@ const AdminDashboard = () => {
                                         <table className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-50">
                                                 <tr>
-                                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment Type</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
                                                 {payments.map(payment => (
-                                                    <tr key={payment.id}>
-                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{payment.orderId}</td>
-                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${payment.amount}</td>
-                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{payment.date}</td>
+                                                    <tr key={payment._id}>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {payment.transactionId}
+                                                        </td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            ৳{payment.amountPaid.toFixed(2)}
+                                                        </td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {new Date(payment.date).toLocaleDateString()}
+                                                        </td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                            {payment.paymentType}
+                                                        </td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
-                                                            <span className={`font-bold ${payment.status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>
+                                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${payment.status === 'paid'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-yellow-100 text-yellow-800'
+                                                                }`}>
                                                                 {payment.status}
                                                             </span>
                                                         </td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            {payment.status === 'pending' && (
+                                                            {payment.status === 'pending' && payment.paymentType === 'Cash on Delivery' && (
                                                                 <button
-                                                                    onClick={() => handlePaymentStatusChange(payment.id)}
-                                                                    className="flex items-center px-2 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 text-xs sm:text-sm"
+                                                                    onClick={() => handlePaymentStatusChange(payment._id)}
+                                                                    className="flex items-center px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 text-xs sm:text-sm"
                                                                 >
                                                                     <CheckCircle className="mr-1" fontSize="small" />
-                                                                    Accept
+                                                                    Accept Payment
                                                                 </button>
                                                             )}
                                                         </td>
