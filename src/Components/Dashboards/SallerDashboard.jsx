@@ -198,6 +198,7 @@ const SellerDashboard = () => {
                 throw new Error('Failed to add medicine');
             }
 
+            const data = await res.json();
 
             Swal.fire({
                 icon: 'success',
@@ -227,10 +228,12 @@ const SellerDashboard = () => {
                 description: '',
             });
 
+            // ✅ Push new medicine to state
+            setMedicines(prev => [...prev, { ...newMedicine, _id: data.insertedId }]);
+
         } catch (error) {
             console.error(error);
 
-            // ❌ SweetAlert Error
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -238,6 +241,59 @@ const SellerDashboard = () => {
             });
         }
     };
+
+
+    const handleDelete = async (_id) => {
+        const confirmed = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This action can't be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (confirmed.isConfirmed) {
+            try {
+                const res = await fetch(`http://localhost:3000/medicines-data/${_id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (res.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Medicine has been deleted.',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+
+                    // ⬇️ Update UI: remove deleted item from local state
+                    setMedicines(prev => prev.filter(med => med._id !== _id));
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        text: 'Could not delete the medicine.',
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong while deleting.',
+                });
+            }
+        }
+    };
+
+
 
 
 
@@ -382,9 +438,13 @@ const SellerDashboard = () => {
                                                     </button>
 
 
-                                                    <button className="text-red-600 px-2 rounded-md border-2 hover:text-white hover:bg-red-600">
+                                                    <button
+                                                        className="text-red-600 px-2 rounded-md border-2 hover:text-white hover:bg-red-600"
+                                                        onClick={() => handleDelete(medicine._id)}
+                                                    >
                                                         Delete
                                                     </button>
+
                                                 </td>
                                             </tr>
                                         ))}

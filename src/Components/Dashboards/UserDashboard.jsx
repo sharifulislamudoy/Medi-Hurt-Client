@@ -3,7 +3,6 @@ import {
     Dashboard,
     ShoppingCart,
     Payment,
-    Favorite,
     History,
     Menu,
     Close
@@ -13,6 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Swal from 'sweetalert2';
 import useAuth from '../Hooks/UseAuth';
+import RouteChangeSpinner from '../Loading/RouteChangeSpinner';
 
 const UserDashboard = () => {
     const { user } = useAuth();
@@ -25,10 +25,7 @@ const UserDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-    const [wishlist, setWishlist] = useState([
-        { id: 1, name: "Vitamin D3", price: 12.99 },
-        { id: 2, name: "Omega-3 Fish Oil", price: 18.50 }
-    ]);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -44,12 +41,12 @@ const UserDashboard = () => {
     useEffect(() => {
         const fetchPaymentHistory = async () => {
             if (!user?._id) return;
-            
+
             try {
                 setLoading(true);
                 const response = await fetch(`http://localhost:3000/orders/${user._id}`);
                 const data = await response.json();
-                
+
                 if (data.success) {
                     setPaymentHistory(data.orders);
                 } else {
@@ -63,8 +60,14 @@ const UserDashboard = () => {
             }
         };
 
+
+
         fetchPaymentHistory();
     }, [user?._id]);
+
+    if (!user) {
+        return <RouteChangeSpinner />
+    }
 
     const handleTabChange = (tabId) => {
         setActiveTab(tabId);
@@ -78,16 +81,12 @@ const UserDashboard = () => {
         return paymentDate >= dateRange[0] && paymentDate <= dateRange[1];
     });
 
-    const removeFromWishlist = (id) => {
-        setWishlist(wishlist.filter(item => item.id !== id));
-        Swal.fire('Removed!', 'Item removed from wishlist', 'success');
-    };
+
 
     const menuItems = [
         { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
         { id: 'payments', text: 'Payment History', icon: <Payment className="mr-3" /> },
         { id: 'orders', text: 'My Orders', icon: <ShoppingCart className="mr-3" /> },
-        { id: 'wishlist', text: 'Wishlist', icon: <Favorite className="mr-3" /> },
     ];
 
     return (
@@ -112,7 +111,7 @@ const UserDashboard = () => {
             >
                 <div className="p-4 text-center">
                     <h1 className="text-xl text-white mt-2 font-bold">User Panel</h1>
-                    <p className='text-white'>{user?.email}</p>
+                    <p className='text-white text-sm'>{user?.email}</p>
                 </div>
                 <div className="border-t border-gray-200"></div>
                 <nav>
@@ -362,69 +361,6 @@ const UserDashboard = () => {
                                             </div>
                                         )}
                                     </div>
-                                </div>
-                            )}
-
-                            {activeTab === 'wishlist' && (
-                                <div>
-                                    <h2 className="text-xl sm:text-2xl font-semibold mb-4">My Wishlist</h2>
-                                    {wishlist.length > 0 ? (
-                                        <div className="bg-white rounded-lg shadow overflow-hidden">
-                                            <table className="min-w-full divide-y divide-gray-200">
-                                                <thead className="bg-gray-50">
-                                                    <tr>
-                                                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-white divide-y divide-gray-200">
-                                                    {wishlist.map(item => (
-                                                        <tr key={item.id}>
-                                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                                {item.name}
-                                                            </td>
-                                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                ৳{item.price.toFixed(2)}
-                                                            </td>
-                                                            <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                                <div className="flex space-x-2">
-                                                                    <button
-                                                                        className="text-teal-600 hover:text-teal-900"
-                                                                        onClick={() => Swal.fire('Added to Cart', `${item.name} added to cart`, 'success')}
-                                                                    >
-                                                                        Add to Cart
-                                                                    </button>
-                                                                    <button
-                                                                        className="text-red-600 hover:text-red-900"
-                                                                        onClick={() => removeFromWishlist(item.id)}
-                                                                    >
-                                                                        Remove
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    ) : (
-                                        <div className="bg-white rounded-lg shadow p-6 text-center">
-                                            <div className="text-gray-400 mb-4">
-                                                <Favorite fontSize="large" />
-                                            </div>
-                                            <h3 className="text-lg font-medium text-gray-700 mb-2">Your wishlist is empty</h3>
-                                            <p className="text-gray-500 mb-4">
-                                                Save your favorite items here for easy access later
-                                            </p>
-                                            <button
-                                                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
-                                                onClick={() => Swal.fire('Info', 'Redirect to shop page would happen here', 'info')}
-                                            >
-                                                Browse Medicines
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
                             )}
                         </>
