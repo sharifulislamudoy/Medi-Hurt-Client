@@ -19,6 +19,7 @@
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.11",
+    "axios": "^1.10.0",
     "daisyui": "^5.0.46",
     "date-fns": "^4.1.0",
     "firebase": "^11.10.0",

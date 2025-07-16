@@ -14,6 +14,8 @@ import Admin from "../Layouts/Admin";
 import AppWrapper from "../Components/AppWrapper/AppWrapper";
 import Login from "../Pages/Login";
 import AdminDashboard from "../Components/Dashboards/AdminDashboard";
+import SellerDashboard from "../Components/Dashboards/SallerDashboard";
+import UserDashboard from "../Components/Dashboards/UserDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -69,5 +71,13 @@ export const router = createBrowserRouter([
   {
     path: '/admin/dashboard',
     Component: AdminDashboard
+  },
+  {
+    path :'/seller/dashboard',
+    Component: SellerDashboard,
+  },
+  {
+    path: '/user/dashboard',
+    Component: UserDashboard,
   }
 ]);
