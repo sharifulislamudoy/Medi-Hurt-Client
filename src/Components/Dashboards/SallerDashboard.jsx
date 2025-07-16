@@ -57,33 +57,65 @@ const SellerDashboard = () => {
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const [payments, setPayments] = useState([]);
 
-    const fakePayments = [
-        {
-            _id: '1',
-            medicines: [{ name: 'Paracetamol' }, { name: 'Vitamin C' }],
-            buyer: { email: 'customer@example.com' },
-            amountPaid: 1200,
-            date: '2023-05-15',
-            status: 'paid'
-        },
-        {
-            _id: '2',
-            medicines: [{ name: 'Amoxicillin' }],
-            buyer: { email: 'customer2@example.com' },
-            amountPaid: 800,
-            date: '2023-05-10',
-            status: 'pending'
-        },
-        {
-            _id: '3',
-            medicines: [{ name: 'Vitamin C' }, { name: 'Amoxicillin' }],
-            buyer: { email: 'customer3@example.com' },
-            amountPaid: 1500,
-            date: '2023-05-18',
-            status: 'paid'
-        }
-    ];
+useEffect(() => {
+    if (!user?.email) return; // wait for user to load
+
+    fetch('http://localhost:3000/orders')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // filter orders where either:
+                // 1. The order email matches user email, OR
+                // 2. Any item in the order has email matching user email
+                const userPayments = data.orders.filter(
+                    order => order.items.some(item => item.email === user.email)
+                );
+                setPayments(userPayments);
+            }
+        })
+        .catch(err => console.error('Fetch error:', err));
+}, [user?.email]);
+
+    // console.log(payments)
+
+    //   useEffect(() => {
+    //     fetch('http://localhost:3000/orders')
+    //       .then(res => res.json())
+    //       .then(data => {
+    //         if (data.success) {
+    //           setOrders(data.orders);
+    //         }
+    //       })
+    //       .catch(err => console.error('Error fetching orders:', err));
+    //   }, []);
+    // const payments = [
+    //     {
+    //         _id: '1',
+    //         medicines: [{ name: 'Paracetamol' }, { name: 'Vitamin C' }],
+    //         buyer: { email: 'customer@example.com' },
+    //         amountPaid: 1200,
+    //         date: '2023-05-15',
+    //         status: 'paid'
+    //     },
+    //     {
+    //         _id: '2',
+    //         medicines: [{ name: 'Amoxicillin' }],
+    //         buyer: { email: 'customer2@example.com' },
+    //         amountPaid: 800,
+    //         date: '2023-05-10',
+    //         status: 'pending'
+    //     },
+    //     {
+    //         _id: '3',
+    //         medicines: [{ name: 'Vitamin C' }, { name: 'Amoxicillin' }],
+    //         buyer: { email: 'customer3@example.com' },
+    //         amountPaid: 1500,
+    //         date: '2023-05-18',
+    //         status: 'paid'
+    //     }
+    // ];
 
     const fakeAdvertisements = [
         {
@@ -165,6 +197,7 @@ const SellerDashboard = () => {
             }));
         }
     };
+
 
 
     const handleSaveMedicine = async () => {
@@ -477,16 +510,16 @@ const SellerDashboard = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {fakePayments.map(payment => (
+                                        {payments.map(payment => (
                                             <tr key={payment._id}>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {payment._id}
+                                                    {payment.transactionId}
                                                 </td>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {payment.medicines.map(m => m.name).join(', ')}
+                                                    {payment.items.map(item => item.name).join(', ')}
                                                 </td>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {payment.buyer.email}
+                                                    {payment.email}
                                                 </td>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     ৳{payment.amountPaid.toFixed(2)}
@@ -504,6 +537,7 @@ const SellerDashboard = () => {
                                                 </td>
                                             </tr>
                                         ))}
+
                                     </tbody>
                                 </table>
                             </div>
