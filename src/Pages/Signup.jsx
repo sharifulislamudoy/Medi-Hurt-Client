@@ -92,13 +92,21 @@ const Signup = () => {
 
             const resultData = await res.json();
 
-            if (resultData.insertedId) {
+            if (res.ok && result.insertedId) {
                 Swal.fire({
                     title: 'Success!',
-                    text: `Welcome, ${user.displayName || 'User'}!`,
+                    text: `Welcome, ${username}! Your account has been created.`,
                     icon: 'success',
                     confirmButtonColor: '#1db184',
                     confirmButtonText: 'Continue'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Signup Failed',
+                    text: result.message || 'This email is already registered. Please use a different one.',
+                    icon: 'error',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Try Again'
                 });
             }
 

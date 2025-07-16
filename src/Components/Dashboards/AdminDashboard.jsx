@@ -18,22 +18,36 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 const AdminDashboard = () => {
+
     const [activeTab, setActiveTab] = useState(() => {
         // Try to get the saved tab from localStorage
         const savedTab = localStorage.getItem('adminActiveTab');
         return savedTab || 'dashboard';
     });
     const [salesData, setSalesData] = useState({
-        totalRevenue: 12500,
-        paidTotal: 9800,
-        pendingTotal: 2700
+        totalRevenue: 0,
+        paidTotal: 0,
+        pendingTotal: 0,
     });
+    const [chartData, setChartData] = useState([]);
+
+
     const [users, setUsers] = useState([]);
     const [categories, setCategories] = useState([]);
     const [payments, setPayments] = useState([]);
-    const [sales, setSales] = useState([]);
     const [advertisements, setAdvertisements] = useState([]);
     const [categoryForm, setCategoryForm] = useState({
         categoryName: '',
@@ -43,7 +57,6 @@ const AdminDashboard = () => {
         imageFile: null
     });
     const [editCategoryId, setEditCategoryId] = useState(null);
-    const [dateRange, setDateRange] = useState([null, null]);
     const [loading, setLoading] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -88,6 +101,73 @@ const AdminDashboard = () => {
         fetchPayments();
     }, []);
 
+    const [filteredSales, setFilteredSales] = useState([]);
+    const [dateRange, setDateRange] = useState([null, null]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/orders')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const allOrders = data.orders;
+
+                    // Flatten order items into individual sale records
+                    const flattenedSales = allOrders.flatMap(order => {
+                        return order.items.map(item => ({
+                            id: `${order._id}-${item._id}`, // unique key
+                            medicine: item.name,
+                            seller: item.email,
+                            buyer: order.email,
+                            price: item.selectedPrice,
+                            date: new Date(order.date).toLocaleDateString(),
+                        }));
+                    });
+
+
+                    setFilteredSales(flattenedSales); // default view without filters
+                }
+            })
+            .catch(err => console.error('Fetch error:', err));
+    }, []);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const response = await axios.get("http://localhost:3000/orders");
+                const orders = response.data.orders;
+
+                let totalRevenue = 0;
+                let paidTotal = 0;
+                let pendingTotal = 0;
+
+                orders.forEach(order => {
+                    const amount = parseFloat(order.amountPaid || 0);
+                    totalRevenue += amount;
+
+                    if (order.status === "paid") {
+                        paidTotal += amount;
+                    } else if (order.status === "pending") {
+                        pendingTotal += amount;
+                    }
+                });
+
+                setSalesData({ totalRevenue, paidTotal, pendingTotal });
+
+                // For chart
+                setChartData([
+                    { name: "Total", amount: totalRevenue },
+                    { name: "Paid", amount: paidTotal },
+                    { name: "Pending", amount: pendingTotal },
+                ]);
+            } catch (error) {
+                console.error("Error fetching sales data:", error);
+            }
+        };
+
+        fetchOrders();
+    }, []);;
+
+
     // Mock data initialization
     useEffect(() => {
         // Simulate API calls
@@ -95,11 +175,11 @@ const AdminDashboard = () => {
         setTimeout(() => {
 
 
-            setSales([
-                { id: 1, medicine: 'Paracetamol', seller: 'seller1@example.com', buyer: 'customer1@example.com', price: 120, date: '2023-05-10' },
-                { id: 2, medicine: 'Amoxicillin', seller: 'seller2@example.com', buyer: 'customer2@example.com', price: 350, date: '2023-05-11' },
-                { id: 3, medicine: 'Vitamin C', seller: 'seller1@example.com', buyer: 'customer3@example.com', price: 200, date: '2023-05-12' }
-            ]);
+            // setSales([
+            //     { id: 1, medicine: 'Paracetamol', seller: 'seller1@example.com', buyer: 'customer1@example.com', price: 120, date: '2023-05-10' },
+            //     { id: 2, medicine: 'Amoxicillin', seller: 'seller2@example.com', buyer: 'customer2@example.com', price: 350, date: '2023-05-11' },
+            //     { id: 3, medicine: 'Vitamin C', seller: 'seller1@example.com', buyer: 'customer3@example.com', price: 200, date: '2023-05-12' }
+            // ]);
 
             setAdvertisements([
                 { id: 1, medicine: 'Paracetamol', description: 'Effective pain reliever', seller: 'seller1@example.com', imageUrl: 'https://example.com/paracetamol.jpg', inSlider: true },
@@ -401,11 +481,7 @@ const AdminDashboard = () => {
         console.log(`Downloading report in ${format} format`);
     };
 
-    const filteredSales = sales.filter(sale => {
-        if (!dateRange[0] || !dateRange[1]) return true;
-        const saleDate = new Date(sale.date);
-        return saleDate >= dateRange[0] && saleDate <= dateRange[1];
-    });
+
 
     const menuItems = [
         { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
@@ -495,8 +571,24 @@ const AdminDashboard = () => {
                                             <p className="text-2xl sm:text-3xl font-bold text-yellow-600">${salesData.pendingTotal.toLocaleString()}</p>
                                         </div>
                                     </div>
+
+                                    {/* Chart */}
+                                    <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+                                        <h3 className="text-gray-500 text-sm uppercase font-medium mb-4">Sales Chart</h3>
+                                        <ResponsiveContainer width="100%" height={300}>
+                                            <BarChart data={chartData}>
+                                                <CartesianGrid strokeDasharray="3 3" />
+                                                <XAxis dataKey="name" />
+                                                <YAxis tickFormatter={(value) => `$${value}`} />
+                                                <Tooltip formatter={(value) => `$${value}`} />
+                                                <Legend />
+                                                <Bar dataKey="amount" fill="#6366f1" />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                    </div>
                                 </div>
                             )}
+
 
                             {activeTab === 'users' && (
                                 <div>

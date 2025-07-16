@@ -301,7 +301,8 @@ const UserDashboard = () => {
                                                             <ul className="mt-1 space-y-1">
                                                                 {order.items.map((item, index) => (
                                                                     <li key={index} className="text-sm">
-                                                                        {item.name} × {item.quantity} (৳{item.selectedPrice.toFixed(2)})
+                                                                        {item.name} × {item.quantity}
+                                                                        (৳{item.selectedPrice ? item.selectedPrice.toFixed(2) : 'N/A'})
                                                                     </li>
                                                                 ))}
                                                             </ul>
