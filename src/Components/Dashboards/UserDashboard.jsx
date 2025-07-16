@@ -37,33 +37,24 @@ const UserDashboard = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Fetch payment history from backend
     useEffect(() => {
-        const fetchPaymentHistory = async () => {
-            if (!user?._id) return;
+        if (!user?.email) return; // wait for user to load
 
-            try {
-                setLoading(true);
-                const response = await fetch(`http://localhost:3000/orders/${user._id}`);
-                const data = await response.json();
-
+        fetch('http://localhost:3000/orders')
+            .then(res => res.json())
+            .then(data => {
                 if (data.success) {
-                    setPaymentHistory(data.orders);
-                } else {
-                    throw new Error('Failed to fetch payment history');
+                    // filter orders where either:
+                    // 1. The order email matches user email, OR
+                    // 2. Any item in the order has email matching user email
+                    const userPayments = data.orders.filter(
+                        order => order.email === user.email
+                    );
+                    setPaymentHistory(userPayments);
                 }
-            } catch (error) {
-                console.error('Error fetching payment history:', error);
-                Swal.fire('Error', 'Failed to load payment history', 'error');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-
-
-        fetchPaymentHistory();
-    }, [user?._id]);
+            })
+            .catch(err => console.error('Fetch error:', err));
+    }, [user?.email]);
 
     if (!user) {
         return <RouteChangeSpinner />
@@ -335,15 +326,6 @@ const UserDashboard = () => {
 
                                                     <div className="border-t border-gray-200 my-3"></div>
 
-                                                    <div className="flex justify-end">
-                                                        <button
-                                                            className="flex items-center text-sm text-teal-600 hover:text-teal-800"
-                                                            onClick={() => Swal.fire('Tracking', `Order #${order.transactionId} is on its way!`, 'info')}
-                                                        >
-                                                            <History className="mr-1" fontSize="small" />
-                                                            Track Order
-                                                        </button>
-                                                    </div>
                                                 </div>
                                             ))
                                         ) : (

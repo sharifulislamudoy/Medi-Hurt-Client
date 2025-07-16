@@ -59,24 +59,24 @@ const SellerDashboard = () => {
 
     const [payments, setPayments] = useState([]);
 
-useEffect(() => {
-    if (!user?.email) return; // wait for user to load
+    useEffect(() => {
+        if (!user?.email) return; // wait for user to load
 
-    fetch('http://localhost:3000/orders')
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                // filter orders where either:
-                // 1. The order email matches user email, OR
-                // 2. Any item in the order has email matching user email
-                const userPayments = data.orders.filter(
-                    order => order.items.some(item => item.email === user.email)
-                );
-                setPayments(userPayments);
-            }
-        })
-        .catch(err => console.error('Fetch error:', err));
-}, [user?.email]);
+        fetch('http://localhost:3000/orders')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // filter orders where either:
+                    // 1. The order email matches user email, OR
+                    // 2. Any item in the order has email matching user email
+                    const userPayments = data.orders.filter(
+                        order => order.items.some(item => item.email === user.email)
+                    );
+                    setPayments(userPayments);
+                }
+            })
+            .catch(err => console.error('Fetch error:', err));
+    }, [user?.email]);
 
     // console.log(payments)
 
