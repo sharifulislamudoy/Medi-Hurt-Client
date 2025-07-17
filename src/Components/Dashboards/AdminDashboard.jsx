@@ -20,17 +20,18 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Legend,
 } from "recharts";
 
 const AdminDashboard = () => {
+
 
     const [activeTab, setActiveTab] = useState(() => {
         // Try to get the saved tab from localStorage
@@ -60,6 +61,41 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+    const handleAdvertiseToggle = async (id) => {
+        const adToUpdate = advertisements.find((ad) => ad._id === id);
+        const updatedSliderValue = !adToUpdate.inSlider;
+
+        const res = await fetch(`http://localhost:3000/advertisements/${id}/slider`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ inSlider: updatedSliderValue }),
+        });
+
+        if (res.ok) {
+            const updatedAds = advertisements.map((ad) =>
+                ad._id === id ? { ...ad, inSlider: updatedSliderValue } : ad
+            );
+            setAdvertisements(updatedAds);
+        } else {
+            console.error("Slider update failed");
+        }
+    };
+    const handleStatusUpdate = async (id) => {
+        const res = await fetch(`http://localhost:3000/advertisements/${id}/status`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "approved" }),
+        });
+
+        if (res.ok) {
+            const updatedAds = advertisements.map((ad) =>
+                ad._id === id ? { ...ad, status: "approved" } : ad
+            );
+            setAdvertisements(updatedAds);
+        } else {
+            console.error("Status update failed");
+        }
+    };
     useEffect(() => {
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth < 768); // md breakpoint
@@ -68,6 +104,20 @@ const AdminDashboard = () => {
         handleResize(); // Set initial value
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const fetchAds = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/advertisements");
+                const data = await res.json();
+                setAdvertisements(data);
+            } catch (err) {
+                console.error("Failed to fetch ads:", err);
+            }
+        };
+
+        fetchAds();
     }, []);
 
     useEffect(() => {
@@ -166,29 +216,6 @@ const AdminDashboard = () => {
 
         fetchOrders();
     }, []);;
-
-
-    // Mock data initialization
-    useEffect(() => {
-        // Simulate API calls
-        setLoading(true);
-        setTimeout(() => {
-
-
-            // setSales([
-            //     { id: 1, medicine: 'Paracetamol', seller: 'seller1@example.com', buyer: 'customer1@example.com', price: 120, date: '2023-05-10' },
-            //     { id: 2, medicine: 'Amoxicillin', seller: 'seller2@example.com', buyer: 'customer2@example.com', price: 350, date: '2023-05-11' },
-            //     { id: 3, medicine: 'Vitamin C', seller: 'seller1@example.com', buyer: 'customer3@example.com', price: 200, date: '2023-05-12' }
-            // ]);
-
-            setAdvertisements([
-                { id: 1, medicine: 'Paracetamol', description: 'Effective pain reliever', seller: 'seller1@example.com', imageUrl: 'https://example.com/paracetamol.jpg', inSlider: true },
-                { id: 2, medicine: 'Vitamin D', description: 'Boosts immunity', seller: 'seller2@example.com', imageUrl: 'https://example.com/vitamind.jpg', inSlider: false }
-            ]);
-
-            setLoading(false);
-        }, 1000);
-    }, []);
 
     const handleTabChange = (tabId) => {
         setActiveTab(tabId);
@@ -470,12 +497,6 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleAdvertiseToggle = (adId) => {
-        setAdvertisements(advertisements.map(ad =>
-            ad.id === adId ? { ...ad, inSlider: !ad.inSlider } : ad
-        ));
-    };
-
     const handleDownloadReport = (format) => {
         // In a real app, this would generate and download the report
         console.log(`Downloading report in ${format} format`);
@@ -576,7 +597,7 @@ const AdminDashboard = () => {
                                     <div className="bg-white rounded-lg shadow p-4 sm:p-6">
                                         <h3 className="text-gray-500 text-sm uppercase font-medium mb-4">Sales Chart</h3>
                                         <ResponsiveContainer width="100%" height={300}>
-                                            <BarChart data={chartData}>
+                                            <BarChart className='text-teal-600' data={chartData}>
                                                 <CartesianGrid strokeDasharray="3 3" />
                                                 <XAxis dataKey="name" />
                                                 <YAxis tickFormatter={(value) => `$${value}`} />
@@ -835,12 +856,13 @@ const AdminDashboard = () => {
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Medicine</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">In Slider</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
                                                 {advertisements.map(ad => (
-                                                    <tr key={ad.id}>
+                                                    <tr key={ad._id}>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ad.medicine}</td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                             <img
@@ -849,13 +871,27 @@ const AdminDashboard = () => {
                                                                 className="w-10 h-10 sm:w-14 sm:h-14 object-cover rounded"
                                                             />
                                                         </td>
-                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">{ad.description}</td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">
+                                                            {ad.description}
+                                                        </td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                                            {ad.status === "pending" ? (
+                                                                <button
+                                                                    onClick={() => handleStatusUpdate(ad._id)}
+                                                                    className="text-white bg-green-500 hover:bg-green-600 px-3 py-1 rounded"
+                                                                >
+                                                                    Approve
+                                                                </button>
+                                                            ) : (
+                                                                <span className="text-green-600 font-semibold">Approved</span>
+                                                            )}
+                                                        </td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                             <label className="inline-flex items-center cursor-pointer">
                                                                 <input
                                                                     type="checkbox"
                                                                     checked={ad.inSlider}
-                                                                    onChange={() => handleAdvertiseToggle(ad.id)}
+                                                                    onChange={() => handleAdvertiseToggle(ad._id)}
                                                                     className="sr-only peer"
                                                                 />
                                                                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -864,6 +900,7 @@ const AdminDashboard = () => {
                                                     </tr>
                                                 ))}
                                             </tbody>
+
                                         </table>
                                     </div>
                                 </div>

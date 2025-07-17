@@ -12,6 +12,18 @@ import useAuth from '../Hooks/UseAuth';
 import RouteChangeSpinner from '../Loading/RouteChangeSpinner';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    CartesianGrid,
+} from "recharts";
+import moment from "moment";
+import { IoClose } from 'react-icons/io5'; // Close icon
 
 const SellerDashboard = () => {
     const { user } = useAuth()
@@ -25,11 +37,81 @@ const SellerDashboard = () => {
 
     const [medicines, setMedicines] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
+    const [medicine, setMedicine] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [description, setDescription] = useState("");
+    const [advertisements, setAdvertisements] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const advertisementData = {
+            sellerEmail: user.email,
+            medicine,
+            imageUrl,
+            description,
+            status: "pending",
+            inSlider: false,
+        };
+
+        try {
+            const res = await fetch("http://localhost:3000/advertisements", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(advertisementData),
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert("Advertisement submitted successfully!");
+                setMedicine("");
+                setImageUrl("");
+                setDescription("");
+                document.getElementById("advertise_modal").close(); // Close modal
+            } else {
+                alert("Failed to submit: " + data.message);
+            }
+        } catch (error) {
+            console.error("Error submitting ad:", error);
+            alert("Something went wrong!");
+        }
+    };
+
+    useEffect(() => {
+        const fetchAdvertisements = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/advertisements");
+                const data = await res.json();
+
+                // If you only want to show ads submitted by the current seller:
+                const userAds = data.filter(ad => ad.sellerEmail === user.email);
+
+                setAdvertisements(userAds); // Or setAdvertisements(data) for all ads
+            } catch (error) {
+                console.error("Failed to fetch ads:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAdvertisements();
+    }, [user?.email]);
     useEffect(() => {
         fetch('http://localhost:3000/medicines')
             .then(res => res.json())
             .then(data => setCategoryOptions(data))
     }, []);
+
+    const [salesData, setSalesData] = useState({
+        totalRevenue: 0,
+        paidTotal: 0,
+        pendingTotal: 0,
+    });
+    const [lineChartData, setLineChartData] = useState([]);
 
     const [companiesOptions, setCompaniesOptions] = useState([]);
     useEffect(() => {
@@ -60,15 +142,12 @@ const SellerDashboard = () => {
     const [payments, setPayments] = useState([]);
 
     useEffect(() => {
-        if (!user?.email) return; // wait for user to load
+        if (!user?.email) return;
 
         fetch('http://localhost:3000/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // filter orders where either:
-                    // 1. The order email matches user email, OR
-                    // 2. Any item in the order has email matching user email
                     const userPayments = data.orders.filter(
                         order => order.items.some(item => item.email === user.email)
                     );
@@ -77,45 +156,6 @@ const SellerDashboard = () => {
             })
             .catch(err => console.error('Fetch error:', err));
     }, [user?.email]);
-
-    // console.log(payments)
-
-    //   useEffect(() => {
-    //     fetch('http://localhost:3000/orders')
-    //       .then(res => res.json())
-    //       .then(data => {
-    //         if (data.success) {
-    //           setOrders(data.orders);
-    //         }
-    //       })
-    //       .catch(err => console.error('Error fetching orders:', err));
-    //   }, []);
-    // const payments = [
-    //     {
-    //         _id: '1',
-    //         medicines: [{ name: 'Paracetamol' }, { name: 'Vitamin C' }],
-    //         buyer: { email: 'customer@example.com' },
-    //         amountPaid: 1200,
-    //         date: '2023-05-15',
-    //         status: 'paid'
-    //     },
-    //     {
-    //         _id: '2',
-    //         medicines: [{ name: 'Amoxicillin' }],
-    //         buyer: { email: 'customer2@example.com' },
-    //         amountPaid: 800,
-    //         date: '2023-05-10',
-    //         status: 'pending'
-    //     },
-    //     {
-    //         _id: '3',
-    //         medicines: [{ name: 'Vitamin C' }, { name: 'Amoxicillin' }],
-    //         buyer: { email: 'customer3@example.com' },
-    //         amountPaid: 1500,
-    //         date: '2023-05-18',
-    //         status: 'paid'
-    //     }
-    // ];
 
     const fakeAdvertisements = [
         {
@@ -161,6 +201,58 @@ const SellerDashboard = () => {
         if (user?.email) {
             fetchMedicines();
         }
+    }, [user?.email]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const res = await axios.get("http://localhost:3000/orders");
+                const orders = res.data.orders;
+
+                const userOrders = orders.filter(order =>
+                    order.items.some(item => item.email === user.email)
+                );
+
+                let totalRevenue = 0;
+                let paidTotal = 0;
+                let pendingTotal = 0;
+
+                const dateMap = {};
+
+                userOrders.forEach(order => {
+                    totalRevenue += order.amountPaid;
+                    if (order.status === "paid") paidTotal += order.amountPaid;
+                    if (order.status === "pending") pendingTotal += order.amountPaid;
+
+                    const date = moment(order.date).format("YYYY-MM-DD");
+                    if (!dateMap[date]) {
+                        dateMap[date] = { date, paid: 0, pending: 0 };
+                    }
+
+                    if (order.status === "paid") {
+                        dateMap[date].paid += order.amountPaid;
+                    } else if (order.status === "pending") {
+                        dateMap[date].pending += order.amountPaid;
+                    }
+                });
+
+                const chartData = Object.values(dateMap).sort(
+                    (a, b) => new Date(a.date) - new Date(b.date)
+                );
+
+                setSalesData({
+                    totalRevenue,
+                    paidTotal,
+                    pendingTotal,
+                });
+
+                setLineChartData(chartData);
+            } catch (err) {
+                console.error("Failed to fetch orders", err);
+            }
+        };
+
+        fetchOrders();
     }, [user?.email]);
 
     if (!user) {
@@ -337,13 +429,6 @@ const SellerDashboard = () => {
         { id: 'advertisements', text: 'Ask For Advertisement', icon: <Campaign className="mr-3" /> },
     ];
 
-    // Mock data for display purposes
-    const salesData = {
-        totalRevenue: 8500,
-        paidTotal: 6500,
-        pendingTotal: 2000
-    };
-
 
 
     return (
@@ -419,6 +504,32 @@ const SellerDashboard = () => {
                                     <h3 className="text-gray-500 text-sm uppercase font-medium mb-2">Pending Total</h3>
                                     <p className="text-2xl sm:text-3xl font-bold text-yellow-600">৳{salesData.pendingTotal.toLocaleString()}</p>
                                 </div>
+                            </div>
+
+                            {/* Line Chart */}
+                            <div className="bg-white rounded-lg shadow p-4 sm:p-6 w-full max-w-4xl mx-auto">
+                                <h3 className="text-gray-500 text-sm uppercase font-medium mb-4 text-center">
+                                    Revenue Trend
+                                </h3>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <LineChart data={lineChartData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="date" />
+                                        <YAxis />
+                                        <Tooltip
+                                            formatter={value => `৳${value.toLocaleString()}`}
+                                            labelFormatter={label => `Date: ${label}`}
+                                        />
+                                        <Legend />
+                                        <Line type="monotone" dataKey="paid" stroke="#16A34A" name="Paid" />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="pending"
+                                            stroke="#F59E0B"
+                                            name="Pending"
+                                        />
+                                    </LineChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
                     )}
@@ -550,6 +661,7 @@ const SellerDashboard = () => {
                                 <h2 className="text-xl sm:text-2xl font-semibold">Advertisement Requests</h2>
                                 <button
                                     className="flex items-center px-3 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 text-sm sm:text-base"
+                                    onClick={() => document.getElementById('advertise_modal').showModal()}
                                 >
                                     <AddCircleOutline className="mr-1 sm:mr-2" />
                                     Request Advertisement
@@ -567,12 +679,12 @@ const SellerDashboard = () => {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {fakeAdvertisements.map(ad => (
+                                        {advertisements.map(ad => (
                                             <tr key={ad._id}>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ad.medicine}</td>
                                                 <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                     <img
-                                                        src={ad.image}
+                                                        src={ad.imageUrl}
                                                         alt={ad.medicine}
                                                         className="w-10 h-10 sm:w-14 sm:h-14 object-cover rounded"
                                                     />
@@ -952,6 +1064,58 @@ const SellerDashboard = () => {
                                 </form>
                             )}
                         </div>
+                    </dialog>
+
+                    {/* Modal */}
+
+                    {/* Modal */}
+                    <dialog id="advertise_modal" className="modal">
+                        <div className="modal-box relative bg-white">
+                            <form method="dialog" className="absolute right-2 top-2">
+                                <button className="text-gray-500 hover:text-red-500 text-xl">
+                                    <IoClose />
+                                </button>
+                            </form>
+
+                            <h3 className="font-bold text-lg mb-2">Request Advertisement</h3>
+
+                            <form className="space-y-3" onSubmit={handleSubmit}>
+                                <input
+                                    type="text"
+                                    placeholder="Medicine Name"
+                                    className="input input-bordered w-full border"
+                                    value={medicine}
+                                    onChange={(e) => setMedicine(e.target.value)}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Image URL"
+                                    className="input input-bordered w-full border"
+                                    value={imageUrl}
+                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    required
+                                />
+                                <textarea
+                                    placeholder="Description"
+                                    className="textarea textarea-bordered w-full border"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    required
+                                ></textarea>
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary text-teal-600 rounded-xl hover:bg-teal-600 hover:text-white border-2 border-teal-600 w-full"
+                                >
+                                    Submit Advertisement
+                                </button>
+                            </form>
+                        </div>
+
+                        <form method="dialog" className="modal-backdrop">
+                            <button>close</button>
+                        </form>
                     </dialog>
 
 

@@ -320,7 +320,7 @@ const UserDashboard = () => {
                                                                 {order.address}
                                                             </p>
                                                             <p className="text-xs text-gray-500">
-                                                                {order.status === 'paid' ? 'Estimated delivery: 2-3 days' : 'Will be processed after payment'}
+                                                                {order.status === 'paid' ? 'Delivery successful' : 'Your medicine will be delivered into 2-3 days'}
                                                             </p>
                                                         </div>
                                                     </div>
