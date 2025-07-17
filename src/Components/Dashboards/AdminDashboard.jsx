@@ -29,73 +29,23 @@ import {
     ResponsiveContainer,
     Legend,
 } from "recharts";
+import { useRef } from 'react';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+
 
 const AdminDashboard = () => {
-
 
     const [activeTab, setActiveTab] = useState(() => {
         // Try to get the saved tab from localStorage
         const savedTab = localStorage.getItem('adminActiveTab');
         return savedTab || 'dashboard';
     });
-    const [salesData, setSalesData] = useState({
-        totalRevenue: 0,
-        paidTotal: 0,
-        pendingTotal: 0,
-    });
-    const [chartData, setChartData] = useState([]);
-
-
-    const [users, setUsers] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [payments, setPayments] = useState([]);
-    const [advertisements, setAdvertisements] = useState([]);
-    const [categoryForm, setCategoryForm] = useState({
-        categoryName: '',
-        categoryId: '',
-        categoryDescription: '',
-        categoryImage: '',
-        imageFile: null
-    });
-    const [editCategoryId, setEditCategoryId] = useState(null);
     const [loading, setLoading] = useState(false);
+    const tableRef = useRef(null);
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-    const handleAdvertiseToggle = async (id) => {
-        const adToUpdate = advertisements.find((ad) => ad._id === id);
-        const updatedSliderValue = !adToUpdate.inSlider;
 
-        const res = await fetch(`http://localhost:3000/advertisements/${id}/slider`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ inSlider: updatedSliderValue }),
-        });
-
-        if (res.ok) {
-            const updatedAds = advertisements.map((ad) =>
-                ad._id === id ? { ...ad, inSlider: updatedSliderValue } : ad
-            );
-            setAdvertisements(updatedAds);
-        } else {
-            console.error("Slider update failed");
-        }
-    };
-    const handleStatusUpdate = async (id) => {
-        const res = await fetch(`http://localhost:3000/advertisements/${id}/status`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: "approved" }),
-        });
-
-        if (res.ok) {
-            const updatedAds = advertisements.map((ad) =>
-                ad._id === id ? { ...ad, status: "approved" } : ad
-            );
-            setAdvertisements(updatedAds);
-        } else {
-            console.error("Status update failed");
-        }
-    };
     useEffect(() => {
         const handleResize = () => {
             setIsSmallScreen(window.innerWidth < 768); // md breakpoint
@@ -106,79 +56,36 @@ const AdminDashboard = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    useEffect(() => {
-        const fetchAds = async () => {
-            try {
-                const res = await fetch("http://localhost:3000/advertisements");
-                const data = await res.json();
-                setAdvertisements(data);
-            } catch (err) {
-                console.error("Failed to fetch ads:", err);
-            }
-        };
-
-        fetchAds();
-    }, []);
-
-    useEffect(() => {
-        fetch('http://localhost:3000/users')
-            .then(res => res.json())
-            .then(data => setUsers(data))
-    }, [])
-
-    useEffect(() => {
-        fetch('http://localhost:3000/medicines')
-            .then(res => res.json())
-            .then(data => setCategories(data))
-    }, [])
-
-    useEffect(() => {
-        const fetchPayments = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('http://localhost:3000/orders');
-                if (!response.ok) throw new Error('Failed to fetch payments');
-                const data = await response.json();
-                setPayments(data.orders || []);
-            } catch (error) {
-                console.error('Error fetching payments:', error);
-                Swal.fire('Error', 'Failed to load payment data', 'error');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPayments();
-    }, []);
+    const handleTabChange = (tabId) => {
+        setActiveTab(tabId);
+        localStorage.setItem('adminActiveTab', tabId);
+        if (isSmallScreen) setMobileMenuOpen(false);
+    };
 
     const [filteredSales, setFilteredSales] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
 
-    useEffect(() => {
-        fetch('http://localhost:3000/orders')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    const allOrders = data.orders;
-
-                    // Flatten order items into individual sale records
-                    const flattenedSales = allOrders.flatMap(order => {
-                        return order.items.map(item => ({
-                            id: `${order._id}-${item._id}`, // unique key
-                            medicine: item.name,
-                            seller: item.email,
-                            buyer: order.email,
-                            price: item.selectedPrice,
-                            date: new Date(order.date).toLocaleDateString(),
-                        }));
-                    });
+    const menuItems = [
+        { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
+        { id: 'users', text: 'Manage Users', icon: <People className="mr-3" /> },
+        { id: 'categories', text: 'Manage Categories', icon: <Category className="mr-3" /> },
+        { id: 'payments', text: 'Payment Management', icon: <Payment className="mr-3" /> },
+        { id: 'sales', text: 'Sales Report', icon: <Assessment className="mr-3" /> },
+        { id: 'advertisements', text: 'Manage Banner Ads', icon: <Campaign className="mr-3" /> },
+    ];
 
 
-                    setFilteredSales(flattenedSales); // default view without filters
-                }
-            })
-            .catch(err => console.error('Fetch error:', err));
-    }, []);
+
+
+
+    // {DashBoard Related Functions}
+
+    const [salesData, setSalesData] = useState({
+        totalRevenue: 0,
+        paidTotal: 0,
+        pendingTotal: 0,
+    });
+    const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -217,11 +124,19 @@ const AdminDashboard = () => {
         fetchOrders();
     }, []);;
 
-    const handleTabChange = (tabId) => {
-        setActiveTab(tabId);
-        localStorage.setItem('adminActiveTab', tabId);
-        if (isSmallScreen) setMobileMenuOpen(false);
-    };
+
+
+
+
+
+    // {User Related Functions}
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/users')
+            .then(res => res.json())
+            .then(data => setUsers(data))
+    }, []);
 
     const handleRoleChange = async (userId, newRole) => {
         try {
@@ -235,10 +150,11 @@ const AdminDashboard = () => {
                 text: `Are you sure you want to change this user's role to ${newRole}?`,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Yes, change it!'
             });
+
 
             if (!result.isConfirmed) return;
 
@@ -263,6 +179,7 @@ const AdminDashboard = () => {
 
             // Show success message
             await Swal.fire(
+
                 'Updated!',
                 `User role has been changed to ${newRole}`,
                 'success'
@@ -278,42 +195,27 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleOpenCategoryModal = (category = null) => {
-        if (category) {
-            setCategoryForm({
-                categoryId: category.id || category._id, // Handle both cases
-                categoryName: category.name,
-                categoryDescription: category.description || '',
-                categoryImage: category.image,
-                imageFile: null
-            });
-            setEditCategoryId(category.id || category._id);
-        } else {
-            setCategoryForm({
-                categoryId: '',
-                categoryName: '',
-                categoryDescription: '',
-                categoryImage: '',
-                imageFile: null
-            });
-            setEditCategoryId(null);
-        }
-        document.getElementById('category_modal').showModal();
-    };
 
 
-    const handleCategoryFormChange = (e) => {
-        const { name, value } = e.target;
-        setCategoryForm(prev => ({ ...prev, [name]: value }));
-    };
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setCategoryForm(prev => ({ ...prev, imageFile: file, categoryImage: imageUrl }));
-        }
-    };
+    // {Category Related Functions}
+    const [categories, setCategories] = useState([]);
+
+    const [categoryForm, setCategoryForm] = useState({
+        categoryName: '',
+        categoryId: '',
+        categoryDescription: '',
+        categoryImage: '',
+        imageFile: null
+    });
+
+    const [editCategoryId, setEditCategoryId] = useState(null);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/medicines')
+            .then(res => res.json())
+            .then(data => setCategories(data))
+    }, []);
 
     const handleSaveCategory = async () => {
         try {
@@ -404,8 +306,36 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleOpenCategoryModal = (category = null) => {
+        if (category) {
+            setCategoryForm({
+                categoryId: category.id || category._id, // Handle both cases
+                categoryName: category.name,
+                categoryDescription: category.description || '',
+                categoryImage: category.image,
+                imageFile: null
+            });
+            setEditCategoryId(category.id || category._id);
+        } else {
+            setCategoryForm({
+                categoryId: '',
+                categoryName: '',
+                categoryDescription: '',
+                categoryImage: '',
+                imageFile: null
+            });
+            setEditCategoryId(null);
+        }
+        document.getElementById('category_modal').showModal();
+    };
+
+    const handleCategoryFormChange = (e) => {
+        const { name, value } = e.target;
+        setCategoryForm(prev => ({ ...prev, [name]: value }));
+    };
+
     const handleDeleteCategory = async (categoryId) => {
-        // Show confirmation dialog
+
         const result = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -445,6 +375,57 @@ const AdminDashboard = () => {
             }
         }
     };
+
+
+
+
+    // {Payments Related Functions}
+    const [payments, setPayments] = useState([]);
+
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('http://localhost:3000/orders');
+                if (!response.ok) throw new Error('Failed to fetch payments');
+                const data = await response.json();
+                setPayments(data.orders || []);
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+                Swal.fire('Error', 'Failed to load payment data', 'error');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPayments();
+    }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/orders')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const allOrders = data.orders;
+
+                    // Flatten order items into individual sale records
+                    const flattenedSales = allOrders.flatMap(order => {
+                        return order.items.map(item => ({
+                            id: `${order._id}-${item._id}`, // unique key
+                            medicine: item.name,
+                            seller: item.email,
+                            buyer: order.email,
+                            price: item.selectedPrice,
+                            date: new Date(order.date).toLocaleDateString(),
+                        }));
+                    });
+
+
+                    setFilteredSales(flattenedSales); // default view without filters
+                }
+            })
+            .catch(err => console.error('Fetch error:', err));
+    }, []);
 
     const handlePaymentStatusChange = async (paymentId) => {
         try {
@@ -497,21 +478,80 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleDownloadReport = (format) => {
-        // In a real app, this would generate and download the report
-        console.log(`Downloading report in ${format} format`);
+
+
+
+    // {Advertisement Related Functions }
+    const [advertisements, setAdvertisements] = useState([]);
+
+    useEffect(() => {
+        const fetchAds = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/advertisements");
+                const data = await res.json();
+                setAdvertisements(data);
+            } catch (err) {
+                console.error("Failed to fetch ads:", err);
+            }
+        };
+
+        fetchAds();
+    }, []);
+
+    const handleAdvertiseToggle = async (id) => {
+        const adToUpdate = advertisements.find((ad) => ad._id === id);
+        const updatedSliderValue = !adToUpdate.inSlider;
+
+        const res = await fetch(`http://localhost:3000/advertisements/${id}/slider`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ inSlider: updatedSliderValue }),
+        });
+
+        if (res.ok) {
+            const updatedAds = advertisements.map((ad) =>
+                ad._id === id ? { ...ad, inSlider: updatedSliderValue } : ad
+            );
+            setAdvertisements(updatedAds);
+        } else {
+            console.error("Slider update failed");
+        }
+    };
+
+    const handleStatusUpdate = async (id) => {
+        const res = await fetch(`http://localhost:3000/advertisements/${id}/status`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "approved" }),
+        });
+
+        if (res.ok) {
+            const updatedAds = advertisements.map((ad) =>
+                ad._id === id ? { ...ad, status: "approved" } : ad
+            );
+            setAdvertisements(updatedAds);
+        } else {
+            console.error("Status update failed");
+        }
+    };
+
+    const handleDelete = async (id) => {
+        const confirm = window.confirm("Are you sure you want to delete this advertisement?");
+        if (!confirm) return;
+
+        const res = await fetch(`http://localhost:3000/advertisements/${id}`, {
+            method: "DELETE",
+        });
+
+        if (res.ok) {
+            const filteredAds = advertisements.filter((ad) => ad._id !== id);
+            setAdvertisements(filteredAds);
+        } else {
+            console.error("Failed to delete advertisement");
+        }
     };
 
 
-
-    const menuItems = [
-        { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
-        { id: 'users', text: 'Manage Users', icon: <People className="mr-3" /> },
-        { id: 'categories', text: 'Manage Categories', icon: <Category className="mr-3" /> },
-        { id: 'payments', text: 'Payment Management', icon: <Payment className="mr-3" /> },
-        { id: 'sales', text: 'Sales Report', icon: <Assessment className="mr-3" /> },
-        { id: 'advertisements', text: 'Manage Banner Ads', icon: <Campaign className="mr-3" /> },
-    ];
 
     return (
         <div className="flex h-screen bg-gray-50">
@@ -581,15 +621,15 @@ const AdminDashboard = () => {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                                         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
                                             <h3 className="text-gray-500 text-sm uppercase font-medium mb-2">Total Revenue</h3>
-                                            <p className="text-2xl sm:text-3xl font-bold">${salesData.totalRevenue.toLocaleString()}</p>
+                                            <p className="text-2xl sm:text-3xl font-bold">৳{salesData.totalRevenue.toLocaleString()}</p>
                                         </div>
                                         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
                                             <h3 className="text-gray-500 text-sm uppercase font-medium mb-2">Paid Total</h3>
-                                            <p className="text-2xl sm:text-3xl font-bold text-green-600">${salesData.paidTotal.toLocaleString()}</p>
+                                            <p className="text-2xl sm:text-3xl font-bold text-green-600">৳{salesData.paidTotal.toLocaleString()}</p>
                                         </div>
                                         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
                                             <h3 className="text-gray-500 text-sm uppercase font-medium mb-2">Pending Total</h3>
-                                            <p className="text-2xl sm:text-3xl font-bold text-yellow-600">${salesData.pendingTotal.toLocaleString()}</p>
+                                            <p className="text-2xl sm:text-3xl font-bold text-yellow-600">৳{salesData.pendingTotal.toLocaleString()}</p>
                                         </div>
                                     </div>
 
@@ -609,7 +649,6 @@ const AdminDashboard = () => {
                                     </div>
                                 </div>
                             )}
-
 
                             {activeTab === 'users' && (
                                 <div>
@@ -802,25 +841,21 @@ const AdminDashboard = () => {
                                                 </div>
                                             </LocalizationProvider>
                                             <div className="flex flex-wrap gap-2">
-                                                <button
-                                                    onClick={() => handleDownloadReport('csv')}
-                                                    className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-100 text-sm"
+                                                <DownloadTableExcel
+                                                    filename="sales-report"
+                                                    sheet="sales"
+                                                    currentTableRef={tableRef.current}
                                                 >
-                                                    <FileDownload className="mr-1" fontSize="small" />
-                                                    CSV
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDownloadReport('pdf')}
-                                                    className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-100 text-sm"
-                                                >
-                                                    <FileDownload className="mr-1" fontSize="small" />
-                                                    PDF
-                                                </button>
+                                                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-100 text-sm">
+                                                        <FileDownload className="mr-1" fontSize="small" />
+                                                        Excel
+                                                    </button>
+                                                </DownloadTableExcel>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="bg-white rounded-lg shadow overflow-x-auto">
-                                        <table className="min-w-full divide-y divide-gray-200">
+                                        <table ref={tableRef} className="min-w-full divide-y divide-gray-200">
                                             <thead className="bg-gray-50">
                                                 <tr>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Medicine</th>
@@ -836,7 +871,7 @@ const AdminDashboard = () => {
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sale.medicine}</td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sale.seller}</td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sale.buyer}</td>
-                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sale.price}</td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">৳{sale.price}</td>
                                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{sale.date}</td>
                                                     </tr>
                                                 ))}
@@ -858,6 +893,8 @@ const AdminDashboard = () => {
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">In Slider</th>
+                                                    <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
@@ -892,11 +929,21 @@ const AdminDashboard = () => {
                                                                     type="checkbox"
                                                                     checked={ad.inSlider}
                                                                     onChange={() => handleAdvertiseToggle(ad._id)}
+                                                                    disabled={ad.status !== "approved"} // ❗ Disable if not approved
                                                                     className="sr-only peer"
                                                                 />
                                                                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                                             </label>
                                                         </td>
+                                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                                                            <button
+                                                                onClick={() => handleDelete(ad._id)}
+                                                                className="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </td>
+
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -908,7 +955,7 @@ const AdminDashboard = () => {
                         </>
                     )}
 
-                    {/* Add this modal component near the end of your return statement, before the closing </div> */}
+                    {/* {Category Modal} */}
                     <dialog id="category_modal" className="modal">
                         <div className="modal-box bg-white">
                             <form method="dialog">
@@ -978,20 +1025,6 @@ const AdminDashboard = () => {
                                     </div>
                                 )}
 
-                                {/* Image Upload */}
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text">Upload Image</span>
-                                    </label>
-                                    <input
-                                        type="file"
-                                        className="file-input file-input-bordered w-full"
-                                        accept="image/*"
-                                        onChange={handleImageUpload}
-                                    />
-                                </div>
-
-                                <div className="text-center text-gray-500 text-sm">OR</div>
 
                                 {/* Image URL Field */}
                                 <div className="form-control">

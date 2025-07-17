@@ -3,7 +3,6 @@ import {
     Dashboard,
     ShoppingCart,
     Payment,
-    History,
     Menu,
     Close
 } from '@mui/icons-material';
@@ -22,7 +21,6 @@ const UserDashboard = () => {
     });
     const [paymentHistory, setPaymentHistory] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
-    const [loading, setLoading] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -136,12 +134,6 @@ const UserDashboard = () => {
                     <h1 className="text-2xl sm:text-3xl font-bold ml-15 mt-2 md:ml-0 md:mt-0 mb-4 sm:mb-6">
                         {menuItems.find(item => item.id === activeTab)?.text || 'User Dashboard'}
                     </h1>
-
-                    {loading ? (
-                        <div className="flex justify-center items-center min-h-[300px]">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                        </div>
-                    ) : (
                         <>
                             {activeTab === 'dashboard' && (
                                 <div>
@@ -347,7 +339,6 @@ const UserDashboard = () => {
                                 </div>
                             )}
                         </>
-                    )}
                 </div>
             </div>
         </div>

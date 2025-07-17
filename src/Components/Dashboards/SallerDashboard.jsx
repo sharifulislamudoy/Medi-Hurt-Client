@@ -23,7 +23,7 @@ import {
     CartesianGrid,
 } from "recharts";
 import moment from "moment";
-import { IoClose } from 'react-icons/io5'; // Close icon
+import { IoClose } from 'react-icons/io5';
 
 const SellerDashboard = () => {
     const { user } = useAuth()
@@ -33,147 +33,21 @@ const SellerDashboard = () => {
         return savedTab || 'dashboard';
     });
 
-    const [selectedMedicine, setSelectedMedicine] = useState(null);
-
-    const [medicines, setMedicines] = useState([]);
-    const [categoryOptions, setCategoryOptions] = useState([]);
-    const [medicine, setMedicine] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [description, setDescription] = useState("");
-    const [advertisements, setAdvertisements] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const advertisementData = {
-            sellerEmail: user.email,
-            medicine,
-            imageUrl,
-            description,
-            status: "pending",
-            inSlider: false,
-        };
-
-        try {
-            const res = await fetch("http://localhost:3000/advertisements", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(advertisementData),
-            });
-
-            const data = await res.json();
-            if (res.ok) {
-                alert("Advertisement submitted successfully!");
-                setMedicine("");
-                setImageUrl("");
-                setDescription("");
-                document.getElementById("advertise_modal").close(); // Close modal
-            } else {
-                alert("Failed to submit: " + data.message);
-            }
-        } catch (error) {
-            console.error("Error submitting ad:", error);
-            alert("Something went wrong!");
-        }
-    };
-
-    useEffect(() => {
-        const fetchAdvertisements = async () => {
-            try {
-                const res = await fetch("http://localhost:3000/advertisements");
-                const data = await res.json();
-
-                // If you only want to show ads submitted by the current seller:
-                const userAds = data.filter(ad => ad.sellerEmail === user.email);
-
-                setAdvertisements(userAds); // Or setAdvertisements(data) for all ads
-            } catch (error) {
-                console.error("Failed to fetch ads:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchAdvertisements();
-    }, [user?.email]);
-    useEffect(() => {
-        fetch('http://localhost:3000/medicines')
-            .then(res => res.json())
-            .then(data => setCategoryOptions(data))
-    }, []);
-
-    const [salesData, setSalesData] = useState({
-        totalRevenue: 0,
-        paidTotal: 0,
-        pendingTotal: 0,
-    });
-    const [lineChartData, setLineChartData] = useState([]);
-
-    const [companiesOptions, setCompaniesOptions] = useState([]);
-    useEffect(() => {
-        fetch('http://localhost:3000/medicines-data')
-            .then(res => res.json())
-            .then(data => setCompaniesOptions(data))
-    }, [])
-
-    const [medicineForm, setMedicineForm] = useState({
-        name: '',
-        genericName: '',
-        category: '',
-        brand: '',
-        stock: '',
-        formulations: {
-            tablet: '',
-            syrup: '',
-            capsule: '',
-            injection: '',
-        },
-        image: '',
-        description: '',
-    });
-
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    const [payments, setPayments] = useState([]);
+    const handleTabChange = (tabId) => {
+        setActiveTab(tabId);
+        // Save the active tab to localStorage
+        localStorage.setItem('sellerDashboardActiveTab', tabId);
+        if (isSmallScreen) setMobileMenuOpen(false);
+    };
 
-    useEffect(() => {
-        if (!user?.email) return;
-
-        fetch('http://localhost:3000/orders')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    const userPayments = data.orders.filter(
-                        order => order.items.some(item => item.email === user.email)
-                    );
-                    setPayments(userPayments);
-                }
-            })
-            .catch(err => console.error('Fetch error:', err));
-    }, [user?.email]);
-
-    const fakeAdvertisements = [
-        {
-            _id: '1',
-            medicine: 'Paracetamol',
-            image: 'https://via.placeholder.com/150',
-            description: 'Effective pain reliever and fever reducer',
-            status: 'approved',
-            inSlider: true
-        },
-        {
-            _id: '2',
-            medicine: 'Amoxicillin',
-            image: 'https://via.placeholder.com/150',
-            description: 'Antibiotic for bacterial infections',
-            status: 'pending',
-            inSlider: false
-        }
+    const menuItems = [
+        { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
+        { id: 'medicines', text: 'Manage Medicines', icon: <LocalPharmacy className="mr-3" /> },
+        { id: 'payments', text: 'Payment History', icon: <Payment className="mr-3" /> },
+        { id: 'advertisements', text: 'Ask For Advertisement', icon: <Campaign className="mr-3" /> },
     ];
 
     useEffect(() => {
@@ -187,21 +61,16 @@ const SellerDashboard = () => {
     }, []);
 
 
-    useEffect(() => {
-        const fetchMedicines = async () => {
-            try {
-                const res = await axios.get('http://localhost:3000/medicines-data');
-                const filtered = res.data.filter(med => med.email === user.email);
-                setMedicines(filtered);
-            } catch (error) {
-                console.error("Error fetching medicines:", error);
-            }
-        };
 
-        if (user?.email) {
-            fetchMedicines();
-        }
-    }, [user?.email]);
+
+    // {Sales Data Related Functions}
+    const [salesData, setSalesData] = useState({
+        totalRevenue: 0,
+        paidTotal: 0,
+        pendingTotal: 0,
+    });
+
+    const [lineChartData, setLineChartData] = useState([]);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -255,42 +124,30 @@ const SellerDashboard = () => {
         fetchOrders();
     }, [user?.email]);
 
-    if (!user) {
-        return <RouteChangeSpinner />;
-    }
-
-    const handleTabChange = (tabId) => {
-        setActiveTab(tabId);
-        // Save the active tab to localStorage
-        localStorage.setItem('sellerDashboardActiveTab', tabId);
-        if (isSmallScreen) setMobileMenuOpen(false);
-    };
-
-    const handleOpenMedicineModal = () => {
-        document.getElementById('medicine_modal').showModal();
-    };
-
-    const handleMedicineFormChange = (e) => {
-        const { name, value } = e.target;
-
-        if (name.startsWith('formulations.')) {
-            const key = name.split('.')[1];
-            setMedicineForm((prev) => ({
-                ...prev,
-                formulations: {
-                    ...prev.formulations,
-                    [key]: value,
-                },
-            }));
-        } else {
-            setMedicineForm((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
-    };
 
 
+
+
+    // {Add Medicines Related Functions}
+    const [medicines, setMedicines] = useState([]);
+
+    const [selectedMedicine, setSelectedMedicine] = useState(null);
+
+    const [medicineForm, setMedicineForm] = useState({
+        name: '',
+        genericName: '',
+        category: '',
+        brand: '',
+        stock: '',
+        formulations: {
+            tablet: '',
+            syrup: '',
+            capsule: '',
+            injection: '',
+        },
+        image: '',
+        description: '',
+    });
 
     const handleSaveMedicine = async () => {
         const newMedicine = {
@@ -353,7 +210,6 @@ const SellerDashboard = () => {
                 description: '',
             });
 
-            // ✅ Push new medicine to state
             setMedicines(prev => [...prev, { ...newMedicine, _id: data.insertedId }]);
 
         } catch (error) {
@@ -366,7 +222,6 @@ const SellerDashboard = () => {
             });
         }
     };
-
 
     const handleDelete = async (_id) => {
         const confirmed = await Swal.fire({
@@ -418,18 +273,168 @@ const SellerDashboard = () => {
         }
     };
 
+    const handleOpenMedicineModal = () => {
+        document.getElementById('medicine_modal').showModal();
+    };
+
+    const handleMedicineFormChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name.startsWith('formulations.')) {
+            const key = name.split('.')[1];
+            setMedicineForm((prev) => ({
+                ...prev,
+                formulations: {
+                    ...prev.formulations,
+                    [key]: value,
+                },
+            }));
+        } else {
+            setMedicineForm((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        fetch('http://localhost:3000/medicines')
+            .then(res => res.json())
+            .then(data => setCategoryOptions(data))
+    }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/medicines-data')
+            .then(res => res.json())
+            .then(data => setCompaniesOptions(data))
+    }, [])
+
+    useEffect(() => {
+        const fetchMedicines = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/medicines-data');
+                const filtered = res.data.filter(med => med.email === user.email);
+                setMedicines(filtered);
+            } catch (error) {
+                console.error("Error fetching medicines:", error);
+            }
+        };
+
+        if (user?.email) {
+            fetchMedicines();
+        }
+    }, [user?.email]);
 
 
 
 
-    const menuItems = [
-        { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
-        { id: 'medicines', text: 'Manage Medicines', icon: <LocalPharmacy className="mr-3" /> },
-        { id: 'payments', text: 'Payment History', icon: <Payment className="mr-3" /> },
-        { id: 'advertisements', text: 'Ask For Advertisement', icon: <Campaign className="mr-3" /> },
-    ];
+
+    // {Payment Related Function}
+
+    const [payments, setPayments] = useState([]);
+
+    useEffect(() => {
+        if (!user?.email) return;
+
+        fetch('http://localhost:3000/orders')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const userPayments = data.orders.filter(
+                        order => order.items.some(item => item.email === user.email)
+                    );
+                    setPayments(userPayments);
+                }
+            })
+            .catch(err => console.error('Fetch error:', err));
+    }, [user?.email]);
 
 
+
+    const [companiesOptions, setCompaniesOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [medicine, setMedicine] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [description, setDescription] = useState("");
+    const [advertisements, setAdvertisements] = useState([]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const advertisementData = {
+            sellerEmail: user.email,
+            medicine,
+            imageUrl,
+            description,
+            status: "pending",
+            inSlider: false,
+        };
+
+        try {
+            const res = await fetch("http://localhost:3000/advertisements", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(advertisementData),
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Advertisement submitted successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#14b8a6",
+                });
+
+                setMedicine("");
+                setImageUrl("");
+                setDescription("");
+                document.getElementById("advertise_modal").close();
+            } else {
+                Swal.fire({
+                    title: "Failed!",
+                    text: data.message || "Failed to submit advertisement.",
+                    icon: "error",
+                    confirmButtonColor: "#ef4444", //
+                });
+            }
+        } catch (error) {
+            console.error("Error submitting ad:", error);
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong while submitting.",
+                icon: "error",
+                confirmButtonColor: "#ef4444", // 
+            });
+        }
+    };
+
+
+    useEffect(() => {
+        const fetchAdvertisements = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/advertisements");
+                const data = await res.json();
+
+                // If you only want to show ads submitted by the current seller:
+                const userAds = data.filter(ad => ad.sellerEmail === user.email);
+
+                setAdvertisements(userAds); // Or setAdvertisements(data) for all ads
+            } catch (error) {
+                console.error("Failed to fetch ads:", error);
+            }
+        };
+
+        fetchAdvertisements();
+    }, [user?.email]);
+
+
+
+    if (!user) {
+        return <RouteChangeSpinner />;
+    }
 
     return (
         <div className="flex h-screen bg-gray-50">
@@ -948,6 +953,7 @@ const SellerDashboard = () => {
                         </div>
                     </dialog>
 
+                    {/* Medicine Edit Modal */}
                     <dialog id="edit_modal" className="modal">
                         <div className="modal-box w-full max-w-md bg-white">
                             <h3 className="font-bold text-lg mb-4">Edit Medicine</h3>
@@ -1066,9 +1072,8 @@ const SellerDashboard = () => {
                         </div>
                     </dialog>
 
-                    {/* Modal */}
 
-                    {/* Modal */}
+                    {/* Advertisement Modal */}
                     <dialog id="advertise_modal" className="modal">
                         <div className="modal-box relative bg-white">
                             <form method="dialog" className="absolute right-2 top-2">
