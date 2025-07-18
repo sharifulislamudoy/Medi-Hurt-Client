@@ -3,11 +3,14 @@ import { FaEye, FaSort, FaSortUp, FaSortDown, FaShoppingCart } from "react-icons
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { useCart } from "../Provider/CartProvider";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ReTitle } from "re-title";
 import useScrollToTop from "../Components/Hooks/useScrollToTop";
+import useAuth from "../Components/Hooks/UseAuth";
 
 const ShopPage = () => {
+    const navigate = useNavigate()
+    const { user } = useAuth();
     useScrollToTop()
     const [medicines, setMedicines] = useState([]);
     const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -139,6 +142,26 @@ const ShopPage = () => {
     };
 
     const handleSelectFormulation = (type, price) => {
+        // Check if user is logged in
+        if (!user) {
+            document.getElementById('medicine_modal').close();
+            Swal.fire({
+                icon: "error",
+                title: "Login Required",
+                text: "You need to log in to add items to your cart.",
+                showConfirmButton: true,
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    navigate('/auth/login');
+                }
+            });
+            return;
+        }
+
         const quantity = selectedQuantity[type] || 1;
         const totalPrice = price * quantity;
 

@@ -31,6 +31,7 @@ import {
 } from "recharts";
 import { useRef } from 'react';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { ReTitle } from 're-title';
 
 
 const AdminDashboard = () => {
@@ -577,6 +578,7 @@ const AdminDashboard = () => {
 
     return (
         <div className="flex h-screen bg-gray-50">
+            <ReTitle title='Medi Hurt | Admin'></ReTitle>
             {/* Mobile menu button */}
             {isSmallScreen && (
                 <button

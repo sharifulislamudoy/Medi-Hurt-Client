@@ -12,6 +12,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Swal from 'sweetalert2';
 import useAuth from '../Hooks/UseAuth';
 import RouteChangeSpinner from '../Loading/RouteChangeSpinner';
+import { ReTitle } from 're-title';
 
 const UserDashboard = () => {
     const { user } = useAuth();
@@ -80,6 +81,7 @@ const UserDashboard = () => {
 
     return (
         <div className="flex h-screen bg-gray-50">
+            <ReTitle title='Medi Hurt | User'></ReTitle>
             {/* Mobile menu button */}
             {isSmallScreen && (
                 <button

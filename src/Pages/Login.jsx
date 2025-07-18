@@ -4,10 +4,11 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { ReTitle } from 're-title';
 
 const Login = () => {
+    const navigate = useNavigate();
     const { loginWithGoogle, loginWithEmail } = useAuth();
     const {
         register,
@@ -20,18 +21,27 @@ const Login = () => {
 
         try {
             await loginWithEmail(email, password);
-            
-            // Show success alert
+
+            // 🔍 Fetch the user by email to get their role
+            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const userData = await res.json();
+
             Swal.fire({
                 title: 'Welcome Back!',
                 text: 'You have successfully logged in.',
                 icon: 'success',
                 confirmButtonColor: '#1db184',
                 confirmButtonText: 'Continue'
+            }).then(() => {
+                // 🔀 Navigate based on role
+                if (userData.role === 'admin') {
+                    navigate('/admin/dashboard');
+                } else if (userData.role === 'seller') {
+                    navigate('/seller/dashboard');
+                } else {
+                    navigate('/shop');
+                }
             });
-
-            // Optional: Redirect to dashboard
-            // navigate('/dashboard');
 
         } catch (error) {
             console.error("Login error:", error.message);
@@ -44,16 +54,30 @@ const Login = () => {
         }
     };
 
+
     const handleGoogleLogin = async () => {
         try {
             const result = await loginWithGoogle();
-            
+            const email = result.user.email;
+
+            // 🔍 Fetch user data after Google login
+            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const userData = await res.json();
+
             Swal.fire({
                 title: 'Success!',
                 text: `Welcome back, ${result.user.displayName || 'User'}!`,
                 icon: 'success',
                 confirmButtonColor: '#1db184',
                 confirmButtonText: 'Continue'
+            }).then(() => {
+                if (userData.role === 'admin') {
+                    navigate('/admin/dashboard');
+                } else if (userData.role === 'seller') {
+                    navigate('/seller/dashboard');
+                } else {
+                    navigate('/shop');
+                }
             });
 
         } catch (err) {
@@ -67,9 +91,10 @@ const Login = () => {
         }
     };
 
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-teal-600">
-            <ReTitle title='Medi Hurt | Login'/>
+            <ReTitle title='Medi Hurt | Login' />
             <div className="w-full max-w-md p-8">
                 <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Welcome Back</h2>
 
@@ -161,7 +186,7 @@ const Login = () => {
                         className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 py-2 rounded-md hover:bg-blue-50 transition"
                     >
                         <FcGoogle className="text-lg" />
-                        Sign In with Google
+                        Login with Google
                     </button>
                 </div>
             </div>

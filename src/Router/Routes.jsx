@@ -20,6 +20,8 @@ import About from "../Pages/About";
 import Contact from "../Pages/Contact";
 import CoverageArea from "../Pages/CoverageArea";
 import FAQ from "../Pages/FAQ";
+import ProtectedRoute from "../Provider/ProtectedRoutes";
+import Unauthorized from "../Pages/Unauthorized";
 
 export const router = createBrowserRouter([
   {
@@ -46,11 +48,15 @@ export const router = createBrowserRouter([
         },
         {
           path: '/checkout',
-          Component: Checkout,
+          element: <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
         },
         {
           path: '/invoice',
-          Component: Invoice
+          element: <ProtectedRoute>
+            <Invoice />
+          </ProtectedRoute>
         },
         {
           path: '/about',
@@ -90,14 +96,24 @@ export const router = createBrowserRouter([
   },
   {
     path: '/admin/dashboard',
-    Component: AdminDashboard
+    element: <ProtectedRoute allowedRoles={['admin']}>
+      <AdminDashboard />
+    </ProtectedRoute>
   },
   {
     path :'/seller/dashboard',
-    Component: SellerDashboard,
+    element: <ProtectedRoute allowedRoles={['seller']}>
+      <SellerDashboard />
+    </ProtectedRoute>
   },
   {
     path: '/user/dashboard',
-    Component: UserDashboard,
+    element: <ProtectedRoute allowedRoles={['user']}>
+      <UserDashboard />
+    </ProtectedRoute>
   },
+  {
+    path: '/unauthorized',
+    Component: Unauthorized
+  }
 ]);

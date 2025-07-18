@@ -6,9 +6,11 @@ import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { ReTitle } from 're-title';
 import { updateProfile } from 'firebase/auth';
+import { useNavigate } from 'react-router';
 
 const Signup = () => {
-    const { loginWithGoogle, registerWithEmail, user } = useAuth();
+    const navigate = useNavigate();
+    const { loginWithGoogle, registerWithEmail } = useAuth();
     const {
         register,
         handleSubmit,
@@ -21,8 +23,6 @@ const Signup = () => {
         try {
             const userCredential = await registerWithEmail(email, password);
             const user = userCredential.user;
-
-            // ✅ Update Firebase user's profile
             await updateProfile(user, {
                 displayName: username,
                 photoURL: photoURL
@@ -48,14 +48,25 @@ const Signup = () => {
             const result = await res.json();
 
             if (result.insertedId) {
+                // Fetch the newly created user to get their role
+                const resUser = await fetch(`http://localhost:3000/users/${email}`);
+                const userData = await resUser.json();
+
                 Swal.fire({
                     title: 'Success!',
                     text: `Welcome, ${username}! Your account has been created.`,
                     icon: 'success',
                     confirmButtonColor: '#1db184',
                     confirmButtonText: 'Continue'
+                }).then(() => {
+                    if (userData.role === 'seller') {
+                        navigate('/seller/dashboard');
+                    } else {
+                        navigate('/shop');
+                    }
                 });
             }
+
 
         } catch (error) {
             console.error("Signup error:", error.message);
@@ -93,14 +104,25 @@ const Signup = () => {
             const resultData = await res.json();
 
             if (res.ok && resultData.insertedId) {
+                // Fetch user role after signup
+                const resUser = await fetch(`http://localhost:3000/users/${user.email}`);
+                const userData = await resUser.json();
+
                 Swal.fire({
                     title: 'Success!',
                     text: `Welcome, ${user.displayName || 'User'}! Your account has been created.`,
                     icon: 'success',
                     confirmButtonColor: '#1db184',
                     confirmButtonText: 'Continue'
+                }).then(() => {
+                    if (userData.role === 'seller') {
+                        navigate('/seller/dashboard');
+                    } else {
+                        navigate('/shop');
+                    }
                 });
-            } else {
+            }
+            else {
                 Swal.fire({
                     title: 'Signup Failed',
                     text: resultData.message || 'This email is already registered. Please use a different one.',

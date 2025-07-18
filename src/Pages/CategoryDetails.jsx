@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import { FaSort, FaSortUp, FaSortDown, FaSearch, FaShoppingCart, FaEye } from "react-icons/fa";
 import ReactPaginate from "react-paginate";
 import { useCart } from "../Provider/CartProvider";
 import { ReTitle } from "re-title";
+import useScrollToTop from "../Components/Hooks/useScrollToTop";
+import useAuth from "../Components/Hooks/UseAuth";
 
 const CategoryDetails = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    useScrollToTop();
     const { categoryName } = useParams();
     const [medicines, setMedicines] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -119,6 +124,28 @@ const CategoryDetails = () => {
     };
 
     const handleSelectFormulation = (type, price) => {
+        // Check if user is logged in
+        if (!user) {
+            document.getElementById("medicine_modal").close();
+            Swal.fire({
+                icon: "error",
+                title: "Login Required",
+                text: "You need to log in to add items to your cart.",
+                showConfirmButton: true,
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                customClass: {
+                    container: 'z-[10000]' // Ensure it appears above modal
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/auth/login');
+                }
+            });
+            return;
+        }
+
         const quantity = quantities[type] || 1;
         const totalPrice = price * quantity;
 
@@ -134,14 +161,14 @@ const CategoryDetails = () => {
             icon: "success",
             title: "Added to Cart",
             html: `
-                <div class="text-left">
-                    <p class="font-bold text-lg mb-2">${selectedMedicine.name}</p>
-                    <p><span class="font-medium">Formulation:</span> ${type}</p>
-                    <p><span class="font-medium">Quantity:</span> ${quantity}</p>
-                    <p><span class="font-medium">Unit Price:</span> ৳${price.toFixed(2)}</p>
-                    <p class="font-bold mt-2">Total: ৳${totalPrice.toFixed(2)}</p>
-                </div>
-            `,
+            <div class="text-left">
+                <p class="font-bold text-lg mb-2">${selectedMedicine.name}</p>
+                <p><span class="font-medium">Formulation:</span> ${type}</p>
+                <p><span class="font-medium">Quantity:</span> ${quantity}</p>
+                <p><span class="font-medium">Unit Price:</span> ৳${price.toFixed(2)}</p>
+                <p class="font-bold mt-2">Total: ৳${totalPrice.toFixed(2)}</p>
+            </div>
+        `,
             showConfirmButton: false,
             showCancelButton: true,
             cancelButtonText: "Continue Shopping",

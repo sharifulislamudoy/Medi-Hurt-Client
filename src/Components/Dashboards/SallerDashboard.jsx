@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import moment from "moment";
 import { IoClose } from 'react-icons/io5';
+import { ReTitle } from 're-title';
 
 const SellerDashboard = () => {
     const { user } = useAuth()
@@ -438,6 +439,7 @@ const SellerDashboard = () => {
 
     return (
         <div className="flex h-screen bg-gray-50">
+            <ReTitle title='Medi Hurt | Seller'></ReTitle>
             {/* Mobile menu button */}
             {isSmallScreen && (
                 <button
