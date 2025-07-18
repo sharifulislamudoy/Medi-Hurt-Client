@@ -36,7 +36,11 @@ const FeedbackSection = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user) return;
+        if (!user) {
+            setMessage({ type: 'error', text: 'You must be logged in to submit feedback.' });
+            setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+            return;
+        }
 
         const newFeedback = {
             name: user.displayName || 'Anonymous',
@@ -69,7 +73,7 @@ const FeedbackSection = () => {
         }
     };
 
-    if (!user) return null;
+    // if (!user) return null;
 
     const renderStars = (rating) => {
         const stars = [];
@@ -139,15 +143,17 @@ const FeedbackSection = () => {
                                 onChange={handleChange}
                                 rows="4"
                                 required
-                                placeholder="Tell us about your experience with our medicines, delivery, or service..."
-                                className="w-full border-teal-600 border-2  p-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"
+                                disabled={!user}
+                                placeholder={user ? "Tell us about your experience..." : "Please log in to leave feedback."}
+                                className="w-full border-teal-600 border-2 p-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition disabled:opacity-60 disabled:cursor-not-allowed"
                             />
+
                         </div>
 
                         <div className="flex justify-end">
                             <button
                                 type="submit"
-                                disabled={loading}
+                                disabled={loading || !user}
                                 className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 disabled:bg-gray-400 transition flex items-center"
                             >
                                 {loading ? (
@@ -158,8 +164,9 @@ const FeedbackSection = () => {
                                         </svg>
                                         Submitting...
                                     </>
-                                ) : 'Submit Feedback'}
+                                ) : user ? 'Submit Feedback' : 'Login to Submit'}
                             </button>
+
                         </div>
 
                         {message.text && (
@@ -168,6 +175,12 @@ const FeedbackSection = () => {
                             </div>
                         )}
                     </form>
+                    {!user && (
+                        <div className="my-4 p-3 bg-yellow-100 text-yellow-700 rounded">
+                            Please log in to submit your feedback. You can still read what others have shared!
+                        </div>
+                    )}
+
                 </div>
 
                 {/* Testimonials */}

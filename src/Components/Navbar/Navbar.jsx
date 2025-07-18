@@ -15,9 +15,31 @@ const Navbar = () => {
     const [allMedicines, setAllMedicines] = useState([]);
     const navigate = useNavigate();
     const [userRole, setUserRole] = useState(null);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    // Update time every second
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    // Format time to HH:MM:SS format
+    const formatTime = (date) => {
+        return date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    };
 
     useEffect(() => {
-        if (!user?.email) return; // 💡 Add this safety check
+        if (!user?.email) return;
 
         fetch("http://localhost:3000/users")
             .then((res) => res.json())
@@ -29,7 +51,6 @@ const Navbar = () => {
             })
             .catch(err => console.error(err));
     }, [user?.email]);
-
 
     // Fetch all medicines on component mount
     useEffect(() => {
@@ -137,6 +158,13 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    {/* Digital Clock */}
+                    <div className="hidden md:flex items-center mr-4">
+                        <div className="text-white font-mono font-bold text-lg bg-teal-600 px-3 py-1 rounded-lg shadow">
+                            {formatTime(currentTime)}
+                        </div>
+                    </div>
+                    
                     <div className="flex-none">
                         {user ? (
                             <div className="flex items-center gap-4">
