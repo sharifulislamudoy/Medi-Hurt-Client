@@ -536,20 +536,42 @@ const AdminDashboard = () => {
     };
 
     const handleDelete = async (id) => {
-        const confirm = window.confirm("Are you sure you want to delete this advertisement?");
-        if (!confirm) return;
-
-        const res = await fetch(`http://localhost:3000/advertisements/${id}`, {
-            method: "DELETE",
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this advertisement?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
         });
 
-        if (res.ok) {
-            const filteredAds = advertisements.filter((ad) => ad._id !== id);
-            setAdvertisements(filteredAds);
-        } else {
-            console.error("Failed to delete advertisement");
+        if (result.isConfirmed) {
+            const res = await fetch(`http://localhost:3000/advertisements/${id}`, {
+                method: "DELETE",
+            });
+
+            if (res.ok) {
+                const filteredAds = advertisements.filter((ad) => ad._id !== id);
+                setAdvertisements(filteredAds);
+
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Advertisement has been deleted.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to delete advertisement.',
+                    icon: 'error',
+                });
+            }
         }
     };
+
 
 
 

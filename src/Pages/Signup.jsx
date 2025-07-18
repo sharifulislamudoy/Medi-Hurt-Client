@@ -5,9 +5,10 @@ import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { ReTitle } from 're-title';
+import { updateProfile } from 'firebase/auth';
 
 const Signup = () => {
-    const { loginWithGoogle, registerWithEmail } = useAuth()
+    const { loginWithGoogle, registerWithEmail, user } = useAuth();
     const {
         register,
         handleSubmit,
@@ -15,23 +16,27 @@ const Signup = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        const { email, password, username, role, photo } = data;
+        const { email, password, username, role, photoURL } = data;
 
         try {
-            // Step 1: Create user in Firebase
             const userCredential = await registerWithEmail(email, password);
             const user = userCredential.user;
 
-            // Step 2: Create user object for backend
+            // ✅ Update Firebase user's profile
+            await updateProfile(user, {
+                displayName: username,
+                photoURL: photoURL
+            });
+
+            // Prepare user object for your database
             const newUser = {
                 email,
                 username,
                 role,
-                photoURL: photo[0]?.name || '', // Optional: store photo name (better to use uploaded URL)
+                photoURL,
                 createdAt: new Date()
             };
 
-            // Step 3: Send user data to backend
             const res = await fetch('http://localhost:3000/users', {
                 method: 'POST',
                 headers: {
@@ -42,7 +47,6 @@ const Signup = () => {
 
             const result = await res.json();
 
-            // Step 4: Show success alert
             if (result.insertedId) {
                 Swal.fire({
                     title: 'Success!',
@@ -65,14 +69,11 @@ const Signup = () => {
     };
 
 
-
-    // Placeholder handlers (replace with actual Firebase logic)
     const handleGoogleSignup = async () => {
         try {
             const result = await loginWithGoogle();
             const user = result.user;
 
-            // Construct new user object with default role = 'user'
             const newUser = {
                 email: user.email,
                 username: user.displayName || 'Unknown',
@@ -81,7 +82,6 @@ const Signup = () => {
                 createdAt: new Date()
             };
 
-            // Send new user to backend
             const res = await fetch('http://localhost:3000/users', {
                 method: 'POST',
                 headers: {
@@ -92,10 +92,10 @@ const Signup = () => {
 
             const resultData = await res.json();
 
-            if (res.ok && result.insertedId) {
+            if (res.ok && resultData.insertedId) {
                 Swal.fire({
                     title: 'Success!',
-                    text: `Welcome, ${username}! Your account has been created.`,
+                    text: `Welcome, ${user.displayName || 'User'}! Your account has been created.`,
                     icon: 'success',
                     confirmButtonColor: '#1db184',
                     confirmButtonText: 'Continue'
@@ -103,7 +103,7 @@ const Signup = () => {
             } else {
                 Swal.fire({
                     title: 'Signup Failed',
-                    text: result.message || 'This email is already registered. Please use a different one.',
+                    text: resultData.message || 'This email is already registered. Please use a different one.',
                     icon: 'error',
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'Try Again'
@@ -121,21 +121,15 @@ const Signup = () => {
         }
     };
 
-
-    const handleGithubSignup = () => {
-        console.log("GitHub signup clicked");
-        // implement GitHub sign-in logic here
-    };
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-teal-600 ">
+        <div className="min-h-screen flex items-center justify-center bg-teal-600">
             <ReTitle title='Medi Hurt | Sign Up' />
-            <div className="w-full max-w-md  p-8">
+            <div className="w-full max-w-md p-8">
                 <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Create Your Account</h2>
-
 
                 {/* Main Signup Form */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
                     {/* Username */}
                     <div>
                         <label className="block text-sm font-medium text-white mb-1">Username</label>
@@ -149,7 +143,7 @@ const Signup = () => {
 
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-medium  mb-1 text-white">Email</label>
+                        <label className="block text-sm font-medium text-white mb-1">Email</label>
                         <input
                             {...register("email", {
                                 required: "Email is required",
@@ -196,19 +190,22 @@ const Signup = () => {
                         {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
                     </div>
 
-                    {/* Photo Upload */}
+                    {/* Photo URL */}
                     <div>
-                        <label className="block text-sm font-medium text-white ">Upload Your Photo</label>
-                        <fieldset className="border  border-teal-700">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                {...register("photo", { required: "Photo is required" })}
-                                className="block w-full text-sm text-black file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-teal-800 file:text-white hover:file:bg-teal-900 bg-white rounded-md"
-                            />
-
-                            {errors.photo && <p className="text-red-500 text-sm mt-1">{errors.photo.message}</p>}
-                        </fieldset>
+                        <label className="block text-sm font-medium text-white mb-1">Photo URL</label>
+                        <input
+                            type="text"
+                            {...register("photoURL", {
+                                required: "Photo URL is required",
+                                pattern: {
+                                    value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i,
+                                    message: "Enter a valid image URL"
+                                }
+                            })}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
+                            placeholder="https://example.com/photo.jpg"
+                        />
+                        {errors.photoURL && <p className="text-red-500 text-sm mt-1">{errors.photoURL.message}</p>}
                     </div>
 
                     {/* Submit */}
@@ -221,6 +218,7 @@ const Signup = () => {
                         </button>
                     </div>
                 </form>
+
                 <div className="text-center text-white mt-4">
                     Already have an account?{" "}
                     <a href="/auth/login" className="text-teal-800 font-extrabold hover:underline">
@@ -246,16 +244,8 @@ const Signup = () => {
                         <FcGoogle className="text-lg" />
                         Sign Up with Google
                     </button>
-                    <button
-                        onClick={handleGithubSignup}
-                        className="w-full flex items-center justify-center gap-3 bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
-                    >
-                        <FaGithub className="text-lg" />
-                        Sign Up with GitHub
-                    </button>
                 </div>
             </div>
-
         </div>
     );
 };

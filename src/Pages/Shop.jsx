@@ -5,8 +5,10 @@ import ReactPaginate from "react-paginate";
 import { useCart } from "../Provider/CartProvider";
 import { useLocation } from "react-router";
 import { ReTitle } from "re-title";
+import useScrollToTop from "../Components/Hooks/useScrollToTop";
 
 const ShopPage = () => {
+    useScrollToTop()
     const [medicines, setMedicines] = useState([]);
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState({});

@@ -16,6 +16,10 @@ import Login from "../Pages/Login";
 import AdminDashboard from "../Components/Dashboards/AdminDashboard";
 import SellerDashboard from "../Components/Dashboards/SallerDashboard";
 import UserDashboard from "../Components/Dashboards/UserDashboard";
+import About from "../Pages/About";
+import Contact from "../Pages/Contact";
+import CoverageArea from "../Pages/CoverageArea";
+import FAQ from "../Pages/FAQ";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +51,22 @@ export const router = createBrowserRouter([
         {
           path: '/invoice',
           Component: Invoice
+        },
+        {
+          path: '/about',
+          Component: About,
+        },
+        {
+          path: '/contact',
+          Component: Contact
+        },
+        {
+          path: '/coverage-area',
+          Component: CoverageArea,
+        },
+        {
+          path: '/faq',
+          Component: FAQ,
         }
     ]
   },
@@ -79,5 +99,5 @@ export const router = createBrowserRouter([
   {
     path: '/user/dashboard',
     Component: UserDashboard,
-  }
+  },
 ]);

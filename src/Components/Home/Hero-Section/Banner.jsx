@@ -23,7 +23,7 @@ const Banner = () => {
     }, []);
 
     return (
-        <div className="w-11/12 mx-auto my-3 h-full rounded-2xl overflow-hidden">
+        <div className="w-11/12 mx-auto my-3 h-[65vh] rounded-2xl  overflow-hidden">
             {sliderImages.length > 0 ? (
                 <Swiper
                     modules={[Autoplay, Pagination]}

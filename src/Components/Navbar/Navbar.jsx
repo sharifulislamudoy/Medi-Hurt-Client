@@ -14,6 +14,22 @@ const Navbar = () => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [allMedicines, setAllMedicines] = useState([]);
     const navigate = useNavigate();
+    const [userRole, setUserRole] = useState(null);
+
+    useEffect(() => {
+        if (!user?.email) return; // 💡 Add this safety check
+
+        fetch("http://localhost:3000/users")
+            .then((res) => res.json())
+            .then((data) => {
+                const foundUser = data.find(userOne => userOne.email === user.email);
+                if (foundUser) {
+                    setUserRole(foundUser.role);
+                }
+            })
+            .catch(err => console.error(err));
+    }, [user?.email]);
+
 
     // Fetch all medicines on component mount
     useEffect(() => {
@@ -278,12 +294,16 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 w-52 bg-white rounded-xl p-2 shadow-lg">
-                                        <li>
-                                            <Link to="/dashboard" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Dashboard</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/settings" className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">Settings</Link>
-                                        </li>
+                                        {userRole && (
+                                            <li>
+                                                <Link
+                                                    to={`/${userRole}/dashboard`}
+                                                    className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg"
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                        )}
                                         <li>
                                             <button onClick={handleLogout} className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</button>
                                         </li>

@@ -67,11 +67,6 @@ const Login = () => {
         }
     };
 
-    const handleGithubLogin = () => {
-        console.log("GitHub login clicked");
-        // implement GitHub login logic here
-    };
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-teal-600">
             <ReTitle title='Medi Hurt | Login'/>
@@ -167,13 +162,6 @@ const Login = () => {
                     >
                         <FcGoogle className="text-lg" />
                         Sign In with Google
-                    </button>
-                    <button
-                        onClick={handleGithubLogin}
-                        className="w-full flex items-center justify-center gap-3 bg-gray-800 text-white py-2 rounded-md hover:bg-gray-900 transition"
-                    >
-                        <FaGithub className="text-lg" />
-                        Sign In with GitHub
                     </button>
                 </div>
             </div>
