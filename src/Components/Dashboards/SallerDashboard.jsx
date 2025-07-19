@@ -25,6 +25,8 @@ import {
 import moment from "moment";
 import { IoClose } from 'react-icons/io5';
 import { ReTitle } from 're-title';
+import { Link } from 'react-router';
+import HomeIcon from '@mui/icons-material/Home';
 
 const SellerDashboard = () => {
     const { user } = useAuth()
@@ -458,9 +460,15 @@ const SellerDashboard = () => {
                     'flex-shrink-0'} 
                     bg-teal-900 border-r px-3 border-border-teal-700`}
             >
-                <div className="p-4 text-center">
+                <div className="p-4 flex justify-center items-center flex-col">
                     <h1 className="text-xl text-white mt-2 font-bold">Seller Panel</h1>
                     <p className='text-sm text-white'>{user.email}</p>
+                    <Link to={'/'}
+                        className="mt-2 flex items-center justify-center text-white hover:text-teal-200"
+                    >
+                        <HomeIcon className="mr-1" />
+                        <span className="text-sm mt-1">Go to Home</span>
+                    </Link>
                 </div>
                 <div className="border-t border-gray-200"></div>
                 <nav>

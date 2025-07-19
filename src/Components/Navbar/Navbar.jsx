@@ -164,7 +164,7 @@ const Navbar = () => {
                             {formatTime(currentTime)}
                         </div>
                     </div>
-                    
+
                     <div className="flex-none">
                         {user ? (
                             <div className="flex items-center gap-4">
@@ -317,12 +317,13 @@ const Navbar = () => {
                                         <div className="w-10 rounded-full ring ring-teal-500 ring-offset-base-100 ring-offset-2">
                                             <img
                                                 alt="User Avatar"
-                                                src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                                                src={user.photoURL || "https://i.ibb.co/gZXtW6vz/610-6104451-image-placeholder-png-user-profile-placeholder-image-png.jpg"}
                                             />
                                         </div>
                                     </div>
                                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 w-52 bg-white rounded-xl p-2 shadow-lg">
                                         {userRole && (
+
                                             <li>
                                                 <Link
                                                     to={`/${userRole}/dashboard`}
@@ -332,6 +333,13 @@ const Navbar = () => {
                                                 </Link>
                                             </li>
                                         )}
+                                        <li>
+                                            <Link to={'/profile-update'}
+                                                className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg"
+                                            >
+                                                Update Profile
+                                            </Link>
+                                        </li>
                                         <li>
                                             <button onClick={handleLogout} className="rounded-lg hover:bg-red-100 transition text-red-600 font-medium text-lg">Logout</button>
                                         </li>

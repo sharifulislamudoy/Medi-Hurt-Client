@@ -22,11 +22,14 @@ import CoverageArea from "../Pages/CoverageArea";
 import FAQ from "../Pages/FAQ";
 import ProtectedRoute from "../Provider/ProtectedRoutes";
 import Unauthorized from "../Pages/Unauthorized";
+import UpdateProfile from "../Components/UpdateProfile/UpdateProfile";
+import ErrorElement from "../Pages/ErrorElement";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
+    errorElement: <ErrorElement />,
     children:[
         {
             index:true,
@@ -56,6 +59,12 @@ export const router = createBrowserRouter([
           path: '/invoice',
           element: <ProtectedRoute>
             <Invoice />
+          </ProtectedRoute>
+        },
+        {
+          path: '/profile-update',
+          element: <ProtectedRoute>
+            <UpdateProfile />
           </ProtectedRoute>
         },
         {

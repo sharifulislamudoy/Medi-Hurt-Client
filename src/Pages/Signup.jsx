@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
@@ -17,18 +17,21 @@ const Signup = () => {
         formState: { errors },
     } = useForm();
 
+    // State for password visibility
+    const [showPassword, setShowPassword] = useState(false);
+
     const onSubmit = async (data) => {
         const { email, password, username, role, photoURL } = data;
 
         try {
             const userCredential = await registerWithEmail(email, password);
             const user = userCredential.user;
+
             await updateProfile(user, {
                 displayName: username,
                 photoURL: photoURL
             });
 
-            // Prepare user object for your database
             const newUser = {
                 email,
                 username,
@@ -47,11 +50,10 @@ const Signup = () => {
 
             const result = await res.json();
 
-            if (result.insertedId) {
-                // Fetch the newly created user to get their role
+            if (res.ok && result.insertedId) {
                 const resUser = await fetch(`http://localhost:3000/users/${email}`);
                 const userData = await resUser.json();
-
+                
                 Swal.fire({
                     title: 'Success!',
                     text: `Welcome, ${username}! Your account has been created.`,
@@ -60,13 +62,20 @@ const Signup = () => {
                     confirmButtonText: 'Continue'
                 }).then(() => {
                     if (userData.role === 'seller') {
-                        navigate('/seller/dashboard');
+                        window.location.href = '/seller/dashboard';
                     } else {
-                        navigate('/shop');
+                        window.location.href = '/shop';
                     }
                 });
-            }
 
+            } else {
+                Swal.fire({
+                    title: 'Signup Failed',
+                    text: result.message || 'Something went wrong while saving your data.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
 
         } catch (error) {
             console.error("Signup error:", error.message);
@@ -183,18 +192,28 @@ const Signup = () => {
                     {/* Password */}
                     <div>
                         <label className="block text-sm font-medium text-white mb-1">Password</label>
-                        <input
-                            type="password"
-                            {...register("password", {
-                                required: "Password is required",
-                                minLength: {
-                                    value: 6,
-                                    message: "Password must be at least 6 characters",
-                                },
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
-                            placeholder="••••••••"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 6,
+                                        message: "Password must be at least 6 characters",
+                                    },
+                                })}
+                                className="w-full pl-10 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
+                                placeholder="••••••••"
+                            />
+                            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-teal-600"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                     </div>
 
