@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaLock, FaEye, FaEyeSlash, FaCheck } from 'react-icons/fa';
+import {
+    FaUser,
+    FaEnvelope,
+    FaPhone,
+    FaMapMarkerAlt,
+    FaCheck,
+    FaExclamationTriangle,
+} from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import useAuth from '../Hooks/UseAuth';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const UpdateProfile = () => {
     const { user } = useAuth();
@@ -11,34 +19,41 @@ const UpdateProfile = () => {
         email: '',
         phone: '',
         address: '',
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
+        age: '',
+        gender: '',
+        bloodGroup: '',
+        allergies: '',
+        emergencyContact: '',
     });
 
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [userId, setUserId] = useState(null);
+    const calculateCompletion = () => {
+        const requiredFields = ['name', 'email', 'phone', 'address', 'age', 'gender'];
+        const filledCount = requiredFields.filter(field => formData[field] && formData[field].toString().trim() !== '').length;
+        return Math.round((filledCount / requiredFields.length) * 100);
+    };
 
-    // Fetch user data by email
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const res = await axios.get('http://localhost:3000/users');
-                const matchedUser = res.data.find(u => u.email === user.email);
+                const matchedUser = res.data.find((u) => u.email === user.email);
                 if (matchedUser) {
-                    setFormData({
+                    setFormData((prev) => ({
+                        ...prev,
                         name: matchedUser.username || '',
                         email: matchedUser.email,
                         phone: matchedUser.phone || '',
                         address: matchedUser.address || '',
-                        currentPassword: '',
-                        newPassword: '',
-                        confirmPassword: ''
-                    });
+                        age: matchedUser.age || '',
+                        gender: matchedUser.gender || '',
+                        bloodGroup: matchedUser.bloodGroup || '',
+                        allergies: matchedUser.allergies || '',
+                        emergencyContact: matchedUser.emergencyContact || '',
+                    }));
                     setUserId(matchedUser._id);
                 }
             } catch (error) {
@@ -49,41 +64,75 @@ const UpdateProfile = () => {
         if (user?.email) fetchUser();
     }, [user]);
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Check if all required fields are filled
+        const requiredFields = ['name', 'email', 'phone', 'address', 'age', 'gender'];
+        for (let field of requiredFields) {
+            if (!formData[field]) {
+                setErrorMessage('Please fill out all required fields.');
+                return;
+            }
+        }
+
+        setErrorMessage('');
 
         // Password validation
         if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
-            alert('New password and confirmation do not match!');
+            setErrorMessage('New password and confirmation do not match!');
             return;
         }
 
         setIsLoading(true);
 
+        if (!userId) {
+            setErrorMessage('User ID not found');
+            return;
+        }
+
         const updatedData = {
             username: formData.name,
             phone: formData.phone,
-            address: formData.address
+            address: formData.address,
+            age: formData.age,
+            gender: formData.gender,
+            bloodGroup: formData.bloodGroup,
+            allergies: formData.allergies,
+            emergencyContact: formData.emergencyContact,
         };
-
-        if (formData.newPassword) {
-            updatedData.password = formData.newPassword;
-        }
 
         try {
             await axios.patch(`http://localhost:3000/users/${userId}`, updatedData);
-            setIsSuccess(true);
-            setTimeout(() => setIsSuccess(false), 3000);
+
+            // Show success SweetAlert
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your profile has been updated successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d9488',
+                timer: 3000,
+                timerProgressBar: true,
+            });
         } catch (error) {
             console.error('Error updating profile:', error);
+            // Show error SweetAlert
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was a problem updating your profile. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d9488',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -101,11 +150,15 @@ const UpdateProfile = () => {
                     <h2 className="text-4xl font-bold text-teal-900 mb-4">
                         Update <span className="text-teal-600">Your Profile</span>
                     </h2>
+                    <p className="text-teal-700 font-semibold mb-4">
+                        Profile Completion: {calculateCompletion()}%
+                    </p>
                     <div className="w-20 h-1 bg-teal-600 mx-auto rounded-full mb-6"></div>
                     <p className="text-gray-700">
                         Keep your information up to date for better service experience
                     </p>
                 </motion.div>
+
 
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -113,14 +166,14 @@ const UpdateProfile = () => {
                     transition={{ delay: 0.2 }}
                     className="bg-white rounded-xl shadow-lg p-8 border border-gray-100"
                 >
-                    {isSuccess && (
+                    {errorMessage && (
                         <motion.div
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="mb-6 bg-teal-100 border border-teal-200 text-teal-800 p-4 rounded-lg flex items-center"
+                            className="mb-6 bg-red-100 border border-red-200 text-red-800 p-4 rounded-lg flex items-center"
                         >
-                            <FaCheck className="text-teal-600 mr-2" />
-                            Profile updated successfully!
+                            <FaExclamationTriangle className="text-red-600 mr-2" />
+                            {errorMessage}
                         </motion.div>
                     )}
 
@@ -159,7 +212,7 @@ const UpdateProfile = () => {
                                             value={formData.email}
                                             onChange={handleChange}
                                             className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                            required
+                                            readOnly
                                         />
                                         <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                                     </div>
@@ -182,6 +235,18 @@ const UpdateProfile = () => {
                                 </div>
 
                                 <div>
+                                    <label htmlFor="emergencyContact" className="block text-gray-700 mb-2">Emergency Contact Number</label>
+                                    <input
+                                        type="tel"
+                                        id="emergencyContact"
+                                        name="emergencyContact"
+                                        value={formData.emergencyContact}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    />
+                                </div>
+
+                                <div>
                                     <label htmlFor="address" className="block text-gray-700 mb-2">Delivery Address</label>
                                     <div className="relative">
                                         <input
@@ -198,83 +263,75 @@ const UpdateProfile = () => {
                                 </div>
                             </div>
 
-                            {/* Password Update */}
+                            {/* Medical Information */}
                             <div className="space-y-6">
                                 <h3 className="text-xl font-semibold text-teal-900 mb-4 flex items-center">
-                                    <FaLock className="mr-2 text-teal-600" />
-                                    Change Password
+                                    <FaUser className="mr-2 text-teal-600" />
+                                    Medical Information
                                 </h3>
 
                                 <div>
-                                    <label htmlFor="currentPassword" className="block text-gray-700 mb-2">Current Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showCurrentPassword ? "text" : "password"}
-                                            id="currentPassword"
-                                            name="currentPassword"
-                                            value={formData.currentPassword}
-                                            onChange={handleChange}
-                                            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        />
-                                        <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                        <button
-                                            type="button"
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-teal-600"
-                                            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                        >
-                                            {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
-                                    </div>
+                                    <label htmlFor="age" className="block text-gray-700 mb-2">Age</label>
+                                    <input
+                                        type="number"
+                                        id="age"
+                                        name="age"
+                                        value={formData.age}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        required
+                                    />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="newPassword" className="block text-gray-700 mb-2">New Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showNewPassword ? "text" : "password"}
-                                            id="newPassword"
-                                            name="newPassword"
-                                            value={formData.newPassword}
-                                            onChange={handleChange}
-                                            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        />
-                                        <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                        <button
-                                            type="button"
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-teal-600"
-                                            onClick={() => setShowNewPassword(!showNewPassword)}
-                                        >
-                                            {showNewPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
-                                    </div>
+                                    <label htmlFor="gender" className="block text-gray-700 mb-2">Gender</label>
+                                    <select
+                                        id="gender"
+                                        name="gender"
+                                        value={formData.gender}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        required
+                                    >
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="confirmPassword" className="block text-gray-700 mb-2">Confirm New Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showConfirmPassword ? "text" : "password"}
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            value={formData.confirmPassword}
-                                            onChange={handleChange}
-                                            className="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        />
-                                        <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                                        <button
-                                            type="button"
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-teal-600"
-                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        >
-                                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
-                                    </div>
+                                    <label htmlFor="bloodGroup" className="block text-gray-700 mb-2">Blood Group</label>
+                                    <select
+                                        id="bloodGroup"
+                                        name="bloodGroup"
+                                        value={formData.bloodGroup}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    >
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
                                 </div>
 
-                                <div className="pt-4">
-                                    <p className="text-sm text-gray-600">
-                                        Note: Leave password fields blank if you don't want to change your password.
-                                    </p>
+                                <div>
+                                    <label htmlFor="allergies" className="block text-gray-700 mb-2">Allergies (if any)</label>
+                                    <textarea
+                                        id="allergies"
+                                        name="allergies"
+                                        value={formData.allergies}
+                                        onChange={handleChange}
+                                        rows="3"
+                                        placeholder="e.g., Penicillin, Aspirin"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    />
                                 </div>
                             </div>
                         </div>

@@ -5,6 +5,8 @@ import Logo from '../assets/Logo.png';
 import useAuth from '../Components/Hooks/UseAuth';
 
 const Admin = () => {
+    const { loginWithEmail } = useAuth();
+
     const {
         register,
         handleSubmit,
@@ -13,16 +15,15 @@ const Admin = () => {
     } = useForm();
 
     const navigate = useNavigate();
-    const { loginAsAdmin } = useAuth();
 
     const onSubmit = async (data) => {
         try {
-            await loginAsAdmin(data.username, data.password);
-            navigate('/admin/dashboard');
+            await loginWithEmail(data.email, data.password);
+            window.location.href = '/admin/dashboard';
         } catch (err) {
             setError('root', {
                 type: 'manual',
-                message: err.message || 'Invalid credentials'
+                message: 'Authentication failed. Invalid credentials.'
             });
         }
     };
@@ -48,25 +49,26 @@ const Admin = () => {
                     )}
 
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                            Username
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                            Email
                         </label>
                         <input
-                            id="username"
-                            {...register('username', {
-                                required: 'Username is required',
-                                minLength: {
-                                    value: 4,
-                                    message: 'Username must be at least 4 characters'
+                            id="email"
+                            type="email"
+                            {...register('email', {
+                                required: 'Email is required',
+                                pattern: {
+                                    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                    message: 'Invalid email address'
                                 }
                             })}
-                            placeholder="Enter admin username"
-                            className={`w-full px-4 py-3 bg-white rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.username ? 'border-red-500' : 'border-gray-300'
+                            placeholder="Enter admin email"
+                            className={`w-full px-4 py-3 bg-white rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'
                                 }`}
                         />
-                        {errors.username && (
+                        {errors.email && (
                             <span className="text-red-500 text-xs mt-1 block">
-                                {errors.username.message}
+                                {errors.email.message}
                             </span>
                         )}
                     </div>
@@ -85,12 +87,12 @@ const Admin = () => {
                                     message: 'Password must be at least 8 characters'
                                 },
                                 pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                                    message: 'Password must contain uppercase, lowercase, number, and special character'
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                                    message: 'Must include uppercase, lowercase, number, and special character'
                                 }
                             })}
                             placeholder="Enter password"
-                            className={`w-full px-4 bg-white py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'
+                            className={`w-full px-4 py-3 bg-white rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'
                                 }`}
                         />
                         {errors.password && (
@@ -119,7 +121,7 @@ const Admin = () => {
                 </form>
 
                 <div className="mt-8 text-center text-xs text-gray-500">
-                    <p>© {new Date().getFullYear()} Medihurt . All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} Medihurt. All rights reserved.</p>
                     <p className="mt-1">
                         For support, contact: <a href="mailto:support@medihurt.com" className="text-blue-600 hover:underline">support@medihurt.com</a>
                     </p>
