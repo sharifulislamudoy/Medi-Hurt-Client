@@ -26,7 +26,7 @@ const Login = () => {
             await loginWithEmail(email, password);
 
             // 🔍 Fetch the user by email to get their role
-            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const res = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
             const userData = await res.json();
 
             Swal.fire({
@@ -63,7 +63,7 @@ const Login = () => {
             const email = result.user.email;
 
             // 🔍 Fetch user data after Google login
-            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const res = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
             const userData = await res.json();
 
             Swal.fire({

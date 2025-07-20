@@ -47,7 +47,7 @@ const Signup = () => {
                 createdAt: new Date()
             };
 
-            const res = await fetch('http://localhost:3000/users', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const Signup = () => {
             const result = await res.json();
 
             if (res.ok && result.insertedId) {
-                const resUser = await fetch(`http://localhost:3000/users/${email}`);
+                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({
@@ -109,7 +109,7 @@ const Signup = () => {
                 createdAt: new Date()
             };
 
-            const res = await fetch('http://localhost:3000/users', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -121,7 +121,7 @@ const Signup = () => {
 
             if (res.ok && resultData.insertedId) {
                 // Fetch user role after signup
-                const resUser = await fetch(`http://localhost:3000/users/${user.email}`);
+                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${user.email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({

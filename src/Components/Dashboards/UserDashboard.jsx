@@ -41,7 +41,7 @@ const UserDashboard = () => {
     useEffect(() => {
         if (!user?.email) return; // wait for user to load
 
-        fetch('http://localhost:3000/orders')
+        fetch('https://medi-hurt-server.vercel.app/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
