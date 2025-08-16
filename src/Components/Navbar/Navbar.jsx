@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
-import { FaShoppingCart, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaShoppingCart, FaFacebook, FaTwitter, FaInstagram, FaBars, FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useCart } from '../../Provider/CartProvider';
 import useAuth from '../Hooks/UseAuth';
@@ -17,7 +17,10 @@ const Navbar = () => {
     const [userRole, setUserRole] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date());
 
-    // Update time
+    // Hamburger menu open state
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    // Update time every second
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
         return () => clearInterval(timer);
@@ -31,6 +34,7 @@ const Navbar = () => {
             hour12: true,
         });
 
+    // Fetch user role if user logged in
     useEffect(() => {
         if (!user?.email) return;
         fetch("http://localhost:3000/users")
@@ -42,12 +46,14 @@ const Navbar = () => {
             .catch(err => console.error(err));
     }, [user?.email]);
 
+    // Fetch all medicines for suggestions
     useEffect(() => {
         fetch("http://localhost:3000/medicines-data")
             .then(res => res.json())
             .then(data => setAllMedicines(data));
     }, []);
 
+    // Update suggestions based on search term
     useEffect(() => {
         if (searchTerm.trim() === "") return setSuggestions([]);
         const filtered = allMedicines
@@ -64,6 +70,7 @@ const Navbar = () => {
         if (searchTerm.trim()) {
             navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
             setShowSuggestions(false);
+            setMenuOpen(false); // close menu on search if mobile
         }
     };
 
@@ -71,6 +78,7 @@ const Navbar = () => {
         setSearchTerm(medicineName);
         navigate(`/shop?search=${encodeURIComponent(medicineName)}`);
         setShowSuggestions(false);
+        setMenuOpen(false); // close menu on suggestion click if mobile
     };
 
     const handleLogout = async () => {
@@ -94,6 +102,7 @@ const Navbar = () => {
                     icon: 'success',
                     confirmButtonColor: '#1db184'
                 });
+                setMenuOpen(false); // close menu on logout
             } catch (error) {
                 Swal.fire({
                     title: 'Error!',
@@ -105,14 +114,14 @@ const Navbar = () => {
         }
     };
 
+    // NavLinks JSX reused in desktop and mobile menu
     const navLinks = (
         <>
-            <li className='px-4'><NavLink to='/' className='px-3 py-1 text-white font-bold'>Home</NavLink></li>
-            <li className='px-4'><NavLink to='/Shop' className='px-3 py-0 text-white font-bold'>Shop</NavLink></li>
-            <li className='px-4'><NavLink to='/about' className='px-3 py-0 text-white font-bold'>About Us</NavLink></li>
-            <li className='px-4'><NavLink to='/contact' className='px-3 py-0 text-white font-bold'>Contact Us</NavLink></li>
-            <li className='px-4'><NavLink to='/faq' className='px-3 py-0 text-white font-bold'>FAQ</NavLink></li>
-            {/* <li className='px-4'><NavLink to='/Language' className='px-3 py-0 text-white font-bold'>Languages</NavLink></li> */}
+            <li className='px-4'><NavLink to='/' className='px-3 py-1 text-white font-bold' onClick={() => setMenuOpen(false)}>Home</NavLink></li>
+            <li className='px-4'><NavLink to='/Shop' className='px-3 py-0 text-white font-bold' onClick={() => setMenuOpen(false)}>Shop</NavLink></li>
+            <li className='px-4'><NavLink to='/about' className='px-3 py-0 text-white font-bold' onClick={() => setMenuOpen(false)}>About Us</NavLink></li>
+            <li className='px-4'><NavLink to='/contact' className='px-3 py-0 text-white font-bold' onClick={() => setMenuOpen(false)}>Contact Us</NavLink></li>
+            <li className='px-4'><NavLink to='/faq' className='px-3 py-0 text-white font-bold' onClick={() => setMenuOpen(false)}>FAQ</NavLink></li>
         </>
     );
 
@@ -122,7 +131,7 @@ const Navbar = () => {
                 {/* Top Row: social | search | clock + seller */}
                 <div className="flex items-center justify-between px-3 py-2 border-b border-gray-300">
                     {/* Social Links */}
-                    <div className="md:flex gap-3 hidden  text-white">
+                    <div className="md:flex gap-3 hidden text-white">
                         <a href="https://facebook.com" target="_blank" rel="noreferrer"><FaFacebook size={20} /></a>
                         <a href="https://twitter.com" target="_blank" rel="noreferrer"><FaTwitter size={20} /></a>
                         <a href="https://instagram.com" target="_blank" rel="noreferrer"><FaInstagram size={20} /></a>
@@ -190,7 +199,15 @@ const Navbar = () => {
 
                 {/* Bottom Row: logo | nav links | cart + user */}
                 <div className="flex items-center justify-between px-2 py-1">
-                    <div className="navbar-start flex items-center">
+                    <div className="navbar-start flex items-center gap-3">
+                        {/* Hamburger button (small screens) */}
+                        <button
+                            className="lg:hidden text-white ml-2 focus:outline-none"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                        </button>
                         <a href="/" className='flex items-center gap-3'>
                             <img src="https://i.ibb.co/Gfv2MGCw/Logo.png" className='h-8' alt="Logo" />
                             <h2 className='font-bold text-2xl flex'>
@@ -198,8 +215,11 @@ const Navbar = () => {
                                 <span className='text-[#1db184]'>.</span>
                             </h2>
                         </a>
+
+
                     </div>
 
+                    {/* Nav links for desktop */}
                     <div className="navbar-center hidden lg:flex rounded-full">
                         <ul className="flex px-7">
                             {navLinks}
@@ -325,13 +345,13 @@ const Navbar = () => {
                                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-50 w-52 bg-white rounded-xl p-2 shadow-lg">
                                         {userRole && (
                                             <li>
-                                                <Link to={`/${userRole}/dashboard`} className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">
+                                                <Link to={`/${userRole}/dashboard`} className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg" onClick={() => setMenuOpen(false)}>
                                                     Dashboard
                                                 </Link>
                                             </li>
                                         )}
                                         <li>
-                                            <Link to={'/profile-update'} className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg">
+                                            <Link to={'/profile-update'} className="rounded-lg hover:bg-teal-100 transition text-black font-medium text-lg" onClick={() => setMenuOpen(false)}>
                                                 Update Profile
                                             </Link>
                                         </li>
@@ -350,6 +370,15 @@ const Navbar = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Mobile Menu */}
+                {menuOpen && (
+                    <div className="lg:hidden bg-[#31718f] rounded-b-lg shadow-inner mt-0 p-4">
+                        <ul className="flex flex-col gap-3">
+                            {navLinks}
+                        </ul>
+                    </div>
+                )}
             </div>
         </div>
     );
