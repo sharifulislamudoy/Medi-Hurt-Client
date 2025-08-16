@@ -18,15 +18,12 @@ const Signup = () => {
         formState: { errors },
     } = useForm();
 
-    // Watch password to validate confirm password
     const password = watch('password', '');
-
-    // State for password visibility
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const onSubmit = async (data) => {
-        const { email, password, username, role, photoURL, address, phone } = data;
+        const { email, password, username, photoURL, address, phone } = data;
 
         try {
             const userCredential = await registerWithEmail(email, password);
@@ -40,14 +37,14 @@ const Signup = () => {
             const newUser = {
                 email,
                 username,
-                role,
+                role: "user", // default role handled here
                 photoURL,
-                address,  
-                phone,        
+                address,
+                phone,
                 createdAt: new Date()
             };
 
-            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
+            const res = await fetch('http://localhost:3000/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -58,7 +55,7 @@ const Signup = () => {
             const result = await res.json();
 
             if (res.ok && result.insertedId) {
-                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
+                const resUser = await fetch(`http://localhost:3000/users/${email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({
@@ -95,7 +92,6 @@ const Signup = () => {
         }
     };
 
-
     const handleGoogleSignup = async () => {
         try {
             const result = await loginWithGoogle();
@@ -104,12 +100,12 @@ const Signup = () => {
             const newUser = {
                 email: user.email,
                 username: user.displayName || 'Unknown',
-                role: 'user',
+                role: 'user', // default role
                 photoURL: user.photoURL || '',
                 createdAt: new Date()
             };
 
-            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
+            const res = await fetch('http://localhost:3000/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -120,8 +116,7 @@ const Signup = () => {
             const resultData = await res.json();
 
             if (res.ok && resultData.insertedId) {
-                // Fetch user role after signup
-                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${user.email}`);
+                const resUser = await fetch(`http://localhost:3000/users/${user.email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({
@@ -165,7 +160,6 @@ const Signup = () => {
             <div className="w-full max-w-md p-8">
                 <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Create Your Account</h2>
 
-                {/* Main Signup Form */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
                     {/* Username */}
@@ -258,7 +252,7 @@ const Signup = () => {
                             {...register("phone", {
                                 required: "Phone number is required",
                                 pattern: {
-                                    value: /^[0-9]{10,15}$/, // simple regex for 10 to 15 digits
+                                    value: /^[0-9]{10,15}$/,
                                     message: "Enter a valid phone number"
                                 }
                             })}
@@ -266,20 +260,6 @@ const Signup = () => {
                             placeholder="e.g. 01234567890"
                         />
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-                    </div>
-
-                    {/* Role Selection */}
-                    <div>
-                        <label className="block text-sm font-medium text-white mb-1">Select Role</label>
-                        <select
-                            {...register("role", { required: "Role is required" })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
-                        >
-                            <option value="">-- Select Role --</option>
-                            <option value="user">User</option>
-                            <option value="seller">Seller</option>
-                        </select>
-                        {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>}
                     </div>
 
                     {/* Address */}
@@ -339,7 +319,6 @@ const Signup = () => {
                     </div>
                 </div>
 
-                {/* Social Sign ups */}
                 <div className="space-y-3 mb-6">
                     <button
                         onClick={handleGoogleSignup}

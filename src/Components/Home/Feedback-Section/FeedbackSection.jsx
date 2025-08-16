@@ -19,7 +19,7 @@ const FeedbackSection = () => {
 
     // Fetch feedbacks from backend
     useEffect(() => {
-        fetch('https://medi-hurt-server.vercel.app/feedbacks')
+        fetch('http://localhost:3000/feedbacks')
             .then(res => res.json())
             .then(data => setFeedbacks(data))
             .catch(err => console.error('Failed to fetch feedbacks:', err));
@@ -53,7 +53,7 @@ const FeedbackSection = () => {
 
         try {
             setLoading(true);
-            const res = await fetch('https://medi-hurt-server.vercel.app/feedbacks', {
+            const res = await fetch('http://localhost:3000/feedbacks', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newFeedback)

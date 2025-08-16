@@ -34,7 +34,7 @@ const CategoryDetails = () => {
                 setLoading(true);
                 setError(null);
 
-                const response = await fetch(`https://medi-hurt-server.vercel.app/medicines-data/${categoryName}`);
+                const response = await fetch(`http://localhost:3000/medicines-data/${categoryName}`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch medicines: ${response.status}`);

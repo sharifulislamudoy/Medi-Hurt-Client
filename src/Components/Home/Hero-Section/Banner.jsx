@@ -10,7 +10,7 @@ const Banner = () => {
     useEffect(() => {
         const fetchSliderImages = async () => {
             try {
-                const response = await fetch('https://medi-hurt-server.vercel.app/advertisements');
+                const response = await fetch('http://localhost:3000/advertisements');
                 const data = await response.json();
                 const filteredImages = data.filter(item => item.inSlider === true);
                 setSliderImages(filteredImages);

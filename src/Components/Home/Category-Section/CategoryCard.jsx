@@ -7,7 +7,7 @@ const CategoryCard = ({ category }) => {
     const [medicineCount, setMedicineCount] = useState(0);
 
     useEffect(() => {
-        axios.get("https://medi-hurt-server.vercel.app/medicines-data")
+        axios.get("http://localhost:3000/medicines-data")
             .then(res => {
                 const filtered = res.data.filter(med => med.category === name);
                 setMedicineCount(filtered.length);

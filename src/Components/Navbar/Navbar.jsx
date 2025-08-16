@@ -33,7 +33,7 @@ const Navbar = () => {
 
     useEffect(() => {
         if (!user?.email) return;
-        fetch("https://medi-hurt-server.vercel.app/users")
+        fetch("http://localhost:3000/users")
             .then((res) => res.json())
             .then((data) => {
                 const foundUser = data.find(u => u.email === user.email);
@@ -43,7 +43,7 @@ const Navbar = () => {
     }, [user?.email]);
 
     useEffect(() => {
-        fetch("https://medi-hurt-server.vercel.app/medicines-data")
+        fetch("http://localhost:3000/medicines-data")
             .then(res => res.json())
             .then(data => setAllMedicines(data));
     }, []);

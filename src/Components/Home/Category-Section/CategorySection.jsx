@@ -10,7 +10,7 @@ const CategorySection = () => {
 
     useEffect(() => {
         // Fetch category data
-        fetch('https://medi-hurt-server.vercel.app/medicines')
+        fetch('http://localhost:3000/medicines')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error('Failed to load categories:', err));
