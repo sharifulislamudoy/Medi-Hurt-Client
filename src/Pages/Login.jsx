@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { FaGithub, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
-import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router';
 import { ReTitle } from 're-title';
+import useAuth from '../Components/Hooks/useAuth';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Login = () => {
             await loginWithEmail(email, password);
 
             // 🔍 Fetch the user by email to get their role
-            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const res = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
             const userData = await res.json();
 
             Swal.fire({
@@ -63,7 +63,7 @@ const Login = () => {
             const email = result.user.email;
 
             // 🔍 Fetch user data after Google login
-            const res = await fetch(`http://localhost:3000/users/${email}`);
+            const res = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
             const userData = await res.json();
 
             Swal.fire({
@@ -142,7 +142,7 @@ const Login = () => {
                         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                     </div>
 
-                    {/* Remember Me & Forgot Password */}
+                    {/* Remember Me & Forgot Password
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <input
@@ -161,7 +161,7 @@ const Login = () => {
                                 Forgot password?
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Submit */}
                     <div>

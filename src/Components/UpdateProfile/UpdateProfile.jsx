@@ -39,7 +39,7 @@ const UpdateProfile = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/users');
+                const res = await axios.get('https://medi-hurt-server.vercel.app/users');
                 const matchedUser = res.data.find((u) => u.email === user.email);
                 if (matchedUser) {
                     setFormData((prev) => ({
@@ -111,7 +111,7 @@ const UpdateProfile = () => {
         };
 
         try {
-            await axios.patch(`http://localhost:3000/users/${userId}`, updatedData);
+            await axios.patch(`https://medi-hurt-server.vercel.app/users/${userId}`, updatedData);
 
             // Show success SweetAlert
             Swal.fire({

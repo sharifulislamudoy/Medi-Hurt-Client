@@ -95,7 +95,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/orders");
+                const response = await axios.get("https://medi-hurt-server.vercel.app/orders");
                 const orders = response.data.orders;
 
                 let totalRevenue = 0;
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch('http://localhost:3000/users')
+        fetch('https://medi-hurt-server.vercel.app/users')
             .then(res => res.json())
             .then(users => {
                 const matchedAdmin = users.find(u => u.email === user.email);
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/users')
+        fetch('https://medi-hurt-server.vercel.app/users')
             .then(res => res.json())
             .then(data => setUsers(data))
     }, []);
@@ -179,7 +179,7 @@ const AdminDashboard = () => {
 
             if (!result.isConfirmed) return;
 
-            const response = await fetch(`http://localhost:3000/users/${userId}/role`, {
+            const response = await fetch(`https://medi-hurt-server.vercel.app/users/${userId}/role`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -233,7 +233,7 @@ const AdminDashboard = () => {
     const [editCategoryId, setEditCategoryId] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/medicines')
+        fetch('https://medi-hurt-server.vercel.app/medicines')
             .then(res => res.json())
             .then(data => setCategories(data))
     }, []);
@@ -262,7 +262,7 @@ const AdminDashboard = () => {
 
             if (editCategoryId) {
                 // Update existing category
-                response = await fetch(`http://localhost:3000/categories/${categoryForm.categoryId}`, {
+                response = await fetch(`https://medi-hurt-server.vercel.app/categories/${categoryForm.categoryId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -272,7 +272,7 @@ const AdminDashboard = () => {
             } else {
                 // Create new category
                 categoryData.id = categoryForm.categoryId || generateUniqueId(); // Add ID generation if needed
-                response = await fetch('http://localhost:3000/categories', {
+                response = await fetch('https://medi-hurt-server.vercel.app/categories', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -369,7 +369,7 @@ const AdminDashboard = () => {
 
         if (result.isConfirmed) {
             try {
-                const response = await fetch(`http://localhost:3000/categories/${categoryId}`, {
+                const response = await fetch(`https://medi-hurt-server.vercel.app/categories/${categoryId}`, {
                     method: 'DELETE',
                 });
 
@@ -407,7 +407,7 @@ const AdminDashboard = () => {
         const fetchPayments = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:3000/orders');
+                const response = await fetch('https://medi-hurt-server.vercel.app/orders');
                 if (!response.ok) throw new Error('Failed to fetch payments');
                 const data = await response.json();
                 setPayments(data.orders || []);
@@ -423,7 +423,7 @@ const AdminDashboard = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3000/orders')
+        fetch('https://medi-hurt-server.vercel.app/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -465,7 +465,7 @@ const AdminDashboard = () => {
             setLoading(true);
 
             // Update payment status in backend
-            const response = await fetch(`http://localhost:3000/orders/${paymentId}/status`, {
+            const response = await fetch(`https://medi-hurt-server.vercel.app/orders/${paymentId}/status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -508,7 +508,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchAds = async () => {
             try {
-                const res = await fetch("http://localhost:3000/advertisements");
+                const res = await fetch("https://medi-hurt-server.vercel.app/advertisements");
                 const data = await res.json();
                 setAdvertisements(data);
             } catch (err) {
@@ -523,7 +523,7 @@ const AdminDashboard = () => {
         const adToUpdate = advertisements.find((ad) => ad._id === id);
         const updatedSliderValue = !adToUpdate.inSlider;
 
-        const res = await fetch(`http://localhost:3000/advertisements/${id}/slider`, {
+        const res = await fetch(`https://medi-hurt-server.vercel.app/advertisements/${id}/slider`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ inSlider: updatedSliderValue }),
@@ -540,7 +540,7 @@ const AdminDashboard = () => {
     };
 
     const handleStatusUpdate = async (id) => {
-        const res = await fetch(`http://localhost:3000/advertisements/${id}/status`, {
+        const res = await fetch(`https://medi-hurt-server.vercel.app/advertisements/${id}/status`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status: "approved" }),
@@ -568,7 +568,7 @@ const AdminDashboard = () => {
         });
 
         if (result.isConfirmed) {
-            const res = await fetch(`http://localhost:3000/advertisements/${id}`, {
+            const res = await fetch(`https://medi-hurt-server.vercel.app/advertisements/${id}`, {
                 method: "DELETE",
             });
 
@@ -924,7 +924,7 @@ const AdminDashboard = () => {
                                         <h2 className="text-xl sm:text-2xl font-semibold">Sales Report</h2>
                                         <div className="flex flex-col gap-4">
                                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                     <DatePicker
                                                         label="Start Date"
                                                         value={dateRange[0]}
@@ -955,7 +955,7 @@ const AdminDashboard = () => {
                                                             </div>
                                                         )}
                                                     />
-                                                </div>
+                                                </div> */}
                                             </LocalizationProvider>
                                             <div className="flex flex-wrap gap-2">
                                                 <DownloadTableExcel

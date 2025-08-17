@@ -37,7 +37,7 @@ const Navbar = () => {
     // Fetch user role if user logged in
     useEffect(() => {
         if (!user?.email) return;
-        fetch("http://localhost:3000/users")
+        fetch("https://medi-hurt-server.vercel.app/users")
             .then((res) => res.json())
             .then((data) => {
                 const foundUser = data.find(u => u.email === user.email);
@@ -48,7 +48,7 @@ const Navbar = () => {
 
     // Fetch all medicines for suggestions
     useEffect(() => {
-        fetch("http://localhost:3000/medicines-data")
+        fetch("https://medi-hurt-server.vercel.app/medicines-data")
             .then(res => res.json())
             .then(data => setAllMedicines(data));
     }, []);

@@ -10,7 +10,7 @@ const CategorySection = () => {
 
     useEffect(() => {
         // Fetch category data
-        fetch('http://localhost:3000/medicines')
+        fetch('https://medi-hurt-server.vercel.app/medicines')
             .then(res => res.json())
             .then(data => setCategories(data))
             .catch(err => console.error('Failed to load categories:', err));
@@ -34,11 +34,11 @@ const CategorySection = () => {
     };
 
     return (
-        <section className="w-11/12 mx-auto my-10">
-            <h2 className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4 text-center">
+        <section className="w-11/12 mx-auto my-20 py-10">
+            <h2 data-aos="fade-up" className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4 text-center">
                 Categories <span className="text-teal-600">MediHurt</span>
             </h2>
-            <div className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
+            <div data-aos="fade-right" className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-20"></div>
 
             {/* Category Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">

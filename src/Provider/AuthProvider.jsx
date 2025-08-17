@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
         if (currentUser) {
             // Fetch additional user data (including role) from your backend
             try {
-                const response = await fetch(`http://localhost:3000/users/${currentUser.email}`);
+                const response = await fetch(`https://medi-hurt-server.vercel.app/users/${currentUser.email}`);
                 const userData = await response.json();
                 // Merge Firebase auth data with your backend user data
                 setUser({

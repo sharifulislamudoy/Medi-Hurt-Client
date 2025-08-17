@@ -34,7 +34,7 @@ const ShopPage = () => {
     const { addToCart } = useCart();
 
     useEffect(() => {
-        fetch("http://localhost:3000/medicines-data")
+        fetch("https://medi-hurt-server.vercel.app/medicines-data")
             .then(res => res.json())
             .then(data => setMedicines(data));
     }, []);

@@ -71,7 +71,7 @@ const SellerDashboard = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch('http://localhost:3000/users')
+        fetch('https://medi-hurt-server.vercel.app/users')
             .then(res => res.json())
             .then(users => {
                 const matchedSeller = users.find(u => u.email === user.email);
@@ -97,7 +97,7 @@ const SellerDashboard = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.get("http://localhost:3000/orders");
+                const res = await axios.get("https://medi-hurt-server.vercel.app/orders");
                 const orders = res.data.orders;
 
                 const userOrders = orders.filter(order =>
@@ -190,7 +190,7 @@ const SellerDashboard = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:3000/medicines-data', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/medicines-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -258,7 +258,7 @@ const SellerDashboard = () => {
 
         if (confirmed.isConfirmed) {
             try {
-                const res = await fetch(`http://localhost:3000/medicines-data/${_id}`, {
+                const res = await fetch(`https://medi-hurt-server.vercel.app/medicines-data/${_id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -320,13 +320,13 @@ const SellerDashboard = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:3000/medicines')
+        fetch('https://medi-hurt-server.vercel.app/medicines')
             .then(res => res.json())
             .then(data => setCategoryOptions(data))
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3000/medicines-data')
+        fetch('https://medi-hurt-server.vercel.app/medicines-data')
             .then(res => res.json())
             .then(data => setCompaniesOptions(data))
     }, [])
@@ -334,7 +334,7 @@ const SellerDashboard = () => {
     useEffect(() => {
         const fetchMedicines = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/medicines-data');
+                const res = await axios.get('https://medi-hurt-server.vercel.app/medicines-data');
                 const filtered = res.data.filter(med => med.email === user.email);
                 setMedicines(filtered);
             } catch (error) {
@@ -358,7 +358,7 @@ const SellerDashboard = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch('http://localhost:3000/orders')
+        fetch('https://medi-hurt-server.vercel.app/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -393,7 +393,7 @@ const SellerDashboard = () => {
         };
 
         try {
-            const res = await fetch("http://localhost:3000/advertisements", {
+            const res = await fetch("https://medi-hurt-server.vercel.app/advertisements", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -437,7 +437,7 @@ const SellerDashboard = () => {
     useEffect(() => {
         const fetchAdvertisements = async () => {
             try {
-                const res = await fetch("http://localhost:3000/advertisements");
+                const res = await fetch("https://medi-hurt-server.vercel.app/advertisements");
                 const data = await res.json();
 
                 // If you only want to show ads submitted by the current seller:
@@ -1066,7 +1066,7 @@ const SellerDashboard = () => {
                                         };
 
                                         try {
-                                            const res = await fetch(`http://localhost:3000/medicines-data/${selectedMedicine._id}`, {
+                                            const res = await fetch(`https://medi-hurt-server.vercel.app/medicines-data/${selectedMedicine._id}`, {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json',

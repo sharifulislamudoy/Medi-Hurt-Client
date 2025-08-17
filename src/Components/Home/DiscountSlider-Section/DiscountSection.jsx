@@ -10,7 +10,7 @@ const DiscountSeciton = () => {
     useEffect(() => {
         const fetchSliderImages = async () => {
             try {
-                const response = await fetch('http://localhost:3000/advertisements');
+                const response = await fetch('https://medi-hurt-server.vercel.app/advertisements');
                 const data = await response.json();
                 const filteredImages = data.filter(item => item.inSlider === true);
                 setSliderImages(filteredImages);
@@ -23,10 +23,11 @@ const DiscountSeciton = () => {
     }, []);
 
     return (
-        <div className="w-11/12 mx-auto my-3 h-[65vh] rounded-2xl  overflow-hidden">
-            <h2 className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4 text-center">
+        <div className="w-11/12 mx-auto  h-[90vh] rounded-2xl   my-20 py-10">
+            <h2 data-aos="fade-up" className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4 text-center">
                 Best Deals <span className="text-teal-600">MediHurt</span>
             </h2>
+            <div data-aos="fade-right" className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
             {sliderImages.length > 0 ? (
                 <Swiper
                     modules={[Autoplay, Pagination]}

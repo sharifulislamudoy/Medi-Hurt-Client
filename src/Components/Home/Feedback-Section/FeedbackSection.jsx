@@ -21,7 +21,7 @@ const FeedbackSection = () => {
 
     // Fetch feedbacks from backend
     useEffect(() => {
-        fetch('http://localhost:3000/feedbacks')
+        fetch('https://medi-hurt-server.vercel.app/feedbacks')
             .then(res => res.json())
             .then(data => setFeedbacks(data))
             .catch(err => console.error('Failed to fetch feedbacks:', err));
@@ -55,7 +55,7 @@ const FeedbackSection = () => {
 
         try {
             setLoading(true);
-            const res = await fetch('http://localhost:3000/feedbacks', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/feedbacks', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newFeedback)
@@ -99,13 +99,13 @@ const FeedbackSection = () => {
         <div className="w-11/12 mx-auto py-12 px-4 md:px-8 bg-gradient-to-b from-white to-teal-50">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
-                    <div className="flex justify-center items-center mb-4">
+                    <div data-aos="fade-up" className="flex justify-center items-center mb-4">
                         <FaPills className="text-3xl text-teal-600 mr-2" />
                         <FaHeartbeat className="text-3xl text-red-500" />
                     </div>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800  mb-2">Customer <span className='text-teal-800'>Experiences</span></h2>
-                    <div className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <h2 data-aos="fade-up" className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800  mb-2">Customer <span className='text-teal-800'>Experiences</span></h2>
+                    <div data-aos="fade-right" className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
+                    <p data-aos="fade-up" className="text-lg text-gray-600 max-w-2xl mx-auto">
                         Share your experience with our pharmacy services and help us serve you better
                     </p>
                 </div>
@@ -186,7 +186,7 @@ const FeedbackSection = () => {
                 </div>
 
                 {/* Testimonials */}
-                <div className="mb-8">
+                <div className=" my-20 py-20">
                     <h3 className="text-3xl font-bold text-teal-800 mb-6 text-center">What Our Customers Say</h3>
 
                     <Swiper

@@ -44,7 +44,7 @@ const UserDashboard = () => {
         if (!user?.email) return;
 
         // Fetch user profile data
-        fetch('http://localhost:3000/users')
+        fetch('https://medi-hurt-server.vercel.app/users')
             .then(res => res.json())
             .then(users => {
                 const matchedUser = users.find(u => u.email === user.email);
@@ -55,7 +55,7 @@ const UserDashboard = () => {
             .catch(err => console.error('Error fetching user profile:', err));
 
         // Your existing orders fetch logic
-        fetch('http://localhost:3000/orders')
+        fetch('https://medi-hurt-server.vercel.app/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {

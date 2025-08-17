@@ -21,11 +21,40 @@ const Signup = () => {
     const password = watch('password', '');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    // cloudinary config
+    const cloudName = "dohhfubsa";
+    const uploadPreset = "react_unsigned";
+
+    const uploadToCloudinary = async (file) => {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", uploadPreset);
+
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: "POST",
+            body: data,
+        });
+
+        const result = await res.json();
+        return result.secure_url;
+    };
 
     const onSubmit = async (data) => {
-        const { email, password, username, photoURL, address, phone } = data;
+        const { email, password, username, address, phone } = data;
 
         try {
+            setLoading(true);
+
+            // file upload to cloudinary
+            let photoURL = "";
+            if (imageFile) {
+                photoURL = await uploadToCloudinary(imageFile);
+            }
+
+            // firebase signup
             const userCredential = await registerWithEmail(email, password);
             const user = userCredential.user;
 
@@ -37,14 +66,14 @@ const Signup = () => {
             const newUser = {
                 email,
                 username,
-                role: "user", // default role handled here
+                role: "user",
                 photoURL,
                 address,
                 phone,
                 createdAt: new Date()
             };
 
-            const res = await fetch('http://localhost:3000/users', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +84,7 @@ const Signup = () => {
             const result = await res.json();
 
             if (res.ok && result.insertedId) {
-                const resUser = await fetch(`http://localhost:3000/users/${email}`);
+                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({
@@ -80,7 +109,6 @@ const Signup = () => {
                     confirmButtonText: 'Try Again'
                 });
             }
-
         } catch (error) {
             console.error("Signup error:", error.message);
             Swal.fire({
@@ -89,6 +117,8 @@ const Signup = () => {
                 icon: 'error',
                 confirmButtonText: 'Try Again'
             });
+        } finally {
+            setLoading(false); // ✅ সব শেষে লোডিং বন্ধ
         }
     };
 
@@ -100,12 +130,12 @@ const Signup = () => {
             const newUser = {
                 email: user.email,
                 username: user.displayName || 'Unknown',
-                role: 'user', // default role
+                role: 'user',
                 photoURL: user.photoURL || '',
                 createdAt: new Date()
             };
 
-            const res = await fetch('http://localhost:3000/users', {
+            const res = await fetch('https://medi-hurt-server.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -116,7 +146,7 @@ const Signup = () => {
             const resultData = await res.json();
 
             if (res.ok && resultData.insertedId) {
-                const resUser = await fetch(`http://localhost:3000/users/${user.email}`);
+                const resUser = await fetch(`https://medi-hurt-server.vercel.app/users/${user.email}`);
                 const userData = await resUser.json();
 
                 Swal.fire({
@@ -161,7 +191,6 @@ const Signup = () => {
                 <h2 className="text-3xl font-extrabold text-center mb-6 text-white">Create Your Account</h2>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
                     {/* Username */}
                     <div>
                         <label className="block text-sm font-medium text-white mb-1">Username</label>
@@ -274,33 +303,58 @@ const Signup = () => {
                         {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
                     </div>
 
-                    {/* Photo URL */}
+                    {/* Photo Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-white mb-1">Photo URL</label>
+                        <label className="block text-sm font-medium text-white mb-1">Profile Photo</label>
                         <input
-                            type="text"
-                            {...register("photoURL", {
-                                required: "Photo URL is required",
-                                pattern: {
-                                    value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i,
-                                    message: "Enter a valid image URL"
-                                }
-                            })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
-                            placeholder="https://example.com/photo.jpg"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setImageFile(e.target.files[0])}
+                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
                         />
-                        {errors.photoURL && <p className="text-red-500 text-sm mt-1">{errors.photoURL.message}</p>}
+                        {/* {!imageFile && <p className="text-red-500 text-sm mt-1">Profile photo is required</p>} */}
                     </div>
 
                     {/* Submit */}
                     <div>
                         <button
                             type="submit"
-                            className="w-full bg-teal-800 text-white font-semibold py-2 rounded-md hover:bg-teal-900 transition duration-200 shadow-sm"
+                            disabled={loading}
+                            className={`w-full flex items-center justify-center gap-2 
+      bg-teal-800 text-white font-semibold py-2 rounded-md 
+      transition duration-200 shadow-sm
+      ${loading ? "opacity-70 cursor-not-allowed" : "hover:bg-teal-900"}`}
                         >
-                            Sign Up
+                            {loading ? (
+                                <>
+                                    <svg
+                                        className="animate-spin h-5 w-5 text-white"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        />
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                                        />
+                                    </svg>
+                                    Submitting...
+                                </>
+                            ) : (
+                                "Sign Up"
+                            )}
                         </button>
                     </div>
+
                 </form>
 
                 <div className="text-center text-white mt-4">

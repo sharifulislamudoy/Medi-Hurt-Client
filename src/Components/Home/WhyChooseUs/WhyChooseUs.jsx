@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 w-11/12 mx-auto bg-gradient-to-br from-white to-teal-50">
+    <section className=" w-11/12 mx-auto  my-20 py-10 bg-gradient-to-br from-white to-teal-50">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,10 +57,10 @@ const WhyChooseUs = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4">
+          <h2 data-aos="fade-up" className="text-3xl lg:text-5xl md:text-4xl font-bold text-teal-900 mb-4">
             Why Choose <span className="text-teal-600">MediHurt?</span>
           </h2>
-          <div className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
+          <div data-aos="fade-right" className="w-24 h-1 bg-teal-600 mx-auto rounded-full mb-8"></div>
           <p className="text-gray-700 max-w-2xl mx-auto text-lg">
             We're revolutionizing healthcare delivery with our patient-first approach and cutting-edge solutions.
           </p>

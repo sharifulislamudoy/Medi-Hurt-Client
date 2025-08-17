@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaShippingFast, FaPills, FaUserShield, FaCreditCard, FaExchangeAlt } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import useScrollToTop from '../Components/Hooks/useScrollToTop';
+import { Link } from 'react-router';
 
 const FAQ = () => {
-    useScrollToTop();
+  useScrollToTop();
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -47,7 +48,7 @@ const FAQ = () => {
   return (
     <section className="py-20 mx-auto w-11/12 bg-gradient-to-br from-teal-50 to-white" id="faq">
       <div className="container max-w-7xl">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -64,7 +65,7 @@ const FAQ = () => {
 
         <div className="max-w-4xl mx-auto">
           {faqs.map((faq, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -124,7 +125,9 @@ const FAQ = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-all"
           >
-            Contact Support
+            <Link to={'/contact'}>
+              Contact Support
+            </Link>
           </motion.button>
         </motion.div>
       </div>

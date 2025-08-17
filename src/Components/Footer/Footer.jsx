@@ -53,17 +53,14 @@ const Footer = () => {
                             Your trusted online pharmacy providing quality medicines and healthcare products at affordable prices.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="text-gray-300 hover:text-white transition">
+                            <a href="https://facebook.com" className="text-gray-300 hover:text-white transition">
                                 <FaFacebook size={20} />
                             </a>
-                            <a href="#" className="text-gray-300 hover:text-white transition">
+                            <a href="https://twitter.com" className="text-gray-300 hover:text-white transition">
                                 <FaTwitter size={20} />
                             </a>
-                            <a href="#" className="text-gray-300 hover:text-white transition">
+                            <a href="https://instagram.com" className="text-gray-300 hover:text-white transition">
                                 <FaInstagram size={20} />
-                            </a>
-                            <a href="#" className="text-gray-300 hover:text-white transition">
-                                <FaLinkedin size={20} />
                             </a>
                         </div>
                     </div>
