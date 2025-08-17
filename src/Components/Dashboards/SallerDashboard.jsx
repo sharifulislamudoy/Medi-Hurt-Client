@@ -8,7 +8,7 @@ import {
     Menu,
     Close
 } from '@mui/icons-material';
-import useAuth from '../Hooks/UseAuth';
+
 import RouteChangeSpinner from '../Loading/RouteChangeSpinner';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -27,6 +27,7 @@ import { IoClose } from 'react-icons/io5';
 import { ReTitle } from 're-title';
 import { Link } from 'react-router';
 import HomeIcon from '@mui/icons-material/Home';
+import useAuth from '../Hooks/useAuth';
 
 const SellerDashboard = () => {
     const { user } = useAuth()

@@ -4,8 +4,9 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import useAuth from '../../Hooks/UseAuth';
+
 import { FaStar, FaRegStar, FaStarHalfAlt, FaQuoteLeft, FaPills, FaHeartbeat } from 'react-icons/fa';
+import useAuth from '../../Hooks/useAuth';
 
 const FeedbackSection = () => {
     const { user } = useAuth();

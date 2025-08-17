@@ -3,8 +3,8 @@ import { Link, NavLink, useNavigate } from 'react-router';
 import { FaShoppingCart, FaFacebook, FaTwitter, FaInstagram, FaBars, FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import { useCart } from '../../Provider/CartProvider';
-import useAuth from '../Hooks/UseAuth';
 import './Navbar.css';
+import useAuth from '../Hooks/useAuth';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -126,7 +126,7 @@ const Navbar = () => {
     );
 
     return (
-        <div className='w-full sticky top-0 z-50 bg-[#31718f] shadow-lg'>
+        <div className='w-full sticky top-0 z-2000 bg-[#31718f] shadow-lg'>
             <div className="w-11/12 mx-auto ">
                 {/* Top Row: social | search | clock + seller */}
                 <div className="flex items-center justify-between px-3 py-2 border-b border-gray-300">
@@ -188,12 +188,12 @@ const Navbar = () => {
                         <div className="text-white font-mono font-bold text-sm hidden md:flex bg-teal-600 px-3 py-1 rounded-lg shadow">
                             {formatTime(currentTime)}
                         </div>
-                        <Link
+                        {/* <Link
                             to="/become-seller"
                             className="btn border-teal-700 text-white bg-teal-600 rounded-2xl px-4 py-0 hover:bg-teal-700"
                         >
                             Become a Seller
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
 

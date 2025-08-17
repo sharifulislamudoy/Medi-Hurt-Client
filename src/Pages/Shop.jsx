@@ -6,7 +6,8 @@ import { useCart } from "../Provider/CartProvider";
 import { useLocation, useNavigate } from "react-router";
 import { ReTitle } from "re-title";
 import useScrollToTop from "../Components/Hooks/useScrollToTop";
-import useAuth from "../Components/Hooks/UseAuth";
+import useAuth from "../Components/Hooks/useAuth";
+
 
 const ShopPage = () => {
     const navigate = useNavigate()
@@ -60,16 +61,16 @@ const ShopPage = () => {
     // Filter and sort medicines
     const filteredAndSortedMedicines = useMemo(() => {
         let filteredItems = [...medicines];
-        
+
         // Apply search filter if URL has search term
         if (urlSearchTerm) {
-            filteredItems = filteredItems.filter(medicine => 
+            filteredItems = filteredItems.filter(medicine =>
                 medicine.name.toLowerCase().includes(urlSearchTerm.toLowerCase()) ||
                 medicine.brand.toLowerCase().includes(urlSearchTerm.toLowerCase()) ||
                 medicine.category.toLowerCase().includes(urlSearchTerm.toLowerCase())
             );
         }
-        
+
         // Apply sorting
         if (sortConfig.key) {
             filteredItems.sort((a, b) => {
@@ -94,26 +95,26 @@ const ShopPage = () => {
                 }
             });
         }
-        
+
         // Move exact matches to the top
         if (urlSearchTerm) {
             filteredItems.sort((a, b) => {
                 const aNameMatch = a.name.toLowerCase() === urlSearchTerm.toLowerCase();
                 const bNameMatch = b.name.toLowerCase() === urlSearchTerm.toLowerCase();
-                
+
                 if (aNameMatch && !bNameMatch) return -1;
                 if (!aNameMatch && bNameMatch) return 1;
-                
+
                 const aStartsWith = a.name.toLowerCase().startsWith(urlSearchTerm.toLowerCase());
                 const bStartsWith = b.name.toLowerCase().startsWith(urlSearchTerm.toLowerCase());
-                
+
                 if (aStartsWith && !bStartsWith) return -1;
                 if (!aStartsWith && bStartsWith) return 1;
-                
+
                 return 0;
             });
         }
-        
+
         return filteredItems;
     }, [medicines, sortConfig, urlSearchTerm]);
 
@@ -197,11 +198,11 @@ const ShopPage = () => {
 
     return (
         <div className="py-6 w-11/12 mx-auto">
-            <ReTitle  title="Medi Hurt | Shop"/>
+            <ReTitle title="Medi Hurt | Shop" />
             <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                 <div>
                     <h2 className="text-3xl font-bold text-teal-900 flex items-center gap-2">
-                        <FaShoppingCart className="text-teal-700" /> 
+                        <FaShoppingCart className="text-teal-700" />
                         Medicine Shop
                     </h2>
                     <p className="text-sm text-gray-600">
@@ -223,7 +224,7 @@ const ShopPage = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                     Image
                                 </th>
-                                <th 
+                                <th
                                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
                                     onClick={() => requestSort('name')}
                                 >
@@ -232,7 +233,7 @@ const ShopPage = () => {
                                         {getSortIcon('name')}
                                     </div>
                                 </th>
-                                <th 
+                                <th
                                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
                                     onClick={() => requestSort('brand')}
                                 >
@@ -241,7 +242,7 @@ const ShopPage = () => {
                                         {getSortIcon('brand')}
                                     </div>
                                 </th>
-                                <th 
+                                <th
                                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
                                     onClick={() => requestSort('category')}
                                 >
@@ -250,7 +251,7 @@ const ShopPage = () => {
                                         {getSortIcon('category')}
                                     </div>
                                 </th>
-                                <th 
+                                <th
                                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
                                     onClick={() => requestSort('price')}
                                 >
@@ -315,7 +316,7 @@ const ShopPage = () => {
                             ) : (
                                 <tr>
                                     <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
-                                        No medicines found matching your search.
+                                        <span className="loading loading-bars loading-xl"></span>
                                     </td>
                                 </tr>
                             )}
