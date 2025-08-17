@@ -4,7 +4,8 @@ import {
     ShoppingCart,
     Payment,
     Menu,
-    Close
+    Close,
+    Person
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +20,7 @@ import useAuth from '../Hooks/useAuth';
 
 const UserDashboard = () => {
     const { user } = useAuth();
+    const [userProfile, setUserProfile] = useState(null);
     const [activeTab, setActiveTab] = useState(() => {
         const savedTab = localStorage.getItem('userActiveTab');
         return savedTab || 'dashboard';
@@ -27,7 +29,6 @@ const UserDashboard = () => {
     const [dateRange, setDateRange] = useState([null, null]);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-
 
     useEffect(() => {
         const handleResize = () => {
@@ -40,15 +41,24 @@ const UserDashboard = () => {
     }, []);
 
     useEffect(() => {
-        if (!user?.email) return; // wait for user to load
+        if (!user?.email) return;
 
+        // Fetch user profile data
+        fetch('http://localhost:3000/users')
+            .then(res => res.json())
+            .then(users => {
+                const matchedUser = users.find(u => u.email === user.email);
+                if (matchedUser) {
+                    setUserProfile(matchedUser);
+                }
+            })
+            .catch(err => console.error('Error fetching user profile:', err));
+
+        // Your existing orders fetch logic
         fetch('http://localhost:3000/orders')
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // filter orders where either:
-                    // 1. The order email matches user email, OR
-                    // 2. Any item in the order has email matching user email
                     const userPayments = data.orders.filter(
                         order => order.email === user.email
                     );
@@ -74,10 +84,9 @@ const UserDashboard = () => {
         return paymentDate >= dateRange[0] && paymentDate <= dateRange[1];
     });
 
-
-
     const menuItems = [
         { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
+        { id: 'profile', text: 'My Profile', icon: <Person className="mr-3" /> },
         { id: 'payments', text: 'Payment History', icon: <Payment className="mr-3" /> },
         { id: 'orders', text: 'My Orders', icon: <ShoppingCart className="mr-3" /> },
     ];
@@ -191,6 +200,73 @@ const UserDashboard = () => {
                                             <p className="mt-2 text-sm">৳{order.amountPaid.toFixed(2)} • {order.items.length} items</p>
                                         </div>
                                     ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'profile' && (
+                            <div className="bg-white rounded-lg shadow overflow-hidden">
+                                <div className="p-6">
+                                    <div className="flex flex-col md:flex-row gap-6">
+                                        <div className="flex-shrink-0">
+                                            <img
+                                                src={userProfile?.photoURL || user?.photoURL || "https://via.placeholder.com/150"}
+                                                alt="Profile"
+                                                className="w-32 h-32 rounded-full object-cover border-4 border-teal-100"
+                                            />
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h2 className="text-2xl font-bold text-gray-800">
+                                                {userProfile?.username || user?.username || 'No name provided'}
+                                            </h2>
+                                            <p className="text-gray-600 mb-4">{user?.email}</p>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-500">Account Information</h3>
+                                                    <div className="mt-2 space-y-2">
+                                                        <p className="text-sm">
+                                                            <span className="font-medium">Role:</span> {userProfile?.role || user?.role || 'user'}
+                                                        </p>
+                                                        <p className="text-sm">
+                                                            <span className="font-medium">Member Since:</span>
+                                                            {userProfile?.createdAt
+                                                                ? new Date(userProfile.createdAt).toLocaleDateString()
+                                                                : user?.createdAt
+                                                                    ? new Date(user.createdAt).toLocaleDateString()
+                                                                    : 'N/A'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-500">Contact Information</h3>
+                                                    <div className="mt-2 space-y-2">
+                                                        <p className="text-sm">
+                                                            <span className="font-medium">Phone:</span>
+                                                            {userProfile?.phone || 'Not provided'}
+                                                        </p>
+                                                        <p className="text-sm">
+                                                            <span className="font-medium">Address:</span>
+                                                            {userProfile?.address || 'Not provided'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 pt-6 border-t border-gray-200">
+                                        <h3 className="text-lg font-medium text-gray-800 mb-4">Account Actions</h3>
+                                        <div className="flex flex-wrap gap-3">
+                                            <Link
+                                                to={'/profile-update'}
+                                                className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 text-sm"
+                                            >
+                                                Edit Profile
+                                            </Link>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}

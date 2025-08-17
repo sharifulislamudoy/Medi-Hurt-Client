@@ -8,9 +8,9 @@ import {
     FaExclamationTriangle,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import useAuth from '../Hooks/UseAuth';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import useAuth from '../Hooks/useAuth';
 
 const UpdateProfile = () => {
     const { user } = useAuth();
