@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { FaEye, FaSort, FaSortUp, FaSortDown, FaShoppingCart } from "react-icons/fa";
+import { FaEye, FaSort, FaSortUp, FaSortDown, FaShoppingCart, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import ReactPaginate from "react-paginate";
 import { useCart } from "../Provider/CartProvider";
@@ -8,7 +8,6 @@ import { ReTitle } from "re-title";
 import useScrollToTop from "../Components/Hooks/useScrollToTop";
 import useAuth from "../Components/Hooks/useAuth";
 
-
 const ShopPage = () => {
     const navigate = useNavigate()
     const { user } = useAuth();
@@ -16,6 +15,7 @@ const ShopPage = () => {
     const [medicines, setMedicines] = useState([]);
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const [selectedQuantity, setSelectedQuantity] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
     const location = useLocation();
 
     // Get search term from URL
@@ -24,7 +24,7 @@ const ShopPage = () => {
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
 
     // Sorting state
     const [sortConfig, setSortConfig] = useState({
@@ -48,26 +48,38 @@ const ShopPage = () => {
         setSortConfig({ key, direction });
     };
 
-    // Get sorting icon
-    const getSortIcon = (key) => {
-        if (sortConfig.key !== key) {
-            return <FaSort className="inline ml-1 opacity-50" />;
-        }
-        return sortConfig.direction === 'ascending'
-            ? <FaSortUp className="inline ml-1" />
-            : <FaSortDown className="inline ml-1" />;
+    // Get sorting button
+    const getSortButton = (key, label) => {
+        return (
+            <button
+                onClick={() => requestSort(key)}
+                className="flex items-center gap-1 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-md text-sm transition"
+            >
+                {label}
+                {sortConfig.key === key ? (
+                    sortConfig.direction === 'ascending' ? (
+                        <FaSortUp />
+                    ) : (
+                        <FaSortDown />
+                    )
+                ) : (
+                    <FaSort className="opacity-50" />
+                )}
+            </button>
+        );
     };
 
     // Filter and sort medicines
     const filteredAndSortedMedicines = useMemo(() => {
         let filteredItems = [...medicines];
 
-        // Apply search filter if URL has search term
-        if (urlSearchTerm) {
+        // Apply search filter from URL or local state
+        const term = urlSearchTerm || searchTerm;
+        if (term) {
             filteredItems = filteredItems.filter(medicine =>
-                medicine.name.toLowerCase().includes(urlSearchTerm.toLowerCase()) ||
-                medicine.brand.toLowerCase().includes(urlSearchTerm.toLowerCase()) ||
-                medicine.category.toLowerCase().includes(urlSearchTerm.toLowerCase())
+                medicine.name.toLowerCase().includes(term.toLowerCase()) ||
+                medicine.brand.toLowerCase().includes(term.toLowerCase()) ||
+                medicine.category.toLowerCase().includes(term.toLowerCase())
             );
         }
 
@@ -97,16 +109,17 @@ const ShopPage = () => {
         }
 
         // Move exact matches to the top
-        if (urlSearchTerm) {
+        const termToUse = urlSearchTerm || searchTerm;
+        if (termToUse) {
             filteredItems.sort((a, b) => {
-                const aNameMatch = a.name.toLowerCase() === urlSearchTerm.toLowerCase();
-                const bNameMatch = b.name.toLowerCase() === urlSearchTerm.toLowerCase();
+                const aNameMatch = a.name.toLowerCase() === termToUse.toLowerCase();
+                const bNameMatch = b.name.toLowerCase() === termToUse.toLowerCase();
 
                 if (aNameMatch && !bNameMatch) return -1;
                 if (!aNameMatch && bNameMatch) return 1;
 
-                const aStartsWith = a.name.toLowerCase().startsWith(urlSearchTerm.toLowerCase());
-                const bStartsWith = b.name.toLowerCase().startsWith(urlSearchTerm.toLowerCase());
+                const aStartsWith = a.name.toLowerCase().startsWith(termToUse.toLowerCase());
+                const bStartsWith = b.name.toLowerCase().startsWith(termToUse.toLowerCase());
 
                 if (aStartsWith && !bStartsWith) return -1;
                 if (!aStartsWith && bStartsWith) return 1;
@@ -116,7 +129,7 @@ const ShopPage = () => {
         }
 
         return filteredItems;
-    }, [medicines, sortConfig, urlSearchTerm]);
+    }, [medicines, sortConfig, urlSearchTerm, searchTerm]);
 
     // Pagination logic
     const pageCount = Math.ceil(filteredAndSortedMedicines.length / itemsPerPage);
@@ -156,7 +169,6 @@ const ShopPage = () => {
                 cancelButtonText: "Cancel",
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     navigate('/auth/login');
                 }
             });
@@ -214,120 +226,74 @@ const ShopPage = () => {
                         )}
                     </p>
                 </div>
+            
             </div>
 
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-teal-700 text-white">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                    Image
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('name')}
-                                >
-                                    <div className="flex items-center">
-                                        Name
-                                        {getSortIcon('name')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('brand')}
-                                >
-                                    <div className="flex items-center">
-                                        Brand
-                                        {getSortIcon('brand')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('category')}
-                                >
-                                    <div className="flex items-center">
-                                        Category
-                                        {getSortIcon('category')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('price')}
-                                >
-                                    <div className="flex items-center">
-                                        Price
-                                        {getSortIcon('price')}
-                                    </div>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                    Stock
-                                </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {currentItems.length > 0 ? (
-                                currentItems.map((medicine) => (
-                                    <tr key={medicine._id || medicine.name} className="hover:bg-gray-50 transition">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex-shrink-0 h-10 w-10">
-                                                <img
-                                                    src={medicine.image}
-                                                    alt={medicine.name}
-                                                    className="h-10 w-10 rounded-full object-cover border border-gray-200"
-                                                />
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900">{medicine.name}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-500">{medicine.brand}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800">
-                                                {medicine.category}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-bold text-teal-700">
-                                                ৳{medicine.formulations?.tablet || 'N/A'}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm">
-                                                {getStockStatus(medicine.stock)}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button
-                                                onClick={() => handleView(medicine)}
-                                                className="text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-3 py-1 rounded-md flex items-center gap-1 transition"
-                                            >
-                                                <FaEye className="text-sm" />
-                                                View
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
-                                        <span className="loading loading-bars loading-xl"></span>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+            {/* Sorting controls */}
+            <div className="flex flex-wrap gap-2 mb-6">
+                {getSortButton('name', 'Name')}
+                {getSortButton('brand', 'Brand')}
+                {getSortButton('category', 'Category')}
+                {getSortButton('price', 'Price')}
             </div>
+
+            {/* Medicine Cards Grid */}
+            {currentItems.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {currentItems.map((medicine) => (
+                        <div key={medicine._id || medicine.name} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <div className="p-4 flex flex-col h-full">
+                                <div className="flex justify-center mb-4">
+                                    <img
+                                        src={medicine.image}
+                                        alt={medicine.name}
+                                        className="h-40 w-40 object-contain"
+                                    />
+                                </div>
+                                
+                                <div className="flex-grow">
+                                    <h3 className="font-bold text-lg text-gray-900 mb-1 line-clamp-2">
+                                        {medicine.name}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 mb-2">{medicine.brand}</p>
+                                    
+                                    <div className="flex items-center justify-between mb-3">
+                                        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-teal-100 text-teal-800">
+                                            {medicine.category}
+                                        </span>
+                                        <div className="text-sm">
+                                            {getStockStatus(medicine.stock)}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-teal-700 font-bold text-lg">
+                                            ৳{medicine.formulations?.tablet || 'N/A'}
+                                        </p>
+                                        <button
+                                            onClick={() => handleView(medicine)}
+                                            className="text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-3 py-1 rounded-md flex items-center gap-1 transition text-sm"
+                                        >
+                                            <FaEye className="text-sm" />
+                                            View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-12">
+                    <FaSearch className="text-4xl text-gray-400 mb-4" />
+                    <p className="text-gray-600 text-lg">No medicines found</p>
+                    <p className="text-gray-500 text-sm mt-2">Try adjusting your search or filter</p>
+                </div>
+            )}
 
             {/* Pagination */}
             {pageCount > 1 && (
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="text-sm text-gray-600">
                         Showing <span className="font-medium">{offset + 1}</span> to{' '}
                         <span className="font-medium">

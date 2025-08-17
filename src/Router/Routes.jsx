@@ -24,7 +24,7 @@ import ProtectedRoute from "../Provider/ProtectedRoutes";
 import Unauthorized from "../Pages/Unauthorized";
 import UpdateProfile from "../Components/UpdateProfile/UpdateProfile";
 import ErrorElement from "../Pages/ErrorElement";
-import BecomeSeller from "../Pages/BecomeSeller";
+// import BecomeSeller from "../Pages/BecomeSeller";
 
 export const router = createBrowserRouter([
   {
@@ -126,8 +126,8 @@ export const router = createBrowserRouter([
     path: '/unauthorized',
     Component: Unauthorized
   },
-  {
-    path:'/become-seller',
-    Component: BecomeSeller,
-  }
+  // {
+  //   path:'/become-seller',
+  //   Component: BecomeSeller,
+  // }
 ]);

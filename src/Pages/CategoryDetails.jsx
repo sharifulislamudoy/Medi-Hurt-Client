@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate";
 import { useCart } from "../Provider/CartProvider";
 import { ReTitle } from "re-title";
 import useScrollToTop from "../Components/Hooks/useScrollToTop";
-import useAuth from "../Components/Hooks/UseAuth";
+import useAuth from "../Components/Hooks/useAuth";
 
 const CategoryDetails = () => {
     const { user } = useAuth();
@@ -21,7 +21,7 @@ const CategoryDetails = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const { addToCart } = useCart();
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
 
     const [sortConfig, setSortConfig] = useState({
         key: null,
@@ -124,7 +124,6 @@ const CategoryDetails = () => {
     };
 
     const handleSelectFormulation = (type, price) => {
-        // Check if user is logged in
         if (!user) {
             document.getElementById("medicine_modal").close();
             Swal.fire({
@@ -136,7 +135,7 @@ const CategoryDetails = () => {
                 showCancelButton: true,
                 cancelButtonText: "Cancel",
                 customClass: {
-                    container: 'z-[10000]' // Ensure it appears above modal
+                    container: 'z-[10000]'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -189,11 +188,10 @@ const CategoryDetails = () => {
         if (stock > 0) return <span className="text-yellow-600 font-medium">Low Stock</span>;
         return <span className="text-red-600 font-medium">Out of Stock</span>;
     };
-
-    const getPriceDisplay = (price) => {
-        return price !== undefined
-            ? <span className="font-bold text-teal-700">৳{price.toFixed(2)}</span>
-            : <span className="text-red-500 text-sm">N/A</span>;
+    const getMinPrice = (formulations) => {
+        if (!formulations) return null;
+        const prices = Object.values(formulations).filter(price => price !== undefined);
+        return prices.length > 0 ? Math.min(...prices) : null;
     };
 
     if (error) {
@@ -243,155 +241,106 @@ const CategoryDetails = () => {
                     </p>
                 </div>
 
-                <div className="relative w-full md:w-64">
-                    <FaSearch className="absolute left-3 top-3 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder={`Search ${categoryName}...`}
-                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                        value={searchTerm}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            setCurrentPage(0);
-                        }}
-                    />
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-600">Sort by:</span>
+                        <select
+                            className="border rounded px-3 py-1 text-sm focus:ring-teal-500 focus:border-teal-500"
+                            onChange={(e) => requestSort(e.target.value)}
+                            value={sortConfig.key || ''}
+                        >
+                            <option value="">Default</option>
+                            <option value="name">Name</option>
+                            <option value="brand">Brand</option>
+                            <option value="tablet">Tablet Price</option>
+                            <option value="syrup">Syrup Price</option>
+                            <option value="capsule">Capsule Price</option>
+                            <option value="injection">Injection Price</option>
+                        </select>
+                        {sortConfig.key && (
+                            <button
+                                onClick={() => setSortConfig(prev => ({
+                                    ...prev,
+                                    direction: prev.direction === 'ascending' ? 'descending' : 'ascending'
+                                }))}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                {sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />}
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="relative w-full md:w-64">
+                        <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder={`Search ${categoryName}...`}
+                            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                setCurrentPage(0);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-teal-700 text-white">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                    Image
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('name')}
-                                >
-                                    <div className="flex items-center">
-                                        Name
-                                        {getSortIcon('name')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('brand')}
-                                >
-                                    <div className="flex items-center">
-                                        Brand
-                                        {getSortIcon('brand')}
-                                    </div>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                    Stock
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('tablet')}
-                                >
-                                    <div className="flex items-center">
-                                        Tablet
-                                        {getSortIcon('tablet')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('syrup')}
-                                >
-                                    <div className="flex items-center">
-                                        Syrup
-                                        {getSortIcon('syrup')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('capsule')}
-                                >
-                                    <div className="flex items-center">
-                                        Capsule
-                                        {getSortIcon('capsule')}
-                                    </div>
-                                </th>
-                                <th
-                                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-teal-600 transition"
-                                    onClick={() => requestSort('injection')}
-                                >
-                                    <div className="flex items-center">
-                                        Injection
-                                        {getSortIcon('injection')}
-                                    </div>
-                                </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {currentItems.map((medicine) => (
-                                <tr key={`${medicine._id || medicine.name}-${medicine.brand}`} className="hover:bg-gray-50 transition">
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex-shrink-0 h-10 w-10">
-                                            <img
-                                                src={medicine.image || '/default-medicine.png'}
-                                                alt={medicine.name}
-                                                className="h-10 w-10 rounded-full object-cover border border-gray-200"
-                                                onError={(e) => {
-                                                    e.target.src = '/default-medicine.png';
-                                                }}
-                                            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {currentItems.map((medicine) => {
+                    const minPrice = getMinPrice(medicine.formulations);
+                    return (
+                        <div key={`${medicine._id || medicine.name}-${medicine.brand}`} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <div className="p-4 flex flex-col h-full">
+                                <div className="flex justify-center mb-4">
+                                    <img
+                                        src={medicine.image || '/default-medicine.png'}
+                                        alt={medicine.name}
+                                        className="h-40 w-40 object-contain rounded-lg border border-gray-200"
+                                        onError={(e) => {
+                                            e.target.src = '/default-medicine.png';
+                                        }}
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-lg text-gray-900 mb-1 line-clamp-2">
+                                        {medicine.name}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        {medicine.brand}
+                                    </p>
+                                    <div className="flex items-center justify-between mb-3">
+                                        <div>
+                                            {minPrice !== null ? (
+                                                <span className="text-lg font-bold text-teal-700">
+                                                    ৳{minPrice.toFixed(2)}
+                                                </span>
+                                            ) : (
+                                                <span className="text-sm text-gray-500">Price varies</span>
+                                            )}
                                         </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{medicine.name}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-500">{medicine.brand}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm">
                                             {getStockStatus(medicine.stock)}
                                         </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm">
-                                            {getPriceDisplay(medicine.formulations?.tablet)}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm">
-                                            {getPriceDisplay(medicine.formulations?.syrup)}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm">
-                                            {getPriceDisplay(medicine.formulations?.capsule)}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm">
-                                            {getPriceDisplay(medicine.formulations?.injection)}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button
-                                            onClick={() => handleViewDetails(medicine)}
-                                            className="text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-3 py-1 rounded-md flex items-center gap-1 transition"
-                                        >
-                                            <FaEye className="text-sm" />
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    </div>
+                                </div>
+                                <div className="mt-auto">
+                                    <button
+                                        onClick={() => handleViewDetails(medicine)}
+                                        className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition"
+                                    >
+                                        <FaEye />
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {pageCount > 1 && (
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="text-sm text-gray-600">
                         Showing <span className="font-medium">{offset + 1}</span> to{' '}
                         <span className="font-medium">

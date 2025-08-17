@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaPhoneAlt, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 const Banner = () => {
   return (
@@ -21,7 +22,7 @@ const Banner = () => {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
             >
-              Your Trusted <span className="text-teal-200">Pharmacy</span> Partner
+              Your Trusted <span className="text-teal-900">Pharmacy</span> Partner
             </motion.h1>
             
             <motion.p 
@@ -39,12 +40,12 @@ const Banner = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <button className="bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
+              <Link to={'/about'} className="bg-white text-teal-700 hover:bg-teal-50 px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl">
                 Explore Services <FaArrowRight className="ml-2" />
-              </button>
-              <button className="border-2 border-white text-white hover:bg-white hover:text-teal-700 px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition-all duration-300">
+              </Link>
+              <Link to={'contact'} className="border-2 border-white text-white hover:bg-white hover:text-teal-700 px-6 py-3 rounded-lg font-semibold flex items-center justify-center transition-all duration-300">
                 Contact Us
-              </button>
+              </Link>
             </motion.div>
           </div>
           

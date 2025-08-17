@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { FaGithub, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { FcGoogle } from 'react-icons/fc';
-import useAuth from '../Components/Hooks/UseAuth';
 import Swal from 'sweetalert2';
 import { ReTitle } from 're-title';
 import { updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router';
+import useAuth from '../Components/Hooks/useAuth';
 
 const Signup = () => {
     const navigate = useNavigate();
