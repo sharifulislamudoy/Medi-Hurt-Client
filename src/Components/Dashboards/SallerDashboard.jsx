@@ -6,8 +6,10 @@ import {
     Campaign,
     AddCircleOutline,
     Menu,
-    Close
+    Close,
+    Person
 } from '@mui/icons-material';
+
 
 import RouteChangeSpinner from '../Loading/RouteChangeSpinner';
 import Swal from 'sweetalert2';
@@ -31,7 +33,7 @@ import useAuth from '../Hooks/useAuth';
 
 const SellerDashboard = () => {
     const { user } = useAuth()
-
+    const [sellerProfile, setSellerProfile] = useState(null);
     const [activeTab, setActiveTab] = useState(() => {
         const savedTab = localStorage.getItem('sellerDashboardActiveTab');
         return savedTab || 'dashboard';
@@ -49,6 +51,7 @@ const SellerDashboard = () => {
 
     const menuItems = [
         { id: 'dashboard', text: 'Dashboard', icon: <Dashboard className="mr-3" /> },
+        { id: 'profile', text: 'My Profile', icon: <Person className="mr-3" /> },
         { id: 'medicines', text: 'Manage Medicines', icon: <LocalPharmacy className="mr-3" /> },
         { id: 'payments', text: 'Payment History', icon: <Payment className="mr-3" /> },
         { id: 'advertisements', text: 'Ask For Advertisement', icon: <Campaign className="mr-3" /> },
@@ -63,6 +66,21 @@ const SellerDashboard = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+
+    useEffect(() => {
+        if (!user?.email) return;
+
+        fetch('http://localhost:3000/users')
+            .then(res => res.json())
+            .then(users => {
+                const matchedSeller = users.find(u => u.email === user.email);
+                if (matchedSeller) {
+                    setSellerProfile(matchedSeller);
+                }
+            })
+            .catch(err => console.error('Error fetching seller profile:', err));
+    }, [user?.email]);
 
 
 
@@ -546,6 +564,72 @@ const SellerDashboard = () => {
                                         />
                                     </LineChart>
                                 </ResponsiveContainer>
+                            </div>
+                        </div>
+                    )}
+                    {activeTab === 'profile' && (
+                        <div className="bg-white rounded-lg shadow overflow-hidden">
+                            <div className="p-6">
+                                <div className="flex flex-col md:flex-row gap-6">
+                                    <div className="flex-shrink-0">
+                                        <img
+                                            src={sellerProfile?.photoURL || user?.photoURL || "https://via.placeholder.com/150"}
+                                            alt="Profile"
+                                            className="w-32 h-32 rounded-full object-cover border-4 border-teal-100"
+                                        />
+                                    </div>
+                                    <div className="flex-grow">
+                                        <h2 className="text-2xl font-bold text-gray-800">
+                                            {sellerProfile?.username || user?.username || 'Seller'}
+                                        </h2>
+                                        <p className="text-gray-600 mb-4">{user?.email}</p>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <h3 className="text-sm font-medium text-gray-500">Account Information</h3>
+                                                <div className="mt-2 space-y-2">
+                                                    <p className="text-sm">
+                                                        <span className="font-medium">Role:</span> {sellerProfile?.role || user?.role || 'seller'}
+                                                    </p>
+                                                    <p className="text-sm">
+                                                        <span className="font-medium">Member Since:</span>
+                                                        {sellerProfile?.createdAt
+                                                            ? new Date(sellerProfile.createdAt).toLocaleDateString()
+                                                            : user?.createdAt
+                                                                ? new Date(user.createdAt).toLocaleDateString()
+                                                                : 'N/A'}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <h3 className="text-sm font-medium text-gray-500">Contact Information</h3>
+                                                <div className="mt-2 space-y-2">
+                                                    <p className="text-sm">
+                                                        <span className="font-medium">Phone:</span>
+                                                        {sellerProfile?.phone || 'Not provided'}
+                                                    </p>
+                                                    <p className="text-sm">
+                                                        <span className="font-medium">Address:</span>
+                                                        {sellerProfile?.address || 'Not provided'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-6 pt-6 border-t border-gray-200">
+                                    <h3 className="text-lg font-medium text-gray-800 mb-4">Account Actions</h3>
+                                    <div className="flex flex-wrap gap-3">
+                                        <Link
+                                            to={'/profile-update'}
+                                            className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 text-sm"
+                                        >
+                                            Edit Profile
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
