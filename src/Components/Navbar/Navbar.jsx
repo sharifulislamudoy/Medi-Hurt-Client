@@ -283,7 +283,8 @@ const Navbar = () => {
                                                                 <h4 className="font-medium text-sm md:text-base truncate">{item.name}</h4>
                                                                 <p className="text-xs text-gray-600 truncate">{item.formulationType}</p>
                                                                 <p className="text-sm font-semibold text-teal-800">
-                                                                    ৳{(item.selectedPrice * item.quantity).toFixed(2)}
+                                                                    ৳{item.formulations.tablet}
+
                                                                 </p>
                                                             </div>
                                                             <div className="flex items-center gap-1">

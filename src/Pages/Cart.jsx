@@ -37,7 +37,7 @@ const Cart = () => {
                                         <div className="flex-1">
                                             <h3 className="font-semibold text-lg">{item.name}</h3>
                                             <p className="text-gray-600">{item.formulationType}</p>
-                                            <p className="text-teal-600 font-medium">৳{item.selectedPrice?.toFixed(2)}</p>
+                                            <p className="text-teal-600 font-medium">৳{item.formulations.tablet}</p>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <div className="flex items-center rounded-lg border-2 border-teal-600">

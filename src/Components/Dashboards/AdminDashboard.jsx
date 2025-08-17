@@ -41,7 +41,6 @@ import useAuth from '../Hooks/useAuth';
 const AdminDashboard = () => {
     const { user } = useAuth()
     const [activeTab, setActiveTab] = useState(() => {
-        // Try to get the saved tab from localStorage
         const savedTab = localStorage.getItem('adminActiveTab');
         return savedTab || 'dashboard';
     });

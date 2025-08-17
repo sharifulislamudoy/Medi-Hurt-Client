@@ -6,8 +6,8 @@ import visa from '../../assets/visa.png';
 import amex from '../../assets/amex.png';
 import mastercard from '../../assets/mastercard.png';
 import discover from '../../assets/discover.png';
-import useAuth from '../Hooks/UseAuth';
 import Swal from 'sweetalert2';
+import useAuth from '../Hooks/useAuth';
 
 const CheckoutForm = () => {
     const { user } = useAuth();
